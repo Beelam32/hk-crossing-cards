@@ -1,0 +1,15 @@
+{
+ "generated": "2026-10-07 03:55",
+ "sources": {
+  "crossing": "03:50",
+  "weather": "08:00",
+  "tunnel": "03:54"
+ },
+ "ok": {
+  "crossing": true,
+  "weather": true,
+  "tunnel": true,
+  "cams": true
+ },
+ "err": {}
+}
