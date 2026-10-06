@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-07 03:55",
+ "generated": "2026-10-07 07:29",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "03:50",
+  "updated": "07:25",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LMC",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 25,
-  "humidity": 52,
+  "temp": 24,
+  "humidity": 58,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "干燥的东北季候风正影响广东，该区天色大致良好。",
-  "forecast": "大致天晴及干燥。早上稍凉，市区最低气温约23度，新界再低两三度。日间最高气温约30度。晚上部分时间多云。吹和缓北至东北风，风势间中清劲。",
+  "situation": "干燥的东北季候风正影响广东，该区天色大致良好。由于风势较弱，天朗气清，新界部分地区的气温下降至20度或以下。",
+  "forecast": "大致天晴及干燥。早上稍凉。日间最高气温约30度。晚上部分时间多云。吹和缓北至东北风，风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -145,13 +145,13 @@
   "fndUpdated": "03:50"
  },
  "tunnel": {
-  "updated": "03:54",
+  "updated": "07:27",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
+    "min": "5",
     "txt": "畅通",
     "lv": "ok"
    },
