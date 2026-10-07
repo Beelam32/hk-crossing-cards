@@ -284,6 +284,10 @@ const T = {
   driveEmpty: {tc:"車程快照暫時未有（未跑過或抓取失敗）· 稍後再試",
                sc:"车程快照暂时未有（未跑过或抓取失败）· 稍后再试",
                en:"No drive snapshot yet (not run, or the fetch failed). Try again later."},
+  /* 2026-10-07 凍結：運輸署對伺服器 IP 限流，自駕快照長期抓唔到 → 暫停，其他分頁照用 */
+  drivePaused:{tc:"自駕車程快照暫停中　運輸署對伺服器 IP 限流，抓唔到數據，修好先恢復 · 其他分頁不受影響",
+               sc:"自驾车程快照暂停中　运输署对服务器 IP 限流，抓不到数据，修好再恢复 · 其他分页不受影响",
+               en:"Drive snapshot paused — TD rate-limits server IPs so the data cannot be fetched. Will restore when fixed. Other tabs are unaffected."},
   thPort:     {tc:"口岸", sc:"口岸", en:"Crossing"},
   thEta:      {tc:"車程", sc:"车程", en:"Drive time"},
   thSpd:      {tc:"均速", sc:"均速", en:"Avg speed"},
@@ -631,7 +635,7 @@ function renderDrive(dr){
   const box = document.getElementById("drive");
   if(!dr || !dr.rows){
     document.getElementById("sub-drive").textContent = '';
-    box.innerHTML = '<div class="empty">' + esc(L("driveEmpty")) + '</div>';
+    box.innerHTML = '<div class="empty">' + esc(L("drivePaused")) + '</div>';
     return;
   }
   document.getElementById("sub-drive").textContent =
