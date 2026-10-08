@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-08 10:08",
+ "generated": "2026-10-08 14:22",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "10:00",
+  "updated": "14:20",
   "rows": [
    {
     "code": "LWS",
@@ -76,28 +76,20 @@
   ]
  },
  "weather": {
-  "temp": 26,
-  "humidity": 65,
-  "uv": 2,
-  "uvDesc": "低",
+  "temp": 29,
+  "humidity": 59,
+  "uv": 7,
+  "uvDesc": "高",
   "warnings": [],
   "situation": "东北季候风正影响广东沿岸。",
-  "forecast": "部分时间有阳光。日间干燥。吹和缓至清劲东至东北风，初时离岸及高地间中吹强风。",
+  "forecast": "下午部分时间有阳光及干燥。今晚大致多云。吹和缓至清劲东至东北风，离岸及高地间中吹强风。",
   "updated": "08:00",
   "days": [
-   {
-    "date": "20261008",
-    "week": "星期四",
-    "txt": "部分时间有阳光。日间干燥。",
-    "max": 30,
-    "min": 26,
-    "psr": "低"
-   },
    {
     "date": "20261009",
     "week": "星期五",
     "txt": "大致天晴及干燥。",
-    "max": 31,
+    "max": 30,
     "min": 26,
     "psr": "低"
    },
@@ -140,18 +132,26 @@
     "max": 32,
     "min": 27,
     "psr": "低"
+   },
+   {
+    "date": "20261015",
+    "week": "星期四",
+    "txt": "部分时间有阳光。",
+    "max": 30,
+    "min": 27,
+    "psr": "低"
    }
   ],
-  "fndUpdated": "09:50"
+  "fndUpdated": "11:30"
  },
  "tunnel": {
-  "updated": "10:05",
+  "updated": "14:21",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "8",
+    "min": "6",
     "txt": "繁忙",
     "lv": "warn"
    },
@@ -159,15 +159,15 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "10",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "11",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "11",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    }
