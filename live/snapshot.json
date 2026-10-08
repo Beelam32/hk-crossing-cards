@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-08 14:22",
+ "generated": "2026-10-08 14:24",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -145,7 +145,7 @@
   "fndUpdated": "11:30"
  },
  "tunnel": {
-  "updated": "14:21",
+  "updated": "14:23",
   "rows": [
    {
     "key": "CH",
