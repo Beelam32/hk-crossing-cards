@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-09 23:25",
+ "generated": "2026-10-10 04:12",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,16 +8,16 @@
  },
  "err": {},
  "crossing": {
-  "updated": "23:21",
+  "updated": "04:11",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "LSC",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -76,12 +76,12 @@
   ]
  },
  "weather": {
-  "temp": 27,
-  "humidity": 73,
+  "temp": 26,
+  "humidity": 78,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "东北季候风今日影响广东沿岸。本港今日初时部分时间多云，日间大致天晴及干燥，下午各区的相对湿度下降至百分之五十左右。预料受高空反气旋支配，未来数日华南普遍晴朗。",
+  "situation": "东北季候风正影响广东沿岸。",
   "forecast": "大致天晴。早上市区最低气温约26度，新界再低两三度。日间干燥及炎热，最高气温约31度。吹和缓东至东北风。",
   "updated": "08:00",
   "days": [
@@ -145,7 +145,7 @@
   "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "23:23",
+  "updated": "04:11",
   "rows": [
    {
     "key": "CH",
@@ -159,9 +159,9 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "12",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "8",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
