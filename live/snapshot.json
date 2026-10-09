@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-09 05:40",
+ "generated": "2026-10-09 09:35",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "05:35",
+  "updated": "09:31",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LMC",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 26,
-  "humidity": 76,
-  "uv": null,
-  "uvDesc": null,
+  "temp": 27,
+  "humidity": 70,
+  "uv": 1,
+  "uvDesc": "低",
   "warnings": [],
-  "situation": "东北季候风正影响广东沿岸。此外，一道云带覆盖南海北部。",
-  "forecast": "初时部分时间多云。日间大致天晴及干燥，市区最高气温约30度，新界再高一两度。吹和缓至清劲东至东北风，初时离岸间中吹强风。",
+  "situation": "东北季候风正影响广东沿岸。",
+  "forecast": "大致天晴。日间干燥，市区最高气温约30度，新界再高一两度。吹和缓至清劲东至东北风，初时离岸间中吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261009",
     "week": "星期五",
-    "txt": "大致天晴。初时部分时间多云。日间干燥。",
+    "txt": "大致天晴。日间干燥。",
     "max": 30,
     "min": 26,
     "psr": "低"
@@ -142,24 +142,24 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "16:30"
+  "fndUpdated": "06:15"
  },
  "tunnel": {
-  "updated": "05:39",
+  "updated": "09:33",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "7",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,9 +167,9 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "13",
+    "txt": "繁忙",
+    "lv": "warn"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
