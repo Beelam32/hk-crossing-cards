@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-10 14:07",
+ "generated": "2026-10-10 20:48",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "14:06",
+  "updated": "20:46",
   "rows": [
    {
     "code": "LWS",
@@ -76,21 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 31,
-  "humidity": 59,
-  "uv": 6,
-  "uvDesc": "高",
-  "warnings": [
-   "火灾危险警告"
-  ],
-  "situation": "东北季候风正影响广东沿岸。同时，高空反气旋为华南带来普遍晴朗的天气。",
-  "forecast": "大致天晴。下午干燥及炎热。吹和缓东至东北风。",
+  "temp": 27,
+  "humidity": 73,
+  "uv": null,
+  "uvDesc": null,
+  "warnings": [],
+  "situation": "东北季候风正影响广东沿岸。同时，高空反气旋为华南带来大致良好的天气。",
+  "forecast": "天晴。明早市区最低气温约26度，新界再低几度。日间干燥及炎热，最高气温约31度。吹和缓东至东北风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261011",
     "week": "星期日",
-    "txt": "天晴，日间干燥。",
+    "txt": "天晴。日间干燥。",
     "max": 31,
     "min": 26,
     "psr": "低"
@@ -98,7 +96,7 @@
    {
     "date": "20261012",
     "week": "星期一",
-    "txt": "天晴，日间干燥。",
+    "txt": "天晴。日间干燥。",
     "max": 31,
     "min": 26,
     "psr": "低"
@@ -144,34 +142,34 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "14:04",
+  "updated": "20:47",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "6",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "12",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "10",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "16",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
