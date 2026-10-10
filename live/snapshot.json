@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-10 04:12",
+ "generated": "2026-10-10 08:09",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "04:11",
+  "updated": "08:06",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LMC",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -78,11 +78,13 @@
  "weather": {
   "temp": 26,
   "humidity": 78,
-  "uv": null,
-  "uvDesc": null,
-  "warnings": [],
-  "situation": "东北季候风正影响广东沿岸。",
-  "forecast": "大致天晴。早上市区最低气温约26度，新界再低两三度。日间干燥及炎热，最高气温约31度。吹和缓东至东北风。",
+  "uv": 0.4,
+  "uvDesc": "低",
+  "warnings": [
+   "火灾危险警告"
+  ],
+  "situation": "东北季候风正影响广东沿岸。同时，高空反气旋为华南带来普遍晴朗的天气。",
+  "forecast": "大致天晴。日间干燥及炎热，市区最高气温约31度，新界再高两三度。吹和缓东至东北风。",
   "updated": "08:00",
   "days": [
    {
@@ -145,7 +147,7 @@
   "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "04:11",
+  "updated": "08:06",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +161,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
