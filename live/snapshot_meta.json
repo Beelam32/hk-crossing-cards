@@ -1,15 +1,16 @@
 {
- "generated": "2026-10-10 20:48",
+ "generated": "2026-10-11 01:33",
  "sources": {
-  "crossing": "20:46",
+  "crossing": "",
   "weather": "08:00",
-  "tunnel": "20:47"
+  "tunnel": "01:32"
  },
  "ok": {
-  "crossing": true,
   "weather": true,
   "tunnel": true,
   "cams": true
  },
- "err": {}
+ "err": {
+  "crossing": "<urlopen error [Errno 101] Network is unreachable>"
+ }
 }
