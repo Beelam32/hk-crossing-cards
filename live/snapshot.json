@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-14 03:25",
+ "generated": "2026-10-14 07:21",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "03:19",
+  "updated": "07:19",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -77,18 +77,18 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 85,
+  "humidity": 82,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "受高空反气旋影响，华南天色大致良好。同时，广东沿岸风势微弱。此外，中国东南沿岸的气压正在上升，预料一股清劲的偏东气流会在今日逐渐影响广东沿岸。",
-  "forecast": "初时大致天晴，部分地区能见度较低。日间渐转多云，有一两阵微雨。气温介乎26至31度。吹微风，渐转吹和缓东风，离岸风势间中清劲。",
+  "situation": "一股偏东气流正影响广东东部沿岸。",
+  "forecast": "渐转多云。初时有一两阵微雨，部分地区能见度较低。日间最高气温约31度。吹微风，渐转吹和缓东风，离岸风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261014",
     "week": "星期三",
-    "txt": "初时大致天晴，部分地区能见度较低。日间渐转多云，有一两阵微雨。",
+    "txt": "渐转多云。初时有一两阵微雨，部分地区能见度较低。",
     "max": 31,
     "min": 26,
     "psr": "低"
@@ -142,10 +142,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "00:00"
+  "fndUpdated": "06:20"
  },
  "tunnel": {
-  "updated": "03:23",
+  "updated": "07:20",
   "rows": [
    {
     "key": "CH",
