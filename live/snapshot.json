@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-15 17:35",
+ "generated": "2026-10-15 22:34",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "17:29",
+  "updated": "22:29",
   "rows": [
    {
     "code": "LWS",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HZM",
@@ -76,10 +76,10 @@
   ]
  },
  "weather": {
-  "temp": 28,
-  "humidity": 69,
-  "uv": 0.7,
-  "uvDesc": "低",
+  "temp": 27,
+  "humidity": 77,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
   "situation": "一股清劲的偏东气流正影响广东沿岸。",
   "forecast": "晚间天色大致良好。明日日间部分时间有阳光。气温介乎26至30度。明晚有一两阵微雨。吹和缓东风，风势间中清劲。",
@@ -145,31 +145,31 @@
   "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "17:34",
+  "updated": "22:32",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "11",
-    "txt": "塞车",
-    "lv": "bad"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "12",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "17",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
