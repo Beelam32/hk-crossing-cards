@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16 02:48",
+ "generated": "2026-10-16 05:53",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "02:39",
+  "updated": "05:49",
   "rows": [
    {
     "code": "LWS",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 27,
-  "humidity": 74,
+  "temp": 26,
+  "humidity": 73,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
   "situation": "一股清劲的偏东气流正影响广东沿岸。",
-  "forecast": "初时天色大致良好。日间部分时间有阳光。气温介乎26至30度。晚上有一两阵微雨。吹和缓东风，风势间中清劲。",
+  "forecast": "初时天色大致良好。日间部分时间有阳光，最高气温约30度。晚上有一两阵微雨。吹和缓东风，风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "02:45",
+  "updated": "05:51",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
