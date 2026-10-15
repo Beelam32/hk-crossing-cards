@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-15 22:34",
+ "generated": "2026-10-16 02:48",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "22:29",
+  "updated": "02:39",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HGP",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -77,12 +77,12 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 77,
+  "humidity": 74,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
   "situation": "一股清劲的偏东气流正影响广东沿岸。",
-  "forecast": "晚间天色大致良好。明日日间部分时间有阳光。气温介乎26至30度。明晚有一两阵微雨。吹和缓东风，风势间中清劲。",
+  "forecast": "初时天色大致良好。日间部分时间有阳光。气温介乎26至30度。晚上有一两阵微雨。吹和缓东风，风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -142,16 +142,16 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "16:30"
+  "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "22:32",
+  "updated": "02:45",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "5",
+    "min": "4",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
