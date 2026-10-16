@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16 16:38",
+ "generated": "2026-10-16 21:39",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "16:29",
+  "updated": "21:39",
   "rows": [
    {
     "code": "LWS",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 29,
-  "humidity": 68,
-  "uv": 2,
-  "uvDesc": "低",
+  "temp": 27,
+  "humidity": 79,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
   "situation": "一股清劲的偏东气流正影响广东沿岸。",
-  "forecast": "大致多云，早晚有一两阵雨。明日日间短暂时间有阳光。气温介乎27至30度。吹和缓东风，风势间中清劲。",
+  "forecast": "渐转多云。明日早晚有一两阵雨，日间短暂时间有阳光。气温介乎27至30度。吹和缓东风，风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -145,31 +145,31 @@
   "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "16:36",
+  "updated": "21:39",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "8",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "12",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "25",
-    "txt": "塞车",
-    "lv": "bad"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
