@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17 01:45",
+ "generated": "2026-10-17 04:20",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:39",
+  "updated": "04:14",
   "rows": [
    {
     "code": "LWS",
@@ -77,11 +77,11 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 78,
+  "humidity": 79,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "一股清劲的偏东气流昨日影响广东沿岸。本港昨日部分时间有阳光。预料受该偏东气流影响，今日及重阳节初时广东沿岸风势较大及有一两阵雨。随著高空反气旋增强，下周初至中期华南沿岸大致天晴及干燥，内陆地区渐转酷热。",
+  "situation": "一股清劲的偏东气流正影响广东沿岸。",
   "forecast": "大致多云。早晚有一两阵雨，日间短暂时间有阳光。气温介乎27至30度。吹和缓东风，风势间中清劲。",
   "updated": "08:00",
   "days": [
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "01:43",
+  "updated": "04:18",
   "rows": [
    {
     "key": "CH",
