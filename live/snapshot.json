@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17 06:55",
+ "generated": "2026-10-17 08:56",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "06:54",
+  "updated": "08:54",
   "rows": [
    {
     "code": "LWS",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -78,17 +78,17 @@
  "weather": {
   "temp": 27,
   "humidity": 76,
-  "uv": null,
-  "uvDesc": null,
+  "uv": 0.4,
+  "uvDesc": "低",
   "warnings": [],
   "situation": "一股清劲至强风程度的偏东气流正影响广东沿岸。",
-  "forecast": "大致多云。早晚有一两阵雨，日间短暂时间有阳光，最高气温约30度。吹和缓至清劲东风，初时离岸及高地间中吹强风。",
+  "forecast": "大致多云，日间部分时间有阳光，最高气温约30度。晚上有一两阵微雨。吹和缓至清劲东风，初时离岸及高地间中吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261017",
     "week": "星期六",
-    "txt": "大致多云，早晚有一两阵雨。日间短暂时间有阳光。",
+    "txt": "大致多云，日间部分时间有阳光。晚上有一两阵微雨。",
     "max": 30,
     "min": 27,
     "psr": "低"
@@ -142,16 +142,16 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "05:50"
+  "fndUpdated": "07:50"
  },
  "tunnel": {
-  "updated": "06:53",
+  "updated": "08:55",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
+    "min": "5",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
