@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18 02:57",
+ "generated": "2026-10-18 05:14",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "02:54",
+  "updated": "05:14",
   "rows": [
    {
     "code": "LWS",
@@ -77,12 +77,12 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 78,
+  "humidity": 79,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
   "situation": "一股清劲至强风程度的偏东气流正影响广东沿岸。",
-  "forecast": "大致多云。早上有一两阵微雨，最低气温约27度。日间部分时间有阳光及干燥，最高气温约31度。吹和缓至清劲东风，初时高地间中吹强风。",
+  "forecast": "大致多云。早上有一两阵微雨。日间部分时间有阳光及干燥，最高气温约31度。吹和缓至清劲东风，初时高地间中吹强风。",
   "updated": "08:00",
   "days": [
    {
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "02:55",
+  "updated": "05:13",
   "rows": [
    {
     "key": "CH",
