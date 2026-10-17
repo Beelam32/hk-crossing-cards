@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17 17:33",
+ "generated": "2026-10-17 21:23",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "17:29",
+  "updated": "21:19",
   "rows": [
    {
     "code": "LWS",
@@ -77,14 +77,12 @@
  },
  "weather": {
   "temp": 28,
-  "humidity": 75,
-  "uv": 0.6,
-  "uvDesc": "低",
-  "warnings": [
-   "火灾危险警告"
-  ],
+  "humidity": 79,
+  "uv": null,
+  "uvDesc": null,
+  "warnings": [],
   "situation": "一股清劲至强风程度的偏东气流正影响广东沿岸。",
-  "forecast": "大致多云。明早有一两阵微雨，最低气温约27度。日间部分时间有阳光及干燥，最高气温约31度。吹和缓至清劲东风，初时离岸及高地间中吹强风。",
+  "forecast": "大致多云。今晚及明早有一两阵微雨，最低气温约27度。日间部分时间有阳光及干燥，最高气温约31度。吹和缓至清劲东风，初时离岸及高地间中吹强风。",
   "updated": "08:00",
   "days": [
    {
@@ -147,21 +145,21 @@
   "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "17:31",
+  "updated": "21:21",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "6",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -169,7 +167,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    }
