@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-19 03:54",
+ "generated": "2026-10-19 06:07",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "03:54",
+  "updated": "06:04",
   "rows": [
    {
     "code": "LWS",
@@ -77,12 +77,14 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 78,
+  "humidity": 80,
   "uv": null,
   "uvDesc": null,
-  "warnings": [],
-  "situation": "一股偏东气流正影响广东沿岸。",
-  "forecast": "天晴。早上最低气温约27度，日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹和缓偏东风，初时高地风势间中清劲。",
+  "warnings": [
+   "火灾危险警告"
+  ],
+  "situation": "受高空反气旋影响，华南天色大致良好。同时，影响广东沿岸的偏东气流正逐渐缓和。",
+  "forecast": "天晴。日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹轻微至和缓偏东风。",
   "updated": "08:00",
   "days": [
    {
@@ -142,10 +144,10 @@
     "psr": "中低"
    }
   ],
-  "fndUpdated": "00:00"
+  "fndUpdated": "04:50"
  },
  "tunnel": {
-  "updated": "03:53",
+  "updated": "06:04",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +161,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
