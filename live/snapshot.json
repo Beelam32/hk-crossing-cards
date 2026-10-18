@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18 19:29",
+ "generated": "2026-10-18 22:45",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "19:24",
+  "updated": "22:44",
   "rows": [
    {
     "code": "LWS",
@@ -23,10 +23,10 @@
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HGP",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HZM",
@@ -76,14 +76,12 @@
   ]
  },
  "weather": {
-  "temp": 29,
-  "humidity": 69,
+  "temp": 28,
+  "humidity": 73,
   "uv": null,
   "uvDesc": null,
-  "warnings": [
-   "火灾危险警告"
-  ],
-  "situation": "一股偏东气流正影响广东沿岸。本港方面，下午多处地区的相对湿度下降至百分之六十或以下。",
+  "warnings": [],
+  "situation": "一股偏东气流正影响广东沿岸。",
   "forecast": "大致天晴。明早最低气温约27度，日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹和缓偏东风，初时高地风势间中清劲。",
   "updated": "08:00",
   "days": [
@@ -147,7 +145,7 @@
   "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "19:27",
+  "updated": "22:43",
   "rows": [
    {
     "key": "CH",
