@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18 14:12",
+ "generated": "2026-10-18 19:29",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "14:09",
+  "updated": "19:24",
   "rows": [
    {
     "code": "LWS",
@@ -34,8 +34,8 @@
     "hours": "24 小时",
     "arrTxt": "畅通",
     "arrLv": "ok",
-    "depTxt": "繁忙",
-    "depLv": "warn"
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "SBC",
@@ -76,15 +76,15 @@
   ]
  },
  "weather": {
-  "temp": 31,
-  "humidity": 62,
-  "uv": 7,
-  "uvDesc": "高",
+  "temp": 29,
+  "humidity": 69,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [
    "火灾危险警告"
   ],
-  "situation": "一股清劲至强风程度的偏东气流正影响广东沿岸。正午时分，本港多处地区的相对湿度下降至百分之六十左右。",
-  "forecast": "大致天晴。下午干燥。吹和缓至清劲东风，初时高地间中吹强风。",
+  "situation": "一股偏东气流正影响广东沿岸。本港方面，下午多处地区的相对湿度下降至百分之六十或以下。",
+  "forecast": "大致天晴。明早最低气温约27度，日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹和缓偏东风，初时高地风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -92,7 +92,7 @@
     "week": "星期一",
     "txt": "大致天晴。日间干燥及炎热。",
     "max": 32,
-    "min": 26,
+    "min": 27,
     "psr": "低"
    },
    {
@@ -144,10 +144,10 @@
     "psr": "中低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "14:10",
+  "updated": "19:27",
   "rows": [
    {
     "key": "CH",
