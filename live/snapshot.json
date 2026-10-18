@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18 22:45",
+ "generated": "2026-10-19 01:41",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,16 +8,16 @@
  },
  "err": {},
  "crossing": {
-  "updated": "22:44",
+  "updated": "01:39",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "LSC",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 28,
-  "humidity": 73,
+  "temp": 27,
+  "humidity": 80,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "一股偏东气流正影响广东沿岸。",
-  "forecast": "大致天晴。明早最低气温约27度，日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹和缓偏东风，初时高地风势间中清劲。",
+  "situation": "一股偏东气流昨日影响广东沿岸。本港昨日早上部分时间多云，有一两阵微雨。日间渐转天晴及干燥，多处地区的相对湿度下降至百分之六十或以下。预料随著现时影响广东沿岸的偏东气流逐渐缓和及受高空反气旋影响，未来一两日华南大致天晴及干燥，天气渐转酷热。",
+  "forecast": "天晴。早上最低气温约27度，日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹和缓偏东风，初时高地风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261019",
     "week": "星期一",
-    "txt": "大致天晴。日间干燥及炎热。",
+    "txt": "天晴。日间干燥及炎热。",
     "max": 32,
     "min": 27,
     "psr": "低"
@@ -142,16 +142,16 @@
     "psr": "中低"
    }
   ],
-  "fndUpdated": "16:30"
+  "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "22:43",
+  "updated": "01:39",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "5",
+    "min": "4",
     "txt": "畅通",
     "lv": "ok"
    },
