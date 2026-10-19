@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-19 06:07",
+ "generated": "2026-10-19 08:19",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "06:04",
+  "updated": "08:14",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -77,20 +77,20 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 80,
-  "uv": null,
-  "uvDesc": null,
+  "humidity": 77,
+  "uv": 0.4,
+  "uvDesc": "低",
   "warnings": [
    "火灾危险警告"
   ],
-  "situation": "受高空反气旋影响，华南天色大致良好。同时，影响广东沿岸的偏东气流正逐渐缓和。",
-  "forecast": "天晴。日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹轻微至和缓偏东风。",
+  "situation": "受高空反气旋影响，华南天色大致良好。",
+  "forecast": "阳光充沛。日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹轻微至和缓偏东风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261019",
     "week": "星期一",
-    "txt": "天晴。日间干燥及炎热。",
+    "txt": "阳光充沛。日间干燥及炎热。",
     "max": 32,
     "min": 27,
     "psr": "低"
@@ -144,10 +144,10 @@
     "psr": "中低"
    }
   ],
-  "fndUpdated": "04:50"
+  "fndUpdated": "07:50"
  },
  "tunnel": {
-  "updated": "06:04",
+  "updated": "08:16",
   "rows": [
    {
     "key": "CH",
@@ -161,7 +161,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
