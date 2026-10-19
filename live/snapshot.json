@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-20 01:37",
+ "generated": "2026-10-20 05:53",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:34",
+  "updated": "05:49",
   "rows": [
    {
     "code": "LWS",
@@ -77,12 +77,12 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 81,
+  "humidity": 82,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "高空反气旋昨日为华南带来普遍晴朗的天气。本港昨日阳光充沛，日间炎热及干燥，多处地区的相对湿度下降至百分之六十或以下。预料高空反气旋会在今明两日继续覆盖华南，该区普遍晴朗及干燥，天气渐转酷热。",
-  "forecast": "天晴。早上最低气温约27度，日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹轻微至和缓东风。",
+  "situation": "受高空反气旋影响，华南天色大致良好。",
+  "forecast": "天晴。日间干燥及炎热，市区最高气温约32度，新界再高一两度。吹轻微至和缓东风。",
   "updated": "08:00",
   "days": [
    {
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "01:36",
+  "updated": "05:52",
   "rows": [
    {
     "key": "CH",
