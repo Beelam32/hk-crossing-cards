@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-21 03:45",
+ "generated": "2026-10-21 06:51",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "03:44",
+  "updated": "06:49",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
@@ -77,12 +77,14 @@
  },
  "weather": {
   "temp": 27,
-  "humidity": 88,
+  "humidity": 90,
   "uv": null,
   "uvDesc": null,
-  "warnings": [],
+  "warnings": [
+   "酷热天气警告"
+  ],
   "situation": "受高空反气旋影响，华南天色大致良好。同时，广东沿岸风势微弱。",
-  "forecast": "大致天晴。早上能见度较低，最低气温约26度。日间干燥，市区最高气温约33度，新界再高两三度，部分地区极端酷热。吹微风，稍后转吹和缓东北风，局部地区有骤雨。",
+  "forecast": "大致天晴。早上能见度较低。日间干燥，市区最高气温约33度，新界再高两三度，部分地区极端酷热。吹微风，稍后转吹和缓东北风，局部地区有骤雨。",
   "updated": "08:00",
   "days": [
    {
@@ -145,7 +147,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "03:43",
+  "updated": "06:48",
   "rows": [
    {
     "key": "CH",
