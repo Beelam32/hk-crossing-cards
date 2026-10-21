@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-21 20:08",
+ "generated": "2026-10-22 01:28",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "20:04",
+  "updated": "01:24",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HZM",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 29,
-  "humidity": 81,
+  "temp": 28,
+  "humidity": 67,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "受高空反气旋影响，广东天气普遍晴朗。此外，一股东北季候风正逐渐影响沿岸地区。",
-  "forecast": "晚间部分时间多云，有一两阵雨。明早最低气温约25度，日间大致天晴，天气炎热及干燥，市区最高气温约32度，新界再高一两度。吹和缓北至东北风，初时离岸及高地风势清劲。",
+  "situation": "受高空反气旋影响，广东昨日普遍晴朗及酷热。本港昨日大致天晴，日间干燥，下午各区气温普遍上升至33度左右，部分地区极端酷热，气温达35度或以上。此外，广东沿岸昨日日间风势微弱，而一股东北季候风在晚上逐渐影响该区。预料干燥的东北季候风会在今日继续为华南沿岸带来大致晴朗的天气。",
+  "forecast": "初时部分时间多云，有几阵骤雨。早上最低气温约25度，日间大致天晴，天气炎热及干燥，市区最高气温约32度，新界再高一两度。吹和缓北至东北风，初时离岸及高地风势清劲。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261022",
     "week": "星期四",
-    "txt": "初时部分时间多云，有一两阵雨。日间大致天晴，天气炎热及干燥。",
+    "txt": "初时部分时间多云，有几阵骤雨。日间大致天晴，天气炎热及干燥。",
     "max": 32,
     "min": 25,
     "psr": "低"
@@ -142,10 +142,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "19:50"
+  "fndUpdated": "01:25"
  },
  "tunnel": {
-  "updated": "20:05",
+  "updated": "01:26",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,7 +167,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    }
