@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-22 07:50",
+ "generated": "2026-10-22 10:41",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "07:49",
+  "updated": "10:39",
   "rows": [
    {
     "code": "LWS",
@@ -76,21 +76,21 @@
   ]
  },
  "weather": {
-  "temp": 26,
-  "humidity": 69,
-  "uv": null,
-  "uvDesc": null,
+  "temp": 27,
+  "humidity": 65,
+  "uv": 3,
+  "uvDesc": "中等",
   "warnings": [],
   "situation": "干燥的东北季候风正影响广东。",
-  "forecast": "初时部分时间多云。日间大致天晴，天气炎热及干燥，市区最高气温约32度，新界再高一两度。吹和缓北至东北风，初时离岸及高地风势清劲。",
+  "forecast": "大致天晴及干燥，日间天气炎热。吹和缓北至东北风，初时离岸及高地风势清劲。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261022",
     "week": "星期四",
-    "txt": "初时部分时间多云。日间大致天晴，天气炎热及干燥。",
+    "txt": "大致天晴及干燥，日间天气炎热。",
     "max": 32,
-    "min": 25,
+    "min": 26,
     "psr": "低"
    },
    {
@@ -142,10 +142,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "04:50"
+  "fndUpdated": "09:20"
  },
  "tunnel": {
-  "updated": "07:48",
+  "updated": "10:38",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,7 +167,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    }
