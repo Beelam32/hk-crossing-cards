@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-22 16:10",
+ "generated": "2026-10-22 21:57",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "16:09",
+  "updated": "21:54",
   "rows": [
    {
     "code": "LWS",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 31,
-  "humidity": 57,
-  "uv": 2,
-  "uvDesc": "低",
+  "temp": 27,
+  "humidity": 63,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
-  "situation": "干燥的东北季候风正为广东带来普遍晴朗的天气。正午时分，本港多处地区的相对湿度下降至百分之六十或以下。",
-  "forecast": "大致天晴及干燥，下午天气炎热。吹和缓偏北风，初时离岸及高地风势清劲。",
+  "situation": "干燥的大陆气流正影响广东，该区天色良好。",
+  "forecast": "天晴。明早市区最低气温约25度，新界再低两三度，日间炎热及非常干燥，最高气温约32度。吹和缓北至西北风，离岸风势间中清劲，高地达强风程度。",
   "updated": "08:00",
   "days": [
    {
@@ -142,32 +142,32 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "16:08",
+  "updated": "21:56",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "7",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "11",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "11",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    }
