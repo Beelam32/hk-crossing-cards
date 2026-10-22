@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-23 02:19",
+ "generated": "2026-10-23 05:48",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "02:19",
+  "updated": "05:44",
   "rows": [
    {
     "code": "LWS",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 25,
+  "temp": 24,
   "humidity": 68,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
   "situation": "干燥的大陆气流正影响广东，该区天色良好。",
-  "forecast": "天晴。早上市区最低气温约25度，新界再低两三度，日间炎热及非常干燥，最高气温约32度。吹和缓北至西北风，离岸风势间中清劲，高地达强风程度。海有涌浪。",
+  "forecast": "天晴。日间炎热及非常干燥，市区最高气温约32度，新界再高一两度。吹和缓至清劲北至西北风，离岸及高地间中吹强风。海有涌浪。",
   "updated": "08:00",
   "days": [
    {
@@ -90,7 +90,7 @@
     "week": "星期五",
     "txt": "天晴。日间炎热及非常干燥。海有涌浪。",
     "max": 32,
-    "min": 25,
+    "min": 24,
     "psr": "低"
    },
    {
@@ -142,10 +142,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "00:00"
+  "fndUpdated": "05:30"
  },
  "tunnel": {
-  "updated": "02:18",
+  "updated": "05:47",
   "rows": [
    {
     "key": "CH",
