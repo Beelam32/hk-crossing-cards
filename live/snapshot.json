@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-23 05:48",
+ "generated": "2026-10-23 08:17",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "05:44",
+  "updated": "08:14",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -77,19 +77,21 @@
  },
  "weather": {
   "temp": 24,
-  "humidity": 68,
-  "uv": null,
-  "uvDesc": null,
-  "warnings": [],
-  "situation": "干燥的大陆气流正影响广东，该区天色良好。",
-  "forecast": "天晴。日间炎热及非常干燥，市区最高气温约32度，新界再高一两度。吹和缓至清劲北至西北风，离岸及高地间中吹强风。海有涌浪。",
+  "humidity": 64,
+  "uv": 0.4,
+  "uvDesc": "低",
+  "warnings": [
+   "火灾危险警告"
+  ],
+  "situation": "干燥的大陆气流正为广东带来晴朗的天气。本港方面，今早大部分地区的气温降至24度左右。",
+  "forecast": "阳光充沛。日间炎热及非常干燥，市区最高气温约31度，新界再高一两度。吹和缓至清劲北至西北风，离岸及高地间中吹强风。海有涌浪。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261023",
     "week": "星期五",
-    "txt": "天晴。日间炎热及非常干燥。海有涌浪。",
-    "max": 32,
+    "txt": "阳光充沛。日间炎热及非常干燥。海有涌浪。",
+    "max": 31,
     "min": 24,
     "psr": "低"
    },
@@ -142,16 +144,16 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "05:30"
+  "fndUpdated": "07:50"
  },
  "tunnel": {
-  "updated": "05:47",
+  "updated": "08:15",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
+    "min": "5",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -159,7 +161,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,7 +169,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    }
