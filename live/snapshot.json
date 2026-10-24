@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-25 03:37",
+ "generated": "2026-10-25 06:09",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "03:34",
+  "updated": "06:04",
   "rows": [
    {
     "code": "LWS",
@@ -77,12 +77,14 @@
  },
  "weather": {
   "temp": 25,
-  "humidity": 66,
+  "humidity": 65,
   "uv": null,
   "uvDesc": null,
-  "warnings": [],
+  "warnings": [
+   "火灾危险警告"
+  ],
   "situation": "干燥的东北季候风正影响广东，该区天色大致良好。",
-  "forecast": "天晴干燥。早上市区最低气温约25度，新界再低两三度，日间最高气温约31度。吹和缓北至东北风。",
+  "forecast": "天晴干燥。日间市区最高气温约31度，新界再高一两度。吹和缓北至东北风。",
   "updated": "08:00",
   "days": [
    {
@@ -90,7 +92,7 @@
     "week": "星期日",
     "txt": "天晴干燥。",
     "max": 31,
-    "min": 25,
+    "min": 24,
     "psr": "低"
    },
    {
@@ -142,10 +144,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "00:00"
+  "fndUpdated": "05:15"
  },
  "tunnel": {
-  "updated": "03:35",
+  "updated": "06:07",
   "rows": [
    {
     "key": "CH",
