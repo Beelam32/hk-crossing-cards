@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-25 01:07",
+ "generated": "2026-10-25 03:37",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:04",
+  "updated": "03:34",
   "rows": [
    {
     "code": "LWS",
@@ -76,12 +76,12 @@
   ]
  },
  "weather": {
-  "temp": 26,
-  "humidity": 62,
+  "temp": 25,
+  "humidity": 66,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "干燥的东北季候风昨日为广东带来普遍晴朗的天气。本港昨日天晴，日间炎热及干燥，普遍地区的相对湿度下降至百分之四十左右。预料受该东北季候风影响，今明两日广东天色普遍晴朗。",
+  "situation": "干燥的东北季候风正影响广东，该区天色大致良好。",
   "forecast": "天晴干燥。早上市区最低气温约25度，新界再低两三度，日间最高气温约31度。吹和缓北至东北风。",
   "updated": "08:00",
   "days": [
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "01:05",
+  "updated": "03:35",
   "rows": [
    {
     "key": "CH",
