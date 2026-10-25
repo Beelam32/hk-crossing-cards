@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-26 01:43",
+ "generated": "2026-10-26 04:12",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:39",
+  "updated": "04:09",
   "rows": [
    {
     "code": "LWS",
@@ -76,12 +76,12 @@
   ]
  },
  "weather": {
-  "temp": 27,
-  "humidity": 60,
+  "temp": 26,
+  "humidity": 61,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "干燥的东北季候风昨日影响广东，该区天色大致良好。本港昨日大致天晴，日间干燥，各区的相对湿度普遍下降至百分之六十或以下。预料东北季候风会在今日继续影响广东。而一股清劲至强风程度的偏东气流会在本周中期逐渐影响华南沿岸，该区云量稍多。",
+  "situation": "东北季候风正影响广东。",
   "forecast": "大致多云，初时有一两阵雨，日间部分时间有阳光。气温介乎26至30度。吹和缓东至东北风。",
   "updated": "08:00",
   "days": [
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "01:43",
+  "updated": "04:10",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
