@@ -1,112 +1,37 @@
 {
- "generated": "2026-10-26 08:54",
+ "generated": "2026-10-26 13:39",
  "ok": {
-  "crossing": true,
   "weather": true,
   "tunnel": true,
   "cams": true
  },
- "err": {},
- "crossing": {
-  "updated": "08:49",
-  "rows": [
-   {
-    "code": "LWS",
-    "name": "罗湖",
-    "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   },
-   {
-    "code": "LSC",
-    "name": "福田",
-    "hours": "06:30–22:30",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   },
-   {
-    "code": "HGP",
-    "name": "皇岗",
-    "hours": "24 小时",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   },
-   {
-    "code": "SBC",
-    "name": "深圳湾",
-    "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   },
-   {
-    "code": "HYW",
-    "name": "莲塘",
-    "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   },
-   {
-    "code": "MKT",
-    "name": "文锦渡",
-    "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   },
-   {
-    "code": "HZM",
-    "name": "港珠澳大桥",
-    "hours": "24 小时",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
-   }
-  ]
+ "err": {
+  "crossing": "<urlopen error _ssl.c:993: The handshake operation timed out>"
  },
  "weather": {
-  "temp": 26,
+  "temp": 30,
   "humidity": 60,
-  "uv": 0.2,
-  "uvDesc": "低",
+  "uv": 7,
+  "uvDesc": "高",
   "warnings": [],
-  "situation": "东北季候风正为广东沿岸带来大致晴朗的天气。",
-  "forecast": "大致天晴。日间市区最高气温约30度，新界再高一两度。吹和缓东至东北风。",
+  "situation": "干燥的东北季候风正为广东沿岸带来普遍晴朗的天气。",
+  "forecast": "大致天晴及干燥。今晚部分时间多云。吹和缓东至东北风。",
   "updated": "08:00",
   "days": [
    {
-    "date": "20261026",
-    "week": "星期一",
-    "txt": "大致天晴。",
-    "max": 30,
-    "min": 26,
-    "psr": "低"
-   },
-   {
     "date": "20261027",
     "week": "星期二",
-    "txt": "大致多云，初时有一两阵微雨。日间部分时间有阳光。",
+    "txt": "部分时间有阳光，早晚有一两阵微雨。",
     "max": 30,
-    "min": 26,
+    "min": 25,
     "psr": "低"
    },
    {
     "date": "20261028",
     "week": "星期三",
-    "txt": "大致多云，初时有一两阵微雨。日间短暂时间有阳光。",
+    "txt": "部分时间有阳光，初时有一两阵微雨。",
     "max": 28,
-    "min": 25,
+    "min": 24,
     "psr": "低"
    },
    {
@@ -114,13 +39,13 @@
     "week": "星期四",
     "txt": "初时部分时间多云。日间大致天晴。",
     "max": 29,
-    "min": 25,
+    "min": 24,
     "psr": "低"
    },
    {
     "date": "20261030",
     "week": "星期五",
-    "txt": "天晴。",
+    "txt": "天晴。日间干燥。",
     "max": 30,
     "min": 25,
     "psr": "低"
@@ -128,7 +53,7 @@
    {
     "date": "20261031",
     "week": "星期六",
-    "txt": "大致天晴。",
+    "txt": "大致天晴。日间干燥。",
     "max": 30,
     "min": 25,
     "psr": "低"
@@ -140,26 +65,34 @@
     "max": 29,
     "min": 25,
     "psr": "低"
+   },
+   {
+    "date": "20261102",
+    "week": "星期一",
+    "txt": "部分时间有阳光。",
+    "max": 31,
+    "min": 25,
+    "psr": "低"
    }
   ],
-  "fndUpdated": "06:35"
+  "fndUpdated": "11:30"
  },
  "tunnel": {
-  "updated": "08:52",
+  "updated": "13:38",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "8",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,7 +100,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "11",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    }

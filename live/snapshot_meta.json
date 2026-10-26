@@ -1,15 +1,16 @@
 {
- "generated": "2026-10-26 08:54",
+ "generated": "2026-10-26 13:39",
  "sources": {
-  "crossing": "08:49",
+  "crossing": "",
   "weather": "08:00",
-  "tunnel": "08:52"
+  "tunnel": "13:38"
  },
  "ok": {
-  "crossing": true,
   "weather": true,
   "tunnel": true,
   "cams": true
  },
- "err": {}
+ "err": {
+  "crossing": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+ }
 }
