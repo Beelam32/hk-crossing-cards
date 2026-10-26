@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-27 02:25",
+ "generated": "2026-10-27 06:48",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "02:19",
+  "updated": "06:44",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 26,
-  "humidity": 77,
+  "temp": 25,
+  "humidity": 92,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "东北季候风正影响广东沿岸。",
-  "forecast": "早晚部分时间多云及有几阵雨。早上市区最低气温约25度，新界再低两三度。日间大致天晴，最高气温约30度。吹和缓至清劲东至东北风，晚上离岸间中吹强风。",
+  "situation": "东北季候风正影响广东沿岸。同时，一道云雨带正覆盖该区。本港今早部分地区录得约10毫米雨量。",
+  "forecast": "早晚部分时间多云及有几阵雨。日间大致天晴，最高气温约30度。吹和缓至清劲东至东北风，晚上离岸间中吹强风。",
   "updated": "08:00",
   "days": [
    {
@@ -90,7 +90,7 @@
     "week": "星期二",
     "txt": "早晚部分时间多云及有几阵雨。日间大致天晴。",
     "max": 30,
-    "min": 25,
+    "min": 24,
     "psr": "低"
    },
    {
@@ -142,10 +142,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "01:05"
+  "fndUpdated": "05:35"
  },
  "tunnel": {
-  "updated": "02:23",
+  "updated": "06:46",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
