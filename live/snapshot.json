@@ -1,27 +1,94 @@
 {
- "generated": "2026-10-26 13:39",
+ "generated": "2026-10-26 19:58",
  "ok": {
+  "crossing": true,
   "weather": true,
   "tunnel": true,
   "cams": true
  },
- "err": {
-  "crossing": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+ "err": {},
+ "crossing": {
+  "updated": "19:54",
+  "rows": [
+   {
+    "code": "LWS",
+    "name": "罗湖",
+    "hours": "06:30–24:00",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   },
+   {
+    "code": "LSC",
+    "name": "福田",
+    "hours": "06:30–22:30",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   },
+   {
+    "code": "HGP",
+    "name": "皇岗",
+    "hours": "24 小时",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   },
+   {
+    "code": "SBC",
+    "name": "深圳湾",
+    "hours": "06:30–24:00",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   },
+   {
+    "code": "HYW",
+    "name": "莲塘",
+    "hours": "07:00–22:00",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   },
+   {
+    "code": "MKT",
+    "name": "文锦渡",
+    "hours": "07:00–22:00",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   },
+   {
+    "code": "HZM",
+    "name": "港珠澳大桥",
+    "hours": "24 小时",
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
+   }
+  ]
  },
  "weather": {
-  "temp": 30,
-  "humidity": 60,
-  "uv": 7,
-  "uvDesc": "高",
+  "temp": 27,
+  "humidity": 75,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
-  "situation": "干燥的东北季候风正为广东沿岸带来普遍晴朗的天气。",
-  "forecast": "大致天晴及干燥。今晚部分时间多云。吹和缓东至东北风。",
+  "situation": "东北季候风正为广东沿岸带来大致晴朗的天气。",
+  "forecast": "早晚部分时间多云及有一两阵微雨。明早市区最低气温约25度，新界再低两三度。日间大致天晴，最高气温约30度。吹和缓至清劲东至东北风，明晚离岸间中吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261027",
     "week": "星期二",
-    "txt": "部分时间有阳光，早晚有一两阵微雨。",
+    "txt": "早晚部分时间多云及有一两阵微雨。日间大致天晴。",
     "max": 30,
     "min": 25,
     "psr": "低"
@@ -75,26 +142,26 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "13:38",
+  "updated": "19:56",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "5",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "7",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "12",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "WH",
