@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-27 06:48",
+ "generated": "2026-10-27 09:45",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "06:44",
+  "updated": "09:34",
   "rows": [
    {
     "code": "LWS",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,21 +76,21 @@
   ]
  },
  "weather": {
-  "temp": 25,
-  "humidity": 92,
-  "uv": null,
-  "uvDesc": null,
+  "temp": 26,
+  "humidity": 75,
+  "uv": 0.8,
+  "uvDesc": "低",
   "warnings": [],
-  "situation": "东北季候风正影响广东沿岸。同时，一道云雨带正覆盖该区。本港今早部分地区录得约10毫米雨量。",
-  "forecast": "早晚部分时间多云及有几阵雨。日间大致天晴，最高气温约30度。吹和缓至清劲东至东北风，晚上离岸间中吹强风。",
+  "situation": "东北季候风正影响广东沿岸。同时，一道云带正覆盖该区。",
+  "forecast": "早晚部分时间多云及有一两阵雨。日间大致天晴，最高气温约30度。吹和缓至清劲东至东北风，晚上离岸间中吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261027",
     "week": "星期二",
-    "txt": "早晚部分时间多云及有几阵雨。日间大致天晴。",
+    "txt": "早晚部分时间多云及有一两阵雨。日间大致天晴。",
     "max": 30,
-    "min": 24,
+    "min": 25,
     "psr": "低"
    },
    {
@@ -142,24 +142,24 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "05:35"
+  "fndUpdated": "07:50"
  },
  "tunnel": {
-  "updated": "06:46",
+  "updated": "09:44",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "6",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,7 +167,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
+    "min": "11",
     "txt": "畅通",
     "lv": "ok"
    }
