@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-27 15:07",
+ "generated": "2026-10-27 21:26",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "15:04",
+  "updated": "21:24",
   "rows": [
    {
     "code": "LWS",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 29,
-  "humidity": 65,
-  "uv": 3,
-  "uvDesc": "中等",
+  "temp": 27,
+  "humidity": 73,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
-  "situation": "东北季候风正影响广东沿岸。此外，华东的气压正在上升，预料一股东北季候风补充会在晚间抵达华南沿岸。",
-  "forecast": "下午大致天晴。今晚部分时间多云及有一两阵微雨。吹和缓至清劲东至东北风，今晚离岸间中吹强风。",
+  "situation": "中国东南部的气压正在上升，预料一股东北季候风补充会在晚间抵达华南沿岸。",
+  "forecast": "大致多云，早晚有一两阵雨，最低气温约24度。日间部分时间有阳光，最高气温约28度。吹和缓至清劲东风，明日离岸及高地间中吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261028",
     "week": "星期三",
-    "txt": "部分时间有阳光，早晚有一两阵微雨。",
+    "txt": "部分时间有阳光，早晚有一两阵雨。",
     "max": 28,
     "min": 24,
     "psr": "低"
@@ -142,34 +142,34 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "15:07",
+  "updated": "21:24",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "8",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "11",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "13",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
