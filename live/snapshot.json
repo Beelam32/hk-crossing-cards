@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-28 06:47",
+ "generated": "2026-10-28 09:56",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "06:44",
+  "updated": "09:49",
   "rows": [
    {
     "code": "LWS",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,23 +76,23 @@
   ]
  },
  "weather": {
-  "temp": 25,
-  "humidity": 63,
-  "uv": null,
-  "uvDesc": null,
+  "temp": 26,
+  "humidity": 59,
+  "uv": 1,
+  "uvDesc": "低",
   "warnings": [
    "强烈季候风信号"
   ],
   "situation": "一股达强风程度的东北季候风正影响广东沿岸。受东北季候风及天文大潮影响，预料本港今晚水位比正常稍高，个别沿岸低洼地区可能出现轻微水浸。",
-  "forecast": "大致多云，早晚有一两阵雨。日间部分时间有阳光，最高气温约28度。吹和缓至清劲东风，离岸及高地吹强风。",
+  "forecast": "大致多云，日间部分时间有阳光。晚上有一两阵微雨。吹和缓至清劲东风，离岸及高地吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261028",
     "week": "星期三",
-    "txt": "部分时间有阳光，早晚有一两阵雨。",
+    "txt": "部分时间有阳光，晚上有一两阵微雨。",
     "max": 28,
-    "min": 24,
+    "min": 25,
     "psr": "低"
    },
    {
@@ -144,16 +144,16 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "04:10"
+  "fndUpdated": "09:50"
  },
  "tunnel": {
-  "updated": "06:45",
+  "updated": "09:54",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
+    "min": "5",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -161,7 +161,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "10",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -169,7 +169,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
+    "min": "11",
     "txt": "畅通",
     "lv": "ok"
    }
