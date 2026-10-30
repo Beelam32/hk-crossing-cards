@@ -1,9 +1,9 @@
 {
- "generated": "2026-10-30 10:46",
+ "generated": "2026-10-30 17:21",
  "sources": {
-  "crossing": "10:44",
+  "crossing": "17:19",
   "weather": "08:00",
-  "tunnel": "10:45"
+  "tunnel": "17:19"
  },
  "ok": {
   "crossing": true,
