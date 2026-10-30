@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-31 00:06",
+ "generated": "2026-10-31 04:56",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "00:04",
+  "updated": "04:54",
   "rows": [
    {
     "code": "LWS",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -77,12 +77,12 @@
  },
  "weather": {
   "temp": 26,
-  "humidity": 75,
+  "humidity": 76,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "高空反气旋昨日为华南带来大致晴朗的天气，而广东风势微弱。本港昨日大致天晴，日间干燥。预料一股偏东气流会在今早抵达广东沿岸，今明两日该区云量逐渐增多。",
-  "forecast": "大致天晴。早上市区最低气温约25度，新界再低两三度。日间干燥，最高气温约29度。今晚渐转多云。吹微风，渐转吹和缓偏东风，风势间中清劲。",
+  "situation": "高空反气旋正为华南带来大致晴朗的天气。同时，广东风势微弱。此外，预料一股偏东气流会在今早逐渐影响沿岸地区。",
+  "forecast": "大致天晴。日间干燥，最高气温约29度。晚上渐转多云。吹微风，渐转吹和缓偏东风，风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "00:04",
+  "updated": "04:54",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
