@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-31 14:02",
+ "generated": "2026-10-31 20:53",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "13:54",
+  "updated": "20:49",
   "rows": [
    {
     "code": "LWS",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 29,
-  "humidity": 60,
-  "uv": 7,
-  "uvDesc": "高",
+  "temp": 26,
+  "humidity": 74,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
-  "situation": "高空反气旋正为广东带来大致晴朗的天气。同时，一股偏东气流影响沿岸地区。",
-  "forecast": "下午大致天晴及干燥。今晚渐转多云。吹和缓偏东风，离岸风势间中清劲。",
+  "situation": "一股偏东气流正影响广东沿岸地区。",
+  "forecast": "渐转多云。明日初时有一两阵微雨，市区最低气温约25度，新界再低一两度。日间短暂时间有阳光，最高气温约28度。吹和缓偏东风，初时离岸及高地风势清劲。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261101",
     "week": "星期日",
-    "txt": "大致多云。初时有一两阵微雨。日间部分时间天色明朗。",
+    "txt": "大致多云。初时有一两阵微雨。日间短暂时间有阳光。",
     "max": 28,
     "min": 25,
     "psr": "低"
@@ -142,24 +142,24 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "19:50"
  },
  "tunnel": {
-  "updated": "14:01",
+  "updated": "20:51",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "8",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -167,7 +167,7 @@
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "10",
+    "min": "9",
     "txt": "畅通",
     "lv": "ok"
    }
