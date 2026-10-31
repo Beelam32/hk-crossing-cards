@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-01 01:27",
+ "generated": "2026-11-01 04:35",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:24",
+  "updated": "04:34",
   "rows": [
    {
     "code": "LWS",
@@ -34,17 +34,17 @@
     "hours": "24 小时",
     "arrTxt": "畅通",
     "arrLv": "ok",
-    "depTxt": "繁忙",
-    "depLv": "warn"
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -81,7 +81,7 @@
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "高空反气旋昨日为广东带来大致晴朗的天气，而一股偏东气流影响沿岸地区。本港昨日大致天晴，日间干燥。预料偏东气流会在今日继续影响广东沿岸，该区云量较多。随著偏东气流缓和，明日该区天色较为明朗。",
+  "situation": "一股偏东气流正影响广东沿岸。同时，一道云带覆盖该区。",
   "forecast": "大致多云。初时有一两阵微雨，市区最低气温约25度，新界再低一两度。日间短暂时间有阳光，最高气温约28度。吹和缓偏东风，初时离岸风势清劲，高地间中吹强风。",
   "updated": "08:00",
   "days": [
@@ -145,7 +145,7 @@
   "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "01:26",
+  "updated": "04:34",
   "rows": [
    {
     "key": "CH",
