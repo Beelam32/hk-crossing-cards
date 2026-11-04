@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-04 22:58",
+ "generated": "2026-11-05 05:06",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,16 +8,16 @@
  },
  "err": {},
  "crossing": {
-  "updated": "22:54",
+  "updated": "04:59",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "LSC",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 27,
-  "humidity": 80,
+  "temp": 26,
+  "humidity": 83,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "一股偏东气流正影响广东沿岸。同时，一道云带覆盖该区。",
-  "forecast": "大致多云。初时有一两阵微雨，明早最低气温约26度。日间部分时间有阳光，最高气温约30度。吹和缓偏东风，初时离岸及高地风势清劲。",
+  "situation": "广东地区风势微弱。同时，一道云带正覆盖该区。",
+  "forecast": "大致多云，初时有一两阵微雨。日间部分时间有阳光，市区最高气温约30度，新界再高一两度。吹微风。",
   "updated": "08:00",
   "days": [
    {
@@ -142,16 +142,16 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "16:30"
+  "fndUpdated": "04:50"
  },
  "tunnel": {
-  "updated": "22:56",
+  "updated": "05:03",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "5",
+    "min": "4",
     "txt": "畅通",
     "lv": "ok"
    },
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
