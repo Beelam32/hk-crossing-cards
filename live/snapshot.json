@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-04 14:48",
+ "generated": "2026-11-04 22:58",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "14:44",
+  "updated": "22:54",
   "rows": [
    {
     "code": "LWS",
@@ -23,10 +23,10 @@
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HGP",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HZM",
@@ -76,13 +76,13 @@
   ]
  },
  "weather": {
-  "temp": 28,
-  "humidity": 77,
-  "uv": 6,
-  "uvDesc": "高",
+  "temp": 27,
+  "humidity": 80,
+  "uv": null,
+  "uvDesc": null,
   "warnings": [],
   "situation": "一股偏东气流正影响广东沿岸。同时，一道云带覆盖该区。",
-  "forecast": "大致多云，有一两阵雨。下午部分时间天色明朗。吹和缓至清劲东风，初时高地间中吹强风。",
+  "forecast": "大致多云。初时有一两阵微雨，明早最低气温约26度。日间部分时间有阳光，最高气温约30度。吹和缓偏东风，初时离岸及高地风势清劲。",
   "updated": "08:00",
   "days": [
    {
@@ -142,34 +142,34 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "11:30"
+  "fndUpdated": "16:30"
  },
  "tunnel": {
-  "updated": "14:46",
+  "updated": "22:56",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "7",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "5",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "11",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "12",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "9",
+    "txt": "畅通",
+    "lv": "ok"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
