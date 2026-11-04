@@ -26,6 +26,23 @@
   .chip{flex:0 0 auto;padding:7px 16px;border-radius:999px;border:1px solid var(--line);
         background:var(--card);font-size:13.5px;cursor:pointer;white-space:nowrap;user-select:none}
   .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .set{margin:0 0 22px}
+  .set-h{display:flex;align-items:center;gap:10px;margin:0 0 8px}
+  .set-t{font-size:14.5px;font-weight:600}
+  .set-t small{font-weight:400;color:var(--sub);margin-left:6px;font-size:12px}
+  .copybtn{border:1px solid var(--line);background:var(--card);border-radius:999px;
+           padding:4px 12px;font-size:12.5px;cursor:pointer;color:var(--ink)}
+  .copybtn:active{background:var(--ink);color:#fff}
+  #cpbox{display:none;position:fixed;inset:0;background:rgba(20,22,26,.55);z-index:60;
+         align-items:center;justify-content:center;padding:18px}
+  .cp-card{background:var(--card);border-radius:var(--radius);max-width:640px;width:100%;
+           max-height:80vh;display:flex;flex-direction:column}
+  .cp-h{display:flex;justify-content:space-between;align-items:center;
+        padding:12px 16px;border-bottom:1px solid var(--line)}
+  .cp-h .x{font-size:22px;cursor:pointer;color:var(--sub);margin-left:10px;line-height:1}
+  #cptxt{margin:0;padding:14px 16px;overflow:auto;white-space:pre-wrap;
+         word-break:break-word;font-size:13.5px;line-height:1.8;
+         font-family:inherit;flex:1}
   .chip .n{opacity:.55;font-size:11.5px;margin-left:4px}
   main{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
   .sec-title{font-size:16px;font-weight:700;margin:22px 0 12px;display:flex;align-items:baseline;gap:8px}
@@ -66,6 +83,12 @@
   每日自動生成 ｜ <span id="total"></span>
 </footer>
 <div id="lb"><span class="x">×</span><img id="lbimg" alt=""></div>
+<div id="cpbox"><div class="cp-card">
+  <div class="cp-h"><b>小紅書文案</b><span>
+    <button id="cpok" class="copybtn" onclick="copyText()">📋 複製全文</button>
+    <span class="x" onclick="closeCopy()">×</span></span></div>
+  <pre id="cptxt"></pre>
+</div></div>
 
 <script>
 const RAW=p=>'https://raw.githubusercontent.com/Beelam32/hk-crossing-cards/main/'+p;
@@ -93,26 +116,69 @@ function capOf(n){
     return extra?`${nice} · ${extra}`:nice;}
   return base.replace(/_/g,' ').replace(/card/i,'').trim()||base;
 }
-let ALL=[],cur='all';
+let ALL=[],SETS=[],cur='all';
+function seriesOf(n){for(const s of SERIES)if(s.match(n))return s.key;return null}
 function render(){
   const el=document.getElementById('content');el.innerHTML='';
+  const inSet=new Set();SETS.forEach(x=>x.cards.forEach(n=>inSet.add(n)));
   for(const s of SERIES){
-    const items=ALL.filter(x=>s.match(x.name)&&(cur==='all'||cur===s.key));
-    if(!items.length)continue;
+    // 套卡（有 set 資料嘅）
+    const sets=SETS.filter(x=>x.cards.length&&s.match(x.cards[0]))
+                   .filter(x=>cur==='all'||cur===s.key);
+    // 散卡（唔屬於任何套嘅）
+    const loose=ALL.filter(x=>!inSet.has(x.name)&&s.match(x.name)
+                   &&(cur==='all'||cur===s.key));
+    if(!sets.length&&!loose.length)continue;
     const sec=document.createElement('section');
-    sec.innerHTML=`<div class="sec-title">${s.title}<small>${s.desc} · ${items.length} 張</small></div>`;
-    const g=document.createElement('div');g.className='grid';
-    for(const it of items){
-      const d=document.createElement('div');d.className='ph';
-      d.innerHTML=`<img loading="lazy" src="${RAW(it.path)}" alt="">
-                   <div class="cap">${capOf(it.name)}</div>`;
-      d.onclick=()=>{document.getElementById('lbimg').src=RAW(it.path);
-                     document.getElementById('lb').style.display='flex'};
-      g.appendChild(d);
+    sec.innerHTML=`<div class="sec-title">${s.title}<small>${s.desc} · ${sets.reduce((a,x)=>a+x.cards.length,0)+loose.length} 張</small></div>`;
+    for(const st of sets){
+      const wrap=document.createElement('div');wrap.className='set';
+      const hdr=document.createElement('div');hdr.className='set-h';
+      hdr.innerHTML=`<span class="set-t">${st.title}<small>${st.cards.length} 張</small></span>`;
+      if(st.copy){
+        const b=document.createElement('button');b.className='copybtn';
+        b.textContent='📋 文案';
+        b.onclick=e=>{e.stopPropagation();showCopy(st)};
+        hdr.appendChild(b);
+      }
+      wrap.appendChild(hdr);
+      const g=document.createElement('div');g.className='grid';
+      addImgs(g,st.cards.map(n=>({name:n})));
+      wrap.appendChild(g);sec.appendChild(wrap);
     }
-    sec.appendChild(g);el.appendChild(sec);
+    if(loose.length){
+      const g=document.createElement('div');g.className='grid';
+      addImgs(g,loose);
+      sec.appendChild(g);
+    }
+    el.appendChild(sec);
   }
   if(!el.children.length)el.innerHTML='<div class="empty">呢本卡簿仲未收到卡</div>';
+}
+function addImgs(g,items){
+  for(const it of items){
+    const d=document.createElement('div');d.className='ph';
+    d.innerHTML=`<img loading="lazy" src="${RAW(it.path)}" alt="">
+                 <div class="cap">${capOf(it.name)}</div>`;
+    d.onclick=()=>{document.getElementById('lbimg').src=RAW(it.path);
+                   document.getElementById('lb').style.display='flex'};
+    g.appendChild(d);
+  }
+}
+function showCopy(st){
+  const box=document.getElementById('cpbox'),pre=document.getElementById('cptxt');
+  pre.textContent='載入中……';box.style.display='flex';
+  fetch(RAW(st.copy)).then(r=>r.text()).then(t=>{pre.textContent=t;pre.dataset.raw=t})
+    .catch(()=>{pre.textContent='讀唔到文案'});
+}
+function closeCopy(){document.getElementById('cpbox').style.display='none'}
+function copyText(){
+  const t=document.getElementById('cptxt').dataset.raw||'';
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject())
+    .then(()=>{const b=document.getElementById('cpok');b.textContent='✓ 已複製';
+               setTimeout(()=>b.textContent='📋 複製全文',1500)})
+    .catch(()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('cptxt'));
+                const s=getSelection();s.removeAllRanges();s.addRange(r)});
 }
 function renderNav(){
   const nav=document.getElementById('nav');nav.innerHTML='';
@@ -134,15 +200,15 @@ function renderNav(){
 }
 /* 主源：同倉 manifest.json（日更 workflow 每次出卡自動重建）；
    後備：GitHub API tree（限流，僅 manifest 未建好嗰陣用） */
-function boot(cards){
-  ALL=cards;
+function boot(j){
+  ALL=j.cards;SETS=j.sets||[];
   document.getElementById('loading').style.display='none';
   document.getElementById('total').textContent=`收錄 ${ALL.length} 張卡`;
   renderNav();render();
 }
 fetch('manifest.json?ts='+Date.now())
  .then(r=>{if(!r.ok)throw 0;return r.json()})
- .then(j=>boot(j.cards))
+ .then(j=>boot(j))
  .catch(()=>fetch('https://api.github.com/repos/Beelam32/hk-crossing-cards/git/trees/main?recursive=0')
    .then(r=>r.json())
    .then(t=>{
@@ -150,12 +216,14 @@ fetch('manifest.json?ts='+Date.now())
      if(!out)throw 0;
      return fetch(out.url).then(r=>r.json());
    })
-   .then(sub=>boot(sub.tree.filter(x=>x.type==='blob'&&IMG.test(x.path))
+   .then(sub=>boot({cards:sub.tree.filter(x=>x.type==='blob'&&IMG.test(x.path))
                       .map(x=>({path:'output/'+x.path,name:x.path}))
-                      .sort((a,b)=>b.name.localeCompare(a.name))))
+                      .sort((a,b)=>b.name.localeCompare(a.name))}))
    .catch(()=>{document.getElementById('loading').textContent='讀唔到圖庫，請刷新再試'}));
 document.getElementById('lb').onclick=()=>document.getElementById('lb').style.display='none';
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lb').style.display='none'});
+document.getElementById('cpbox').onclick=e=>{if(e.target.id==='cpbox')closeCopy()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){
+  document.getElementById('lb').style.display='none';closeCopy()}});
 </script>
 </body>
 </html>
