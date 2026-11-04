@@ -69,7 +69,7 @@
 const RAW=p=>'https://raw.githubusercontent.com/Beelam32/hk-crossing-cards/main/'+p;
 const SERIES=[
   {key:'daily',  title:'過關日報', desc:'天氣 · 口岸實況 · CCTV 快拍，每日更新',
-   match:n=>/^(card_sc_|sc_weather|cctv_card|sc_cctv)/.test(n)},
+   match:n=>/^(card_sc_|sc_weather|cctv_card|sc_cctv|sc_pair_weather)/.test(n)},
   {key:'hike',   title:'山系香港', desc:'行山路線 · 裝備 · 路況',
    match:n=>/hike|dragon|baxian|qiandao|taisandung|taitong|lym/i.test(n)&&!/copy_/.test(n)},
   {key:'spot',   title:'地區指南', desc:'港九新界各區 · 深圳景點',
@@ -78,8 +78,8 @@ const SERIES=[
    match:n=>/^rules_card/.test(n)},
   {key:'taste',  title:'香港味道', desc:'煲仔飯 · 老字號 · 街頭小食',
    match:n=>/^(taste_|sc_taste_)/.test(n)},
-  {key:'misc',   title:'特別企劃', desc:'週報 · 日曆 · 專題卡',
-   match:n=>/^(weekly_card|calendar|drive_card|ports_card|sc_daily_)/.test(n)},
+  {key:'misc',   title:'特別企劃', desc:'週報 · 日曆 · 專題卡 · 口岸交通攻略',
+   match:n=>/^(weekly_card|calendar|drive_card|ports_card|sc_daily_|special_card|med_card|money_card|fireworks_card|hk_card|port_cams)/.test(n)},
 ];
 const IMG=/\.(png|jpe?g|webp)$/i;
 function dateOf(n){const m=n.match(/(\d{8})/);return m?m[1]:''}
