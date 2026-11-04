@@ -39,7 +39,6 @@
   .empty{color:var(--sub);font-size:14px;padding:40px 0;text-align:center}
   footer{max-width:1080px;margin:0 auto;padding:0 16px 50px;font-size:12px;color:var(--sub)}
   footer a{color:var(--accent)}
-  /* lightbox */
   #lb{position:fixed;inset:0;background:rgba(20,20,22,.92);z-index:100;display:none;
       align-items:center;justify-content:center;cursor:zoom-out}
   #lb img{max-width:96vw;max-height:94vh;border-radius:8px}
@@ -67,10 +66,7 @@
 <div id="lb"><span class="x">×</span><img id="lbimg" alt=""></div>
 
 <script>
-const REPO='Beelam32/hk-crossing-cards', BR='main';
-const CDN=(p,w)=>`https://cdn.jsdelivr.net/gh/${REPO}@${BR}/${p}${w?`?width=${w}`:''}`;
-
-/* 卡簿定義：key → {title, match(檔名)->bool} */
+const RAW=p=>'https://raw.githubusercontent.com/Beelam32/hk-crossing-cards/main/'+p;
 const SERIES=[
   {key:'daily',  title:'過關日報', desc:'天氣 · 口岸實況 · CCTV 快拍，每日更新',
    match:n=>/^(card_sc_|sc_weather|cctv_card|sc_cctv)/.test(n)},
@@ -84,7 +80,6 @@ const SERIES=[
    match:n=>/^(weekly_card|calendar|drive_card|ports_card|sc_daily_)/.test(n)},
 ];
 const IMG=/\.(png|jpe?g|webp)$/i;
-
 function dateOf(n){const m=n.match(/(\d{8})/);return m?m[1]:''}
 function capOf(n){
   const base=n.split('/').pop().replace(/\.(png|jpe?g|webp)$/i,'');
@@ -94,7 +89,6 @@ function capOf(n){
     return extra?`${nice} · ${extra}`:nice;}
   return base.replace(/_/g,' ').replace(/card/i,'').trim()||base;
 }
-
 let ALL=[],cur='all';
 function render(){
   const el=document.getElementById('content');el.innerHTML='';
@@ -106,9 +100,10 @@ function render(){
     const g=document.createElement('div');g.className='grid';
     for(const it of items){
       const d=document.createElement('div');d.className='ph';
-      d.innerHTML=`<img loading="lazy" src="${CDN(it.path,420)}" alt="${capOf(it.name)}">
+      d.innerHTML=`<img loading="lazy" src="${RAW(it.path)}" alt="">
                    <div class="cap">${capOf(it.name)}</div>`;
-      d.onclick=()=>{document.getElementById('lbimg').src=CDN(it.path);document.getElementById('lb').style.display='flex'};
+      d.onclick=()=>{document.getElementById('lbimg').src=RAW(it.path);
+                     document.getElementById('lb').style.display='flex'};
       g.appendChild(d);
     }
     sec.appendChild(g);el.appendChild(sec);
@@ -121,34 +116,40 @@ function renderNav(){
     const c=document.createElement('div');
     c.className='chip'+(cur===key?' on':'');
     c.innerHTML=`${label}<span class="n">${count}</span>`;
-    c.onclick=()=>{cur=key;renderNav();
-      document.querySelectorAll('section').forEach((s,i)=>{});
-      render();
-      if(key!=='all')document.querySelectorAll('main section')[SERIES.findIndex(x=>x.key===key)]?.scrollIntoView({behavior:'smooth'});
+    c.onclick=()=>{
+      cur=key;renderNav();render();
+      if(key!=='all'){
+        const i=SERIES.findIndex(x=>x.key===key);
+        document.querySelectorAll('main section')[i]?.scrollIntoView({behavior:'smooth'});
+      }else window.scrollTo({top:0,behavior:'smooth'});
     };
     nav.appendChild(c);
   };
   mk('全部','all',ALL.length);
   for(const s of SERIES)mk(s.title,s.key,ALL.filter(x=>s.match(x.name)).length);
 }
-/* jsDelivr 目錄 API：免 key、支援 CORS、跟 repo 同步 */
-fetch(`https://data.jsdelivr.com/v1/packages/gh/${REPO}@${BR}?structure=flat`)
- .then(r=>r.json())
- .then(j=>{
-   ALL=(j.files||[])
-     .filter(f=>f.name.startsWith('/output/')&&IMG.test(f.name))
-     .map(f=>({path:f.name.slice(1),name:f.name.split('/').pop()}))
-     .sort((a,b)=>{
-       const da=dateOf(a.name),db=dateOf(b.name);
-       if(da!==db)return (db||'0').localeCompare(da||'0');
-       return b.name.localeCompare(a.name);
-     });
-   document.getElementById('loading').style.display='none';
-   document.getElementById('total').textContent=`收錄 ${ALL.length} 張卡`;
-   renderNav();render();
- })
- .catch(()=>{document.getElementById('loading').textContent='讀唔到圖庫，請刷新再試';});
-
+/* 主源：同倉 manifest.json（日更 workflow 每次出卡自動重建）；
+   後備：GitHub API tree（限流，僅 manifest 未建好嗰陣用） */
+function boot(cards){
+  ALL=cards;
+  document.getElementById('loading').style.display='none';
+  document.getElementById('total').textContent=`收錄 ${ALL.length} 張卡`;
+  renderNav();render();
+}
+fetch('manifest.json?ts='+Date.now())
+ .then(r=>{if(!r.ok)throw 0;return r.json()})
+ .then(j=>boot(j.cards))
+ .catch(()=>fetch('https://api.github.com/repos/Beelam32/hk-crossing-cards/git/trees/main?recursive=0')
+   .then(r=>r.json())
+   .then(t=>{
+     const out=t.tree.find(x=>x.path==='output');
+     if(!out)throw 0;
+     return fetch(out.url).then(r=>r.json());
+   })
+   .then(sub=>boot(sub.tree.filter(x=>x.type==='blob'&&IMG.test(x.path))
+                      .map(x=>({path:'output/'+x.path,name:x.path}))
+                      .sort((a,b)=>b.name.localeCompare(a.name))))
+   .catch(()=>{document.getElementById('loading').textContent='讀唔到圖庫，請刷新再試'}));
 document.getElementById('lb').onclick=()=>document.getElementById('lb').style.display='none';
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('lb').style.display='none'});
 </script>
