@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-07 01:46",
+ "generated": "2026-11-07 06:36",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:44",
+  "updated": "06:29",
   "rows": [
    {
     "code": "LWS",
@@ -76,20 +76,20 @@
   ]
  },
  "weather": {
-  "temp": 27,
-  "humidity": 78,
+  "temp": 26,
+  "humidity": 80,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
   "situation": "一股达强风程度的东北季候风正影响广东沿岸。",
-  "forecast": "大致多云，早晚有一两阵雨。日间部分时间天色明朗，气温介乎25至28度。吹清劲偏东风，离岸及高地间中吹强风。",
+  "forecast": "大致多云，早晚有一两阵雨。日间短暂时间有阳光，最高气温约29度。吹清劲偏东风，离岸及高地间中吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261107",
     "week": "星期六",
-    "txt": "大致多云。早晚有一两阵雨。日间部分时间天色明朗。",
-    "max": 28,
+    "txt": "大致多云。早晚有一两阵雨。日间短暂时间有阳光。",
+    "max": 29,
     "min": 25,
     "psr": "低"
    },
@@ -142,10 +142,10 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "00:00"
+  "fndUpdated": "04:50"
  },
  "tunnel": {
-  "updated": "01:44",
+  "updated": "06:34",
   "rows": [
    {
     "key": "CH",
@@ -159,7 +159,7 @@
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
+    "min": "8",
     "txt": "畅通",
     "lv": "ok"
    },
