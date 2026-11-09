@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-09 04:40",
+ "generated": "2026-11-09 08:23",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "04:34",
+  "updated": "08:19",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,19 +76,22 @@
   ]
  },
  "weather": {
-  "temp": 25,
-  "humidity": 65,
-  "uv": null,
-  "uvDesc": null,
-  "warnings": [],
-  "situation": "一道冷锋正横过广东沿岸地区，预料随后的强烈东北季候风会逐渐影响该区。而一道广阔云带正为广东带来几阵雨。",
-  "forecast": "早上大致多云及有一两阵雨，天气较凉，气温约22度。日间渐转天晴干燥，最高气温约26度。晚上市区气温进一步下降至最低约19度，新界再低一两度。吹和缓至清劲偏北风，离岸间中吹强风，高地达烈风程度。",
+  "temp": 23,
+  "humidity": 59,
+  "uv": 0.3,
+  "uvDesc": "低",
+  "warnings": [
+   "强烈季候风信号",
+   "火灾危险警告"
+  ],
+  "situation": "与冷锋相关的强烈东北季候风正影响广东沿岸。今早本港各区气温普遍较昨日低两度左右。此外，截至上午7时40分，天文台录得最低气温23.2度，是今年入秋以来的最低纪录。",
+  "forecast": "大致天晴及干燥，早上较凉。日间最高气温约26度。晚上市区气温进一步下降至最低约19度，新界再低一两度。吹清劲偏北风，离岸吹强风，高地达烈风程度。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261109",
     "week": "星期一",
-    "txt": "早上天气较凉及有一两阵雨。日间渐转天晴干燥。晚上气温进一步下降。",
+    "txt": "大致天晴及干燥。早上较凉。晚上气温进一步下降。",
     "max": 26,
     "min": 19,
     "psr": "低"
@@ -142,34 +145,34 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "01:50"
+  "fndUpdated": "07:50"
  },
  "tunnel": {
-  "updated": "04:38",
+  "updated": "08:22",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "7",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "11",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "12",
+    "txt": "繁忙",
+    "lv": "warn"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
