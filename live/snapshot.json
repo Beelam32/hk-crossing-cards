@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-10 01:12",
+ "generated": "2026-11-10 08:47",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "01:09",
+  "updated": "08:44",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,22 +76,22 @@
   ]
  },
  "weather": {
-  "temp": 19,
-  "humidity": 46,
-  "uv": null,
-  "uvDesc": null,
+  "temp": 18,
+  "humidity": 43,
+  "uv": 0.1,
+  "uvDesc": "低",
   "warnings": [
    "强烈季候风信号",
    "火灾危险警告"
   ],
-  "situation": "一道冷锋昨日早上横过广东沿岸，受与其相关的强烈东北季候风影响，该区北风增强。本港昨日渐转天晴干燥，傍晚各区气温普遍较前日低约五度。预料东北季候风会在今明两日为广东带来普遍晴朗及非常干燥的天气，该区早上清凉，日夜温差颇大。随著季候风在本周后期缓和，该区气温回升。",
-  "forecast": "天晴。天气显著转凉，气温逐步下降至早上市区最低约17度，新界再低一两度。日间非常干燥，最高气温约23度。吹清劲偏北风，初时离岸吹强风，高地达烈风程度，稍后转吹和缓东北风。",
+  "situation": "受强烈东北季候风影响，广东沿岸今早天气清凉。本港方面，截至上午八时三十分，天文台录得最低气温17.5度，是入秋以来的最低纪录，而新界普遍再低一两度。",
+  "forecast": "早上清凉，部分时间多云。日间天晴及非常干燥，最高气温约23度。吹和缓至清劲偏北风，初时离岸及高地吹强风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261110",
     "week": "星期二",
-    "txt": "早上清凉。天晴。日间非常干燥。",
+    "txt": "天晴及非常干燥。早上清凉。",
     "max": 23,
     "min": 17,
     "psr": "低"
@@ -145,32 +145,32 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "00:00"
+  "fndUpdated": "07:50"
  },
  "tunnel": {
-  "updated": "01:10",
+  "updated": "08:45",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "5",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "8",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "9",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "12",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
+    "min": "11",
     "txt": "畅通",
     "lv": "ok"
    }
