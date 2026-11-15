@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-15 22:53",
+ "generated": "2026-11-16 04:03",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,16 +8,16 @@
  },
  "err": {},
  "crossing": {
-  "updated": "22:49",
+  "updated": "03:59",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "LSC",
@@ -41,10 +41,10 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "畅通",
-    "arrLv": "ok",
-    "depTxt": "畅通",
-    "depLv": "ok"
+    "arrTxt": "未开闸",
+    "arrLv": "off",
+    "depTxt": "未开闸",
+    "depLv": "off"
    },
    {
     "code": "HYW",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 24,
-  "humidity": 81,
+  "temp": 23,
+  "humidity": 85,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "广东沿岸天色大致良好。此外，中国东南沿岸的气压正在上升，预料一股清劲的偏东气流会在明日逐渐影响广东沿岸。",
-  "forecast": "晚间渐转多云。明日早晚有一两阵微雨，日间短暂时间有阳光。气温介乎23至26度。吹微风，渐转吹和缓偏东风，明日稍后离岸风势间中清劲。",
+  "situation": "一股偏东气流正逐渐影响广东东部沿岸。",
+  "forecast": "渐转多云。早晚有一两阵微雨，日间短暂时间有阳光。气温介乎23至26度。吹微风，渐转吹和缓偏东风，稍后离岸风势间中清劲。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261116",
     "week": "星期一",
-    "txt": "大致多云。早晚有一两阵微雨，日间短暂时间有阳光。",
+    "txt": "渐转多云。早晚有一两阵微雨，日间短暂时间有阳光。",
     "max": 26,
     "min": 23,
     "psr": "低"
@@ -142,16 +142,16 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "16:30"
+  "fndUpdated": "00:00"
  },
  "tunnel": {
-  "updated": "22:51",
+  "updated": "04:01",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "5",
+    "min": "4",
     "txt": "畅通",
     "lv": "ok"
    },
