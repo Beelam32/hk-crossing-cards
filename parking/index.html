@@ -164,6 +164,40 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 .go:active{opacity:.8;transform:scale(.985)}
 .go.alt-on{background:#1677ff}
 .alt{display:block;text-align:center;font-size:12px;color:var(--ink2);margin-top:10px;text-decoration:underline}
+.route-btn{
+  display:block;width:100%;text-align:center;background:#fff;border:1.5px solid var(--accent);
+  color:var(--accent);padding:11px;border-radius:11px;font-weight:650;font-size:14px;margin-top:9px;cursor:pointer
+}
+.route-btn:active{opacity:.75;transform:scale(.985)}
+.route-btn:disabled{opacity:.5}
+/* 地圖內路線摘要條 */
+#routebar{
+  position:absolute;top:10px;left:10px;right:10px;z-index:800;background:#fff;
+  border-radius:13px;box-shadow:0 3px 16px rgba(0,0,0,.22);padding:11px 13px;
+  font-size:13px;display:none
+}
+#routebar.show{display:block}
+body:not(.tabmap) #routebar{display:none!important}
+#routebar .rb-main{display:flex;align-items:center;gap:8px}
+#routebar .rb-sum{font-weight:700;font-size:14px}
+#routebar .rb-steps-btn{
+  margin-left:auto;border:1px solid var(--line);background:#f1efe9;border-radius:8px;
+  padding:5px 10px;font-size:12px;font-weight:600;color:var(--ink);white-space:nowrap
+}
+#routebar .rb-x{
+  border:0;background:#f1efe9;width:26px;height:26px;border-radius:50%;color:var(--ink2);
+  font-size:13px;display:grid;place-items:center;flex:0 0 26px
+}
+#steps{
+  display:none;margin-top:9px;border-top:1px solid var(--line);padding-top:7px;
+  max-height:34dvh;overflow-y:auto;font-size:12.5px;color:var(--ink2);line-height:1.45
+}
+#steps .st{display:flex;gap:8px;padding:3.5px 0}
+#steps .st b{
+  flex:0 0 18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:10px;display:grid;place-items:center;margin-top:1px;font-weight:700
+}
+#steps .st span{flex:1}
 button,.chip,.geo,#locate{transition:transform .12s,opacity .12s,background .15s,color .15s,border-color .15s}
 button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
 .chip[aria-pressed="true"]:active{opacity:.85}
@@ -181,6 +215,9 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   .tag{background:#24272c;color:#d6d5d1}
   footer{background:#16181b}
   .go{background:#f2f1ee;color:#111214}
+  .route-btn{background:#1b1d21;border-color:#f2f1ee;color:#f2f1ee}
+  #routebar{background:#1b1d21;border:1px solid #2a2d33}
+  #routebar .rb-steps-btn,#routebar .rb-x{background:#24272c;color:#d6d5d1}
   .skel div{background:linear-gradient(90deg,#1e2126 25%,#262a30 37%,#1e2126 63%);background-size:400% 100%}
   #map{background:#1a1c20}
 }
@@ -209,6 +246,14 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <div id="list"><div class="skel" id="skel"><div></div><div></div><div></div><div></div><div></div></div></div>
   <div id="map"></div>
   <div id="attrib">© OpenStreetMap</div>
+  <div id="routebar">
+    <div class="rb-main">
+      <span class="rb-sum" id="rb-sum">—</span>
+      <button class="rb-steps-btn" id="rb-steps">轉彎指示</button>
+      <button class="rb-x" id="rb-x" aria-label="清除路線">✕</button>
+    </div>
+    <div id="steps"></div>
+  </div>
   <button id="locate" aria-label="返我位置">◎</button>
   <div id="traf">
     <div class="thead"><b>主要幹線塞車情況</b><span id="tstamp">載入中…</span></div>
@@ -254,6 +299,7 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <div class="big"><b id="s-num">—</b><span id="s-unit">個私家車位</span></div>
   <div class="kv" id="s-kv"></div>
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
+  <button class="route-btn" id="s-route">喺地圖畫路線（唔使開 Maps）→</button>
   <a class="alt" id="s-alt" href="#" target="_blank" rel="noopener"></a>
   <div class="hint" id="s-hint"></div>
 </div>
@@ -561,6 +607,84 @@ function navLinks(r){
   return {g:g,a:a};
 }
 
+/* ---------- 地圖內路線（OSRM 開放路線服務，免 key，唔使開 Google／高德） ---------- */
+var OSRM="https://router.project-osrm.org/route/v1/driving/";
+var MAN={depart:"出發",arrive:"抵達目的地","new name":"直行",merge:"匯入",
+  "on ramp":"駛入支路","off ramp":"駛出支路",fork:"行分岔","end of road":"去到路口",
+  roundabout:"入迴旋處","roundabout turn":"行迴旋處",exit:"出迴旋處",continue:"繼續直行"};
+var MOD={left:"左轉",right:"右轉","slight left":"稍向左","slight right":"稍向右",
+  "sharp left":"急轉左","sharp right":"急轉右",straight:"直行",uturn:"掉頭"};
+function stepText(st){
+  var mv=st.maneuver||{},t=mv.type||"";
+  var s=(t==="turn"||t==="fork"||t==="end of road")?(MOD[mv.modifier]||"轉彎"):(MAN[t]||MOD[mv.modifier]||"直行");
+  var nm=st.name||"";
+  if(nm)s+=" · "+nm;
+  if(st.distance>15)s+="（行 "+fmtD(st.distance)+"）";
+  return s;
+}
+function showRouteMsg(t){
+  $("rb-sum").textContent=t;
+  $("rb-steps").style.display="none";
+  $("steps").style.display="none";
+  $("routebar").classList.add("show");
+}
+function clearRoute(){
+  if(S.map){
+    if(S.rLine){S.map.removeLayer(S.rLine);S.rLine=null}
+    if(S.rCase){S.map.removeLayer(S.rCase);S.rCase=null}
+    if(S.rEnd){S.map.removeLayer(S.rEnd);S.rEnd=null}
+  }
+  $("routebar").classList.remove("show");
+  S.routeFor=null;
+}
+function planRoute(r){
+  if(!window.L){loadLeaflet(function(){initMap();planRoute(r)});return}
+  if(!S.map)initMap();
+  setTab("map");
+  closeSheet();
+  if(!S.me){
+    S.pendingRoute=r;
+    askGeo();
+    showRouteMsg("要攞到你位置先畫到路線——開咗定位會自動幫你畫");
+    return;
+  }
+  var btn=$("s-route");
+  if(btn){btn.textContent="畫緊路線…";btn.disabled=true}
+  var ac=(typeof AbortController<"u")?new AbortController():null;
+  if(ac)setTimeout(function(){ac.abort()},12000);
+  fetch(OSRM+S.me[1]+","+S.me[0]+";"+r.lng+","+r.lat+
+    "?overview=full&geometries=geojson&steps=true&alternatives=false",
+    ac?{signal:ac.signal}:undefined)
+  .then(function(x){return x.json()})
+  .then(function(j){
+    if(btn){btn.textContent="喺地圖畫路線（唔使開 Maps）";btn.disabled=false}
+    if(!j.routes||!j.routes.length){showRouteMsg("路線服務暫時回應唔到，可以用導航掣開 Maps");return}
+    var rt=j.routes[0],pts=rt.geometry.coordinates.map(function(c){return[c[1],c[0]]});
+    clearRoute();
+    S.routeFor=r.id;
+    S.rCase=L.polyline(pts,{color:"#fff",weight:8.5,opacity:.92,interactive:false}).addTo(S.map);
+    S.rLine=L.polyline(pts,{color:"#1a73e8",weight:5,opacity:.95,interactive:false}).addTo(S.map);
+    S.rEnd=L.circleMarker([r.lat,r.lng],{radius:7,color:"#fff",weight:3,fillColor:"#c0392b",fillOpacity:1,interactive:false}).addTo(S.map);
+    var mins=Math.max(1,Math.round(rt.duration/60));
+    $("rb-sum").textContent=fmtD(rt.distance)+" · 揸車約 "+mins+" 分鐘";
+    var sts=(rt.legs[0]&&rt.legs[0].steps)||[];
+    $("rb-steps").style.display="";
+    $("rb-steps").textContent="轉彎指示 "+sts.length+" ▾";
+    $("rb-steps").dataset.t="轉彎指示 "+sts.length+" ▾";
+    $("steps").innerHTML=sts.map(function(st,i){
+      return '<div class="st"><b>'+(i+1)+'</b><span>'+esc(stepText(st))+'</span></div>';
+    }).join("");
+    $("steps").style.display="none";
+    $("routebar").classList.add("show");
+    if(pts.length>1)S.map.fitBounds(L.latLngBounds(pts),
+      {paddingTopLeft:[24,84],paddingBottomRight:[24,24]});
+  })
+  .catch(function(){
+    if(btn){btn.textContent="喺地圖畫路線（唔使開 Maps）";btn.disabled=false}
+    showRouteMsg("路線服務連唔上（網絡問題），可以用導航掣開 Maps");
+  });
+}
+
 /* ---------- sheet ---------- */
 function paintTrend(r){
   var el=$("s-trend");
@@ -627,6 +751,7 @@ function open(i){
   paintTrend(r);
   $("sheet").classList.add("open");
   document.body.classList.add("sheetopen");
+  clearRoute();
   drawLine(r);
   if(S.tab==="map"&&S.map){
     /* 把選中場地擺去「未畀 sheet 遮住」嘅區域中間 */
@@ -640,6 +765,13 @@ function closeSheet(){
   document.body.classList.remove("sheetopen");
 }
 $("s-close").onclick=closeSheet;
+$("s-route").onclick=function(){if(S.sel)planRoute(S.sel)};
+$("rb-x").onclick=clearRoute;
+$("rb-steps").onclick=function(){
+  var s=$("steps"),on=s.style.display==="block";
+  s.style.display=on?"none":"block";
+  this.textContent=on?(this.dataset.t||"轉彎指示 ▾"):"收起指示 ▴";
+};
 $("sheet").addEventListener("click",function(e){
   if(e.target.id==="sheet"||e.target.className==="grip"){
     $("sheet").classList.remove("open");
@@ -681,6 +813,7 @@ function addMe(){
 }
 function drawLine(r){
   if(!S.map)return;
+  if(S.rLine)return; /* 已畫咗真路線，唔好再疊條直線虛線 */
   if(S.line){S.map.removeLayer(S.line);S.line=null}
   if(!S.me||!r)return;
   S.line=L.polyline([S.me,[r.lat,r.lng]],{color:"#1a73e8",weight:3.5,dashArray:"7 8",opacity:.85,interactive:false}).addTo(S.map);
@@ -831,6 +964,7 @@ function askGeo(){
     if(S.dist){S.dist="";distEl.value="";distEl.classList.remove("on")}
     apply();
     if(S.map){addMe();drawLine(S.sel);S.map.setView(S.me,15)}
+    if(S.pendingRoute){var pr=S.pendingRoute;S.pendingRoute=null;planRoute(pr)}
     $("stamp").innerHTML="已按你位置排序<br>實時車位每 90 秒更新";
   },function(){
     $("geo").textContent="◎";
