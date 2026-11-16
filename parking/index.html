@@ -30,7 +30,17 @@ header{padding:calc(8px + env(safe-area-inset-top)) 14px 0;flex:0 0 auto;backgro
 .hrow{display:flex;align-items:baseline;gap:8px}
 h1{font-size:19px;margin:0;letter-spacing:.3px;font-weight:700}
 .hsub{font-size:11.5px;color:var(--ink2);margin-left:auto;text-align:right;line-height:1.3}
-.search{display:flex;gap:8px;margin:9px 0 8px}
+.search{display:flex;gap:8px;margin:9px 0 8px;position:relative}
+#sugg{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.22);z-index:75;display:none;overflow:hidden}
+#sugg .sg{display:block;width:100%;text-align:left;padding:10px 13px;border:0;background:none;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;line-height:1.4}
+#sugg .sg small{display:block;color:var(--ink2);font-size:11.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sugg .sg+.sg{border-top:1px solid var(--line)}
+#sugg .hd{padding:6px 13px;font-size:11px;color:var(--ink2);border-bottom:1px solid var(--line);background:rgba(127,127,127,.06)}
+#destbar{display:none;align-items:center;gap:8px;margin:-2px 0 8px;padding:8px 12px;border-radius:11px;background:rgba(26,115,232,.1);border:1px solid rgba(26,115,232,.4);font-size:12.5px;color:var(--ink)}
+#destbar b{color:#1a73e8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62%}
+#destbar .x{margin-left:auto;cursor:pointer;color:var(--ink2);padding:2px 6px;font-size:14px}
+.hist{font-size:12.5px;color:var(--ink2);margin:-4px 0 12px;line-height:1.5}
+.hist b{color:var(--ink);font-weight:650}
 .search input{
   flex:1;min-width:0;height:38px;border:1px solid var(--line);background:#fff;
   border-radius:11px;padding:0 12px;font-size:15px;color:var(--ink);outline:none;
@@ -273,10 +283,12 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
     <div class="hsub" id="stamp">載入場地資料…</div>
   </div>
   <div class="search">
-    <input id="q" type="search" placeholder="搜尋停車場 / 地區 / 街道" autocomplete="off" enterkeyhint="search">
+    <input id="q" type="search" placeholder="搜尋車場 / 地區，或輸入目的地" autocomplete="off" enterkeyhint="search">
     <button class="geo" id="geo" aria-label="用我位置">◎</button>
+    <div id="sugg"></div>
   </div>
   <div class="chips" id="chips"></div>
+  <div id="destbar"><span>🚩 由</span><b id="dest-name"></b><span>附近搵位</span><span class="x" id="dest-x" aria-label="清除目的地">✕</span></div>
   <div class="banner" id="banner" style="display:none;margin:0 0 9px">
     <span>◎</span><span>開定位，即刻睇你<b>附近邊個場有位</b></span>
     <button class="geo" id="bgeo" style="width:auto;flex:0 0 auto;padding:0 9px;height:30px;border-radius:8px;font-size:12px;background:#fff">開啟</button>
@@ -330,6 +342,7 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <div class="addr" id="s-addr">—</div>
   <div class="dist-line" id="s-dist" style="display:none"></div>
   <div class="dist-line" id="s-trend" style="display:none"></div>
+  <div class="hist" id="s-hist" style="display:none"></div>
   <div class="big"><b id="s-num">—</b><span id="s-unit">個私家車位</span></div>
   <div class="kv" id="s-kv"></div>
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
@@ -352,7 +365,7 @@ var INFO_URL="data/info.json";
 var ROW=80, GAP=10, PER=ROW+GAP;
 var REFRESH=90000;
 
-var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},favs:{},next:0,trafAt:0};
+var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},favs:{},next:0,trafAt:0,dest:null,prof:null,profTried:false,destM:null};
 try{S.favs=JSON.parse(localStorage.getItem("hkp_favs")||"{}")||{}}catch(e){S.favs={}}
 function saveFavs(){try{localStorage.setItem("hkp_favs",JSON.stringify(S.favs))}catch(e){}}
 function toggleFav(id){
@@ -509,8 +522,10 @@ function apply(){
     return true;
   });
   var favN=function(r){return S.favs[String(r.id)]?0:1};
-  if(S.me){
-    out.forEach(function(r){r._d=dist(S.me[0],S.me[1],r.lat,r.lng)});
+  /* 距離基準：有目的地用目的地，否則用自己位置 */
+  var ref=S.dest||S.me;
+  if(ref){
+    out.forEach(function(r){r._d=dist(ref[0],ref[1],r.lat,r.lng)});
     out.sort(function(a,b){
       var fa=favN(a),fb=favN(b);
       if(fa!==fb)return fa-fb;
@@ -746,6 +761,44 @@ function paintTrend(r){
   el.innerHTML=mins+" 分鐘前 "+rec.num+" → 而家 <b class=\""+cls+"\">"+cur+
     "（"+word+diff+"）</b>"+(diff>0?" · 多咗位":" · 快手啲");
 }
+/* ---------- 歷史趨勢：profile.json.gz（每週聚合嘅「習慣檔」） ---------- */
+function loadProf(){
+  if(S.prof)return Promise.resolve(S.prof);
+  if(S.profTried)return Promise.resolve(null);
+  S.profTried=true;
+  if(!("DecompressionStream" in window))return Promise.resolve(null);
+  return fetch("data/profile.json.gz?v="+new Date().toISOString().slice(0,10),{cache:"no-cache"})
+  .then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()})
+  .then(function(buf){
+    var ds=new DecompressionStream("gzip");
+    return new Response(new Blob([buf]).stream().pipeThrough(ds)).text();
+  })
+  .then(function(txt){S.prof=JSON.parse(txt);return S.prof})
+  .catch(function(){S.prof=null;return null});
+}
+function paintHist(r){
+  var el=$("s-hist");
+  if(!S.prof){
+    loadProf().then(function(){if(S.sel===r)paintHist(r)});
+    el.style.display="none";return;
+  }
+  var p=S.prof.parks&&S.prof.parks[String(r.id)];
+  if(!p||!p.bins){el.style.display="none";return}
+  /* profile bins 用香港時間（星期一=0）；設備時區唔一定係香港，自己換算 */
+  var d=new Date(),hk=d.getUTCHours()+8;
+  var h=hk%24, shift=hk>=24?1:0;
+  var mon0=(d.getUTCDay()+6+shift)%7;
+  var b=p.bins[mon0+"-"+h];
+  if(!b||b[0]<2){el.style.display="none";return}
+  var avg=Math.round(b[1]/b[0]);
+  var fullPct=Math.round(b[3]/b[0]*100);
+  var wk="一二三四五六日".charAt(mon0);
+  var conf=b[0]<6?"（樣本 "+b[0]+" 次，僅供參考）":"";
+  el.style.display="block";
+  el.innerHTML="歷史數據 · 星期"+wk+" "+h+" 點：通常剩約 <b>"+avg+" 位</b>"+
+    (b[2]<avg?" · 最少試過 "+b[2]+" 位":"")+
+    (fullPct>0?" · 滿場 "+fullPct+"% 時間":"")+conf;
+}
 function open(i){
   var r=S.view[i];
   if(!r)return;
@@ -762,10 +815,10 @@ function open(i){
   if(r.vt==="C")kv.push("暫停開放");
   $("s-kv").innerHTML=kv.map(function(t){return '<span class="tag">'+esc(t)+'</span>'}).join("");
   var dl=$("s-dist");
-  if(S.me&&r._d!=null){
+  if(r._d!=null){
     var km=r._d/1000, mins=Math.max(2,Math.round(km*1.35/30*60));
     dl.style.display="block";
-    dl.textContent="由你出發約 "+fmtD(r._d)+" · 揸車大約 "+mins+" 分鐘";
+    dl.textContent="由 "+(S.dest?S.dest[2]:"你")+" 出發約 "+fmtD(r._d)+" · 揸車大約 "+mins+" 分鐘";
   }else{
     dl.style.display="none";
   }
@@ -789,6 +842,7 @@ function open(i){
   var stale=ago(r.upd);
   $("s-hint").textContent=stale?("場方最後回報 "+stale+"　·　數字只供參考，出發前請以現場為準"):"此場未提供實時數字";
   paintTrend(r);
+  paintHist(r);
   $("sheet").classList.add("open");
   document.body.classList.add("sheetopen");
   clearRoute();
@@ -1149,11 +1203,90 @@ $("tabmap").onclick=function(){setTab("map")};
 $("tabtraf").onclick=function(){setTab("traf")};
 
 /* ---------- search / geo ---------- */
-var qt=0;
+var qt=0, sugT=0, sugReq=0;
 $("q").addEventListener("input",function(){
   clearTimeout(qt);
   var v=this.value;
   qt=setTimeout(function(){S.q=v;apply()},140);
+  clearTimeout(sugT);
+  sugT=setTimeout(function(){suggest(v)},520);
+});
+/* 搜目的地：本機車場名搜唔到時，用 Photon（OSM）地理編碼搵地方（限香港 bbox） */
+var PHOTON="https://photon.komoot.io/api/?limit=6&lang=default&bbox=113.82,22.13,114.46,22.62&q=";
+function suggest(v){
+  var q=(v||"").trim();
+  if(q.length<2){hideSugg();return}
+  var ql=q.toLowerCase();
+  var hits=0;
+  for(var i=0;i<S.rows.length;i++){
+    var r=S.rows[i];
+    if((r.n+" "+r.d+" "+r.a).toLowerCase().indexOf(ql)>=0&&++hits>=4)break;
+  }
+  if(hits>=4){hideSugg();return}  /* 本機已經搵到，唔使上網 */
+  var my=++sugReq;
+  fetch(PHOTON+encodeURIComponent(q),{cache:"no-store"}).then(function(r){return r.json()})
+  .then(function(j){
+    if(my!==sugReq)return;
+    var list=(j.features||[]).filter(function(f){
+      return f.geometry&&f.geometry.coordinates&&f.properties.name;
+    });
+    if(!list.length){hideSugg();return}
+    var box=$("sugg");
+    box.innerHTML='<div class="hd">搵唔到同名車場？去以下地方附近搵：</div>'+
+      list.map(function(f,i){
+        var p=f.properties;
+        var nm=p.name;
+        var sub=[p.street,p.locality,p.district].filter(Boolean)
+          .join(" · ").replace(/ Hong Kong| 香港/g,"");
+        return '<button class="sg" data-i="'+i+'"><b>'+esc(nm)+'</b><small>'+esc(sub)+'</small></button>';
+      }).join("");
+    box.style.display="block";
+    Array.prototype.forEach.call(box.querySelectorAll(".sg"),function(b){
+      b.onclick=function(){pickDest(list[b.dataset.i])};
+    });
+  }).catch(function(){hideSugg()});
+}
+function hideSugg(){$("sugg").style.display="none"}
+document.addEventListener("click",function(e){
+  if(!e.target.closest("#sugg")&&!e.target.closest(".search"))hideSugg();
+});
+function pickDest(f){
+  var c=f.geometry&&f.geometry.coordinates;
+  if(!c)return;
+  var lat=parseFloat(c[1]),lng=parseFloat(c[0]);
+  var nm=(f.properties.name||"").trim();
+  if(isNaN(lat)||isNaN(lng)||!nm)return;
+  hideSugg();
+  $("q").value="";S.q="";apply();
+  setDest([lat,lng,nm]);
+}
+function setDest(d){
+  S.dest=d;
+  $("dest-name").textContent=d[2];
+  $("destbar").style.display="flex";
+  apply();
+  if(S.map){
+    if(S.destM)S.map.removeLayer(S.destM);
+    S.destM=L.marker([d[0],d[1]],{
+      icon:L.divIcon({html:'<div style="font-size:26px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))">🚩</div>',
+        className:"",iconSize:[26,26],iconAnchor:[13,26]}),
+      zIndexOffset:1500,interactive:false}).addTo(S.map);
+    S.map.setView([d[0],d[1]],15,{animate:true});
+  }
+  $("stamp").innerHTML="已按「"+esc(d[2])+"」附近排序<br>實時車位每 90 秒更新";
+}
+$("dest-x").onclick=function(){
+  S.dest=null;
+  $("destbar").style.display="none";
+  if(S.destM&&S.map){S.map.removeLayer(S.destM);S.destM=null}
+  apply();
+  $("stamp").innerHTML="已清除目的地<br>實時車位每 90 秒更新";
+};
+$("q").addEventListener("keydown",function(e){
+  if(e.key==="Enter"){
+    var b=$("sugg").querySelector(".sg");
+    if(b&&$("sugg").style.display==="block"){e.preventDefault();b.click();this.blur()}
+  }
 });
 function askGeo(){
   if(!navigator.geolocation){$("stamp").textContent="此瀏覽器不支援定位";return}
