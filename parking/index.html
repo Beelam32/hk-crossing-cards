@@ -82,6 +82,8 @@ main{flex:1 1 auto;position:relative;overflow:hidden}
 .v-ok{background:var(--ok)} .v-warn{background:var(--warn)} .v-bad{background:var(--bad)} .v-na{background:#b8b5ad}
 .n-ok{color:var(--ok)} .n-warn{color:var(--warn)} .n-bad{color:var(--bad)} .n-na{color:#9a978f}
 /* ---------- map ---------- */
+#attrib{position:absolute;right:8px;bottom:8px;z-index:400;font-size:9.5px;color:#4a4a4a;background:rgba(255,255,255,.78);padding:2px 5px;border-radius:4px;pointer-events:none;display:none}
+body.tabmap #attrib{display:block}
 #map{position:absolute;inset:0;display:none;background:#e9e7e1}
 body.tabmap #list{display:none} body.tabmap #map{display:block}
 .pin{
@@ -160,6 +162,7 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 <main>
   <div id="list"><div class="skel" id="skel"><div></div><div></div><div></div><div></div><div></div></div></div>
   <div id="map"></div>
+  <div id="attrib">© OpenStreetMap</div>
 </main>
 
 <footer>
@@ -312,7 +315,7 @@ function fetchVac(){
       if(v){r.vt=v.vt;r.num=v.num;r.upd=v.upd}
     });
     S.lastFetch=t;
-    $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+n+" 個場有回報";
+    $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+n+" 個場 · "+(S.me?"按距離":"空位最多優先");
     apply();
   }).catch(function(){
     if(!S.lastFetch)$("stamp").textContent="場地資料已載入\n實時數據暫時攞唔到";
