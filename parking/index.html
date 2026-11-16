@@ -78,7 +78,33 @@ main{flex:1 1 auto;position:relative;z-index:1;overflow:hidden}
 .row .meta{flex:1 1 auto;min-width:0;padding-right:10px}
 .row .nm{font-size:14.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .sub{font-size:11.5px;color:var(--ink2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row .dist{font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums;padding-right:10px;align-self:flex-start;margin-top:12px}
+.row .dist{font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums;padding-right:6px;align-self:flex-start;margin-top:12px}
+.row .fav{flex:0 0 34px;align-self:stretch;border:0;background:transparent;color:#cfccc4;font-size:16px;line-height:1;display:grid;place-items:center;padding:0}
+.row .fav.on{color:#e3a008}
+/* ---------- traffic ---------- */
+#traf{position:absolute;inset:0;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 14px calc(20px + env(safe-area-inset-bottom))}
+body.tabtraf #list,body.tabtraf #map{display:none}
+body.tabtraf .search,body.tabtraf .chips,body.tabtraf .banner{display:none}
+body.tabtraf #traf{display:block}
+.thead{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.thead b{font-size:15px;font-weight:650}
+.thead span{font-size:11.5px;color:var(--ink2)}
+.tgall{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:9px -14px 0;padding:0 14px 4px;scrollbar-width:none}
+.tgall::-webkit-scrollbar{display:none}
+.tc{flex:0 0 87%;scroll-snap-align:center;text-decoration:none;color:inherit;display:block}
+.tc img{width:100%;display:block;border-radius:12px;border:1px solid var(--line);background:#0c6b6b}
+.tc span{display:block;font-size:11.5px;color:var(--ink2);margin-top:7px;line-height:1.35}
+.tnote{font-size:11.5px;color:var(--ink2);line-height:1.55;margin-top:12px}
+.tnote b{color:var(--ink);font-weight:650}
+.tnews{margin-top:18px}
+#nlist{margin-top:9px}
+.ni{display:flex;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--card);margin-bottom:8px}
+.ni .dot{flex:0 0 7px;width:7px;height:7px;border-radius:50%;background:#c3c0b8;margin-top:6px}
+.ni.live .dot{background:var(--bad)}
+.ni .nt{font-size:12.5px;line-height:1.5;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ni.open .nt{display:block;-webkit-line-clamp:unset}
+.ni{cursor:pointer}
+.ni.live .nt{color:var(--ink)}
 .v-ok{background:var(--ok)} .v-warn{background:var(--warn)} .v-bad{background:var(--bad)} .v-na{background:#b8b5ad}
 .n-ok{color:var(--ok)} .n-warn{color:var(--warn)} .n-bad{color:var(--bad)} .n-na{color:#9a978f}
 /* ---------- map ---------- */
@@ -184,6 +210,26 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <div id="map"></div>
   <div id="attrib">© OpenStreetMap</div>
   <button id="locate" aria-label="返我位置">◎</button>
+  <div id="traf">
+    <div class="thead"><b>主要幹線塞車情況</b><span id="tstamp">載入中…</span></div>
+    <div class="tgall" id="tgall">
+      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj1.tc.png" target="_blank" rel="noopener">
+        <img data-n="1" alt="過海路線圖一" loading="lazy"><span>① 過海 · 九龍（中／西）· 荃灣</span></a>
+      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj2.tc.png" target="_blank" rel="noopener">
+        <img data-n="2" alt="過海路線圖二" loading="lazy"><span>② 過海 · 九龍（東／中／西）</span></a>
+      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj3.tc.png" target="_blank" rel="noopener">
+        <img data-n="3" alt="過海路線圖三" loading="lazy"><span>③ 過海 · 九龍（東／中／西）另一組入口</span></a>
+      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj4.tc.png" target="_blank" rel="noopener">
+        <img data-n="4" alt="新界西路線圖" loading="lazy"><span>④ 新界西 · 汀九／屯門／機場</span></a>
+      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj5.tc.png" target="_blank" rel="noopener">
+        <img data-n="5" alt="新界西路線圖二" loading="lazy"><span>⑤ 新界西 · 荃灣／深井／小欖</span></a>
+    </div>
+    <div class="tnote"><b>綠＝暢順，黃＝慢車</b>，格內數字係預計行車分鐘。呢啲係運輸署即時數據，約每 2 分鐘更新，撳圖可放大。<br>只覆蓋主要幹線同過海路線，唔係全港每條街。</div>
+    <div class="tnews">
+      <div class="thead"><b>特別交通消息</b><span id="nstamp">—</span></div>
+      <div id="nlist"><div class="tnote">載入中…</div></div>
+    </div>
+  </div>
 </main>
 
 <footer>
@@ -192,6 +238,9 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   </button>
   <button id="tabmap" aria-label="地圖">
     <svg viewBox="0 0 24 24"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/></svg><span>地圖</span>
+  </button>
+  <button id="tabtraf" aria-label="塞車">
+    <svg viewBox="0 0 24 24"><path d="M4 16h16M5.5 16v-4.5L7.5 7h9l2 4.5V16"/><circle cx="8" cy="18.5" r="1.3"/><circle cx="16" cy="18.5" r="1.3"/></svg><span>塞車</span>
   </button>
 </footer>
 
@@ -217,7 +266,14 @@ var INFO_URL="data/info.json";
 var ROW=80, GAP=10, PER=ROW+GAP;
 var REFRESH=90000;
 
-var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{}};
+var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},favs:{},next:0,trafAt:0};
+try{S.favs=JSON.parse(localStorage.getItem("hkp_favs")||"{}")||{}}catch(e){S.favs={}}
+function saveFavs(){try{localStorage.setItem("hkp_favs",JSON.stringify(S.favs))}catch(e){}}
+function toggleFav(id){
+  var k=String(id);
+  if(S.favs[k])delete S.favs[k]; else S.favs[k]=1;
+  saveFavs(); apply();
+}
 
 /* ---------- utils ---------- */
 function $(id){return document.getElementById(id)}
@@ -265,6 +321,7 @@ function unitText(r){
 
 /* ---------- filters ---------- */
 var CHIPS=[
+  {k:"fav",t:"★ 收藏",f:function(r){return !!S.favs[String(r.id)]}},
   {k:"free",t:"有位",f:function(r){return r.vt!=="C"&&(r.num==null?r.vt==="B":r.num>0)}},
   {k:"num",t:"有數字",f:function(r){return r.num!=null}},
   {k:"price",t:"有時租",f:function(r){return r.p!=null}},
@@ -343,7 +400,9 @@ function fetchVac(){
         S.first[String(r.id)]={num:r.num,ts:t};
     });
     S.lastFetch=t;
-    $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+n+" 個場 · "+(S.me?"按距離":"空位最多優先");
+    S.next=t+REFRESH;
+    $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+n+" 個場 · "+(S.me?"按距離":"空位最多優先")+
+      ' · <span id="cd"></span>';
     apply();
     if(S.sel&&$("sheet").classList.contains("open"))paintTrend(S.sel);
   }).catch(function(){
@@ -363,11 +422,18 @@ function apply(){
     }
     return true;
   });
+  var favN=function(r){return S.favs[String(r.id)]?0:1};
   if(S.me){
     out.forEach(function(r){r._d=dist(S.me[0],S.me[1],r.lat,r.lng)});
-    out.sort(function(a,b){return (a._d==null?9e9:a._d)-(b._d==null?9e9:b._d)});
+    out.sort(function(a,b){
+      var fa=favN(a),fb=favN(b);
+      if(fa!==fb)return fa-fb;
+      return (a._d==null?9e9:a._d)-(b._d==null?9e9:b._d)
+    });
   }else{
     out.sort(function(a,b){
+      var fa=favN(a),fb=favN(b);
+      if(fa!==fb)return fa-fb;
       var la=lvl(a),lb=lvl(b),w={ok:0,warn:1,bad:2,na:3};
       if(w[a]!==w[b])return w[a]-w[b];
       return (b.num||0)-(a.num||0);
@@ -410,7 +476,9 @@ function rowHTML(r){
     '<div class="num n-'+l+'">'+numText(r)+'<small>'+unitText(r)+'</small></div>'+
     '<div class="meta"><div class="nm">'+esc(r.n)+'</div>'+
     '<div class="sub">'+esc(r.d)+(bits.length?" · "+esc(bits.join(" · ")):"")+'</div></div>'+
-    (d?'<div class="dist">'+d+'</div>':'');
+    (d?'<div class="dist">'+d+'</div>':'')+
+    '<button class="fav'+(S.favs[String(r.id)]?" on":"")+'" data-fav="'+r.id+'" aria-label="收藏">'+
+      (S.favs[String(r.id)]?"★":"☆")+'</button>';
 }
 function render(force){
   var n=S.view.length;
@@ -446,6 +514,8 @@ listEl.addEventListener("scroll",function(){
 var rAF=0;
 
 listEl.addEventListener("click",function(e){
+  var f=e.target.closest(".fav");
+  if(f){e.stopPropagation();toggleFav(f.dataset.fav);return}
   var row=e.target.closest(".row");
   if(!row)return;
   open(parseInt(row.dataset.i,10));
@@ -670,18 +740,77 @@ function drawPins(){
 function setTab(t){
   S.tab=t;
   document.body.classList.toggle("tabmap",t==="map");
+  document.body.classList.toggle("tabtraf",t==="traf");
   $("tablist").classList.toggle("on",t==="list");
   $("tabmap").classList.toggle("on",t==="map");
+  $("tabtraf").classList.toggle("on",t==="traf");
   var bn=$("banner");
-  if(!bn.dataset.dismissed)bn.style.display = t==="map" ? "none" : "flex";
+  if(!bn.dataset.dismissed)bn.style.display = t==="list" ? "flex" : "none";
   if(t==="map"){
     loadLeaflet(function(){initMap();setTimeout(function(){S.map&&S.map.invalidateSize();drawPins()},60)});
+  }else if(t==="traf"){
+    loadTraf();
   }else{
     render(true);
   }
 }
+/* 運輸署主要幹線速度圖（自帶顏色＋行車分鐘） */
+function loadTraf(){
+  var t=Date.now();
+  Array.prototype.forEach.call(document.querySelectorAll("#tgall img"),function(im){
+    im.src="https://resource.data.one.gov.hk/td/jss/sj"+im.dataset.n+".tc.png?t="+t;
+  });
+  S.trafAt=t;
+  var d=new Date(),p=function(n){return (n<10?"0":"")+n};
+  $("tstamp").textContent="更新 "+p(d.getHours())+":"+p(d.getMinutes());
+  loadNews();
+}
+function loadNews(){
+  fetch("https://resource.data.one.gov.hk/td/tc/specialtrafficnews.xml",{cache:"no-store"})
+  .then(function(r){return r.text()})
+  .then(function(txt){
+    var doc=new DOMParser().parseFromString(txt,"application/xml");
+    var ms=doc.getElementsByTagName("message"),arr=[];
+    for(var i=0;i<ms.length;i++){
+      var g=function(n){var e=ms[i].getElementsByTagName(n)[0];return e?e.textContent:""};
+      var body=(g("ChinShort")||g("ChinText")||"").replace(/\s+/g," ").trim();
+      if(!body)continue;
+      arr.push({id:parseInt(g("msgID"),10)||0,st:g("CurrentStatus"),txt:body});
+    }
+    arr.sort(function(a,b){
+      var la=a.st==="2"?0:1, lb=b.st==="2"?0:1;
+      return (la-lb)||(b.id-a.id);
+    });
+    var live=arr.filter(function(x){return x.st==="2"});
+    var done=arr.filter(function(x){return x.st!=="2"});
+    arr=live.slice(0,4).concat(done.slice(0,4));
+    var box=$("nlist");
+    if(!arr.length){box.innerHTML='<div class="tnote">而家冇特別交通消息</div>';return}
+    box.innerHTML=arr.map(function(x){
+      var live=x.st==="2";
+      return '<div class="ni'+(live?" live":"")+'"><span class="dot"></span><div class="nt">'+
+        (live?"":"<span style=\"opacity:.6\">已解封 · </span>")+esc(x.txt)+'</div></div>';
+    }).join("");
+    var d=new Date(),p=function(n){return (n<10?"0":"")+n};
+    $("nstamp").textContent=arr.length+" 條 · "+p(d.getHours())+":"+p(d.getMinutes());
+  })
+  .catch(function(){$("nlist").innerHTML='<div class="tnote">交通消息暫時攞唔到（網絡問題）</div>'});
+}
+$("nlist").addEventListener("click",function(e){
+  var ni=e.target.closest(".ni");
+  if(ni)ni.classList.toggle("open");
+});
+setInterval(function(){
+  var el=$("cd");
+  if(el&&S.next){
+    var s=Math.round((S.next-Date.now())/1000);
+    el.textContent=s>0?(s+" 秒後更新"):"更新中…";
+  }
+  if(S.tab==="traf"&&S.trafAt&&Date.now()-S.trafAt>120000)loadTraf();
+},1000);
 $("tablist").onclick=function(){setTab("list")};
 $("tabmap").onclick=function(){setTab("map")};
+$("tabtraf").onclick=function(){setTab("traf")};
 
 /* ---------- search / geo ---------- */
 var qt=0;
