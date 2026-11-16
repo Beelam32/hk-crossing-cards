@@ -132,8 +132,15 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 .big span{font-size:12.5px;color:var(--ink2)}
 .go{
   display:block;text-align:center;background:var(--accent);color:#fff;text-decoration:none;
-  padding:13px;border-radius:11px;font-weight:650;font-size:15px
+  padding:13px;border-radius:11px;font-weight:650;font-size:15px;
+  transition:background .15s,transform .12s,opacity .12s
 }
+.go:active{opacity:.8;transform:scale(.985)}
+.go.alt-on{background:#1677ff}
+.alt{display:block;text-align:center;font-size:12px;color:var(--ink2);margin-top:10px;text-decoration:underline}
+button,.chip,.geo,#locate{transition:transform .12s,opacity .12s,background .15s,color .15s,border-color .15s}
+button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
+.chip[aria-pressed="true"]:active{opacity:.85}
 .hint{font-size:11.5px;color:var(--ink2);margin-top:10px;text-align:center}
 #top{position:fixed;left:50%;transform:translateX(-50%);top:calc(6px + env(safe-area-inset-top));display:none;z-index:80}
 .skel{padding:14px}
@@ -198,6 +205,7 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
   <div class="big"><b id="s-num">—</b><span id="s-unit">個私家車位</span></div>
   <div class="kv" id="s-kv"></div>
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
+  <a class="alt" id="s-alt" href="#" target="_blank" rel="noopener"></a>
   <div class="hint" id="s-hint"></div>
 </div>
 
@@ -443,6 +451,46 @@ listEl.addEventListener("click",function(e){
   open(parseInt(row.dataset.i,10));
 });
 
+/* ---------- 導航：香港用 Google、大陸用高德 ---------- */
+var NAV={app:null};
+function inMainland(){
+  try{
+    var tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if(tz==="Asia/Shanghai"||tz==="Asia/Urumqi")return true;
+    if(tz==="Asia/Hong_Kong"||tz==="Asia/Macau"||tz==="Asia/Taipei")return false;
+  }catch(e){}
+  var l=(navigator.language||"").toLowerCase();
+  return l.indexOf("zh-cn")===0||l==="zh"||l.indexOf("-cn")>0;
+}
+/* WGS-84 → GCJ-02（高德座標系），唔轉會偏移幾百米 */
+function wgs2gcj(lat,lng){
+  var a=6378245,ee=0.00669342162296594323;
+  function out(l,h){return l<0.8293||l>55.8271||h<72.004||h>137.8347}
+  function tLat(x,y){var r=-100+2*x+3*y+.2*y*y+.1*x*y+.2*Math.sqrt(Math.abs(x));
+    r+=(20*Math.sin(6*x*Math.PI)+20*Math.sin(2*x*Math.PI))*2/3;
+    r+=(20*Math.sin(y*Math.PI)+40*Math.sin(y/3*Math.PI))*2/3;
+    r+=(160*Math.sin(y/12*Math.PI)+320*Math.sin(y*Math.PI/30))*2/3;return r}
+  function tLng(x,y){var r=300+x+2*y+.1*x*x+.1*x*y+.1*Math.sqrt(Math.abs(x));
+    r+=(20*Math.sin(6*x*Math.PI)+20*Math.sin(2*Math.PI*x))*2/3;
+    r+=(20*Math.sin(x*Math.PI)+40*Math.sin(x/3*Math.PI))*2/3;
+    r+=(150*Math.sin(x/12*Math.PI)+300*Math.sin(x/30*Math.PI))*2/3;return r}
+  if(out(lat,lng))return [lat,lng];
+  var dLat=tLat(lng-105,lat),dLng=tLng(lng-105,lat);
+  var rl=lat/180*Math.PI,mg=Math.sin(rl);mg=1-ee*mg*mg;var sm=Math.sqrt(mg);
+  dLat=(dLat*180)/((a*(1-ee))/(mg*sm)*Math.PI);
+  dLng=(dLng*180)/(a/sm*Math.cos(rl)*Math.PI);
+  return [lat+dLat,lng+dLng];
+}
+function navLinks(r){
+  var g="https://www.google.com/maps/dir/?api=1"+
+    (S.me?"&origin="+S.me[0]+","+S.me[1]:"")+
+    "&destination="+r.lat+","+r.lng+"&travelmode=driving";
+  var c=wgs2gcj(r.lat,r.lng);
+  var a="https://uri.amap.com/navigation?to="+c[1]+","+c[0]+","+encodeURIComponent(r.n)+
+    "&mode=car&policy=1&src=hkparking&coordinate=gaode&callnative=1";
+  return {g:g,a:a};
+}
+
 /* ---------- sheet ---------- */
 function paintTrend(r){
   var el=$("s-trend");
@@ -488,10 +536,22 @@ function open(i){
     dl.style.display="none";
   }
   var go=$("s-go");
-  go.href="https://www.google.com/maps/dir/?api=1"+
-    (S.me?"&origin="+S.me[0]+","+S.me[1]:"")+
-    "&destination="+r.lat+","+r.lng+"&travelmode=driving";
-  go.textContent=S.me?"導航去呢度（揸車）→":"用 Maps 查路線（揸車）→";
+  var alt=$("s-alt");
+  var L2=navLinks(r);
+  if(NAV.app==null)NAV.app=inMainland()?"amap":"google";
+  if(NAV.app==="amap"){
+    go.href=L2.a;
+    go.textContent="導航去呢度（高德地圖）→";
+    go.classList.add("alt-on");
+    alt.textContent="而家喺香港？改用 Google Maps ↗";
+    alt.href=L2.g;
+  }else{
+    go.href=L2.g;
+    go.textContent=S.me?"導航去呢度（揸車）→":"用 Maps 查路線（揸車）→";
+    go.classList.remove("alt-on");
+    alt.textContent="喺大陸揸車？改用高德地圖 ↗";
+    alt.href=L2.a;
+  }
   var stale=ago(r.upd);
   $("s-hint").textContent=stale?("場方最後回報 "+stale+"　·　數字只供參考，出發前請以現場為準"):"此場未提供實時數字";
   paintTrend(r);
@@ -539,6 +599,7 @@ function initMap(){
   drawPins();
 };
 window.__map=function(){return S.map};window.__S=function(){return S};window.__paintTrend=paintTrend;
+window.NAV=NAV;window.wgs2gcj=wgs2gcj;
 function addMe(){
   if(!S.map||!S.me)return;
   if(!S.meM){
