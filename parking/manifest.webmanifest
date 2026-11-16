@@ -1,0 +1,25 @@
+{
+ "name": "香港泊車 · 實時車位",
+ "short_name": "香港泊車",
+ "description": "全港 586 個停車場實時車位，每 90 秒更新",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#f7f6f3",
+ "theme_color": "#15161a",
+ "lang": "zh-HK",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}
