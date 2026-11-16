@@ -1,0 +1,40 @@
+name: parking data
+
+# 每日更新停車場靜態資料（名稱／地址／座標／限高／時租）
+# 實時車位唔經呢度：前端直接向 DATA.GOV.HK 抓，永遠最新。
+on:
+  schedule:
+    - cron: "20 19 * * *"   # 03:20 HKT
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            parking
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build slim info.json
+        run: python parking/build.py
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- parking/data/info.json; then
+            echo "no change"
+            exit 0
+          fi
+          git config user.name  "parking-bot"
+          git config user.email "parking-bot@users.noreply.github.com"
+          git add parking/data/info.json
+          git commit -m "parking: refresh info.json ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git push
