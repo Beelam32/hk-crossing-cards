@@ -82,22 +82,44 @@ main{flex:1 1 auto;position:relative;z-index:1;overflow:hidden}
 .row .fav{flex:0 0 34px;align-self:stretch;border:0;background:transparent;color:#cfccc4;font-size:16px;line-height:1;display:grid;place-items:center;padding:0}
 .row .fav.on{color:#e3a008}
 /* ---------- traffic ---------- */
-#traf{position:absolute;inset:0;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 14px calc(20px + env(safe-area-inset-bottom))}
+#traf{position:absolute;inset:0;display:none;overflow:hidden}
 body.tabtraf #list,body.tabtraf #map{display:none}
 body.tabtraf .search,body.tabtraf .chips,body.tabtraf .banner{display:none}
 body.tabtraf #traf{display:block}
-.thead{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.thead b{font-size:15px;font-weight:650}
-.thead span{font-size:11.5px;color:var(--ink2)}
-.tgall{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:9px -14px 0;padding:0 14px 4px;scrollbar-width:none}
-.tgall::-webkit-scrollbar{display:none}
-.tc{flex:0 0 87%;scroll-snap-align:center;text-decoration:none;color:inherit;display:block}
-.tc img{width:100%;display:block;border-radius:12px;border:1px solid var(--line);background:#0c6b6b}
-.tc span{display:block;font-size:11.5px;color:var(--ink2);margin-top:7px;line-height:1.35}
-.tnote{font-size:11.5px;color:var(--ink2);line-height:1.55;margin-top:12px}
-.tnote b{color:var(--ink);font-weight:650}
-.tnews{margin-top:18px}
-#nlist{margin-top:9px}
+#tmap{position:absolute;inset:0;background:#e9e7e1}
+#tstamp{
+  position:absolute;left:10px;top:10px;z-index:520;background:rgba(255,255,255,.95);
+  border-radius:9px;padding:6px 10px;font-size:11.5px;color:var(--ink);
+  box-shadow:0 1px 6px rgba(0,0,0,.18);line-height:1.35;max-width:calc(100% - 20px)
+}
+#tstamp b{font-weight:700}
+#tlegend{
+  position:absolute;left:10px;bottom:14px;z-index:520;background:rgba(255,255,255,.95);
+  border-radius:11px;padding:8px 11px;font-size:11.5px;color:var(--ink);
+  box-shadow:0 1px 6px rgba(0,0,0,.18);line-height:1.6
+}
+#tlegend .lg{display:flex;align-items:center;gap:6px}
+#tlegend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+#tlegend .note{color:var(--ink2);font-size:10.5px;margin-top:3px;line-height:1.4}
+#tnews-btn{
+  position:absolute;right:10px;bottom:14px;z-index:520;border:1px solid var(--line);
+  background:rgba(255,255,255,.96);border-radius:11px;padding:9px 12px;font-size:12px;
+  font-weight:650;color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.18);
+  display:flex;align-items:center;gap:6px
+}
+#tnews-btn .nd{width:7px;height:7px;border-radius:50%;background:var(--bad);display:inline-block}
+#tnews-btn .nd.off{background:#c3c0b8}
+#tnews-panel{
+  position:fixed;left:0;right:0;bottom:0;z-index:620;background:#fff;border-radius:18px 18px 0 0;
+  box-shadow:0 -6px 26px rgba(0,0,0,.2);transform:translateY(105%);transition:transform .22s ease;
+  padding:10px 16px calc(16px + env(safe-area-inset-bottom));max-height:60dvh;overflow:auto;display:none
+}
+#tnews-panel.show{display:block}
+#tnews-panel.open{transform:translateY(0)}
+#tnews-panel .grip{width:38px;height:4px;border-radius:2px;background:#dcd9d2;margin:2px auto 10px}
+#tnews-panel h3{font-size:15px;margin:0 0 8px;font-weight:700}
+#nlist{margin-top:2px}
+#nlist .tnote{font-size:12px;color:var(--ink2);padding:6px 2px;line-height:1.5}
 .ni{display:flex;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--card);margin-bottom:8px}
 .ni .dot{flex:0 0 7px;width:7px;height:7px;border-radius:50%;background:#c3c0b8;margin-top:6px}
 .ni.live .dot{background:var(--bad)}
@@ -208,18 +230,38 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
 @keyframes sh{0%{background-position:100% 0}100%{background-position:0 0}}
 .empty{padding:40px 10px;text-align:center;color:var(--ink2);font-size:13.5px}
 @media (prefers-color-scheme:dark){
-  :root{--bg:#111214;--card:#1b1d21;--ink:#f2f1ee;--ink2:#9a9da6;--line:#2a2d33}
-  .search input,.geo,.chip{background:#1b1d21;color:var(--ink)}
-  .chip[aria-pressed="true"]{background:#f2f1ee;color:#111214;border-color:#f2f1ee}
-  #sheet{background:#16181b}
-  .tag{background:#24272c;color:#d6d5d1}
-  footer{background:#16181b}
-  .go{background:#f2f1ee;color:#111214}
-  .route-btn{background:#1b1d21;border-color:#f2f1ee;color:#f2f1ee}
-  #routebar{background:#1b1d21;border:1px solid #2a2d33}
-  #routebar .rb-steps-btn,#routebar .rb-x{background:#24272c;color:#d6d5d1}
+  :root{--bg:#0f1012;--card:#1a1d21;--ink:#f4f3f0;--ink2:#a9adb6;--line:#34383f}
+  .search input,.geo,.chip,#locate{
+    background:#262a31;border-color:#3d424a;color:var(--ink)
+  }
+  .search input:focus{border-color:#6f7681}
+  .chip[aria-pressed="true"]{background:#f4f3f0;color:#111214;border-color:#f4f3f0}
+  select.chip{background-image:linear-gradient(45deg,transparent 50%,#8f949e 50%),linear-gradient(135deg,#8f949e 50%,transparent 50%)}
+  #sheet{background:#1a1d21;border-top:1px solid #34383f}
+  #s-close{background:#2a2e36;color:#d6d5d1}
+  .tag{background:#2a2e36;color:#e2e0da}
+  footer{background:#191c20;border-top-color:#34383f}
+  footer button{color:#a9adb6}
+  footer button.on{color:#f4f3f0}
+  .go{background:#f4f3f0;color:#111214}
+  .route-btn{background:#262a31;border-color:#8f949e;color:#fff}
+  #routebar{background:#23262c;border:1px solid #3d424a}
+  #routebar .rb-steps-btn,#routebar .rb-x{background:#31353d;color:#e2e0da}
+  #steps{border-top-color:#3d424a}
+  #tstamp,#tlegend,#tnews-btn{
+    background:rgba(26,29,33,.95);border:1px solid #3d424a;color:#f4f3f0;
+    box-shadow:0 1px 8px rgba(0,0,0,.5)
+  }
+  #tlegend .note{color:#a9adb6}
+  #tnews-panel{background:#1a1d21}
+  #tnews-panel h3{color:#f4f3f0}
+  .banner{background:#1b2739;border-color:#2f4568;color:#c2d4f2}
+  .banner .x{color:#8fa9cf}
+  #bgeo{background:#262a31!important;color:#f4f3f0!important;border:1px solid #3d424a!important}
   .skel div{background:linear-gradient(90deg,#1e2126 25%,#262a30 37%,#1e2126 63%);background-size:400% 100%}
-  #map{background:#1a1c20}
+  #map,#tmap{background:#1a1c20}
+  .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#23262c;color:#f4f3f0}
+  .leaflet-container a.leaflet-popup-close-button{color:#a9adb6}
 }
 </style>
 </head>
@@ -256,24 +298,16 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   </div>
   <button id="locate" aria-label="返我位置">◎</button>
   <div id="traf">
-    <div class="thead"><b>主要幹線塞車情況</b><span id="tstamp">載入中…</span></div>
-    <div class="tgall" id="tgall">
-      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj1.tc.png" target="_blank" rel="noopener">
-        <img data-n="1" alt="過海路線圖一" loading="lazy"><span>① 過海 · 九龍（中／西）· 荃灣</span></a>
-      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj2.tc.png" target="_blank" rel="noopener">
-        <img data-n="2" alt="過海路線圖二" loading="lazy"><span>② 過海 · 九龍（東／中／西）</span></a>
-      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj3.tc.png" target="_blank" rel="noopener">
-        <img data-n="3" alt="過海路線圖三" loading="lazy"><span>③ 過海 · 九龍（東／中／西）另一組入口</span></a>
-      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj4.tc.png" target="_blank" rel="noopener">
-        <img data-n="4" alt="新界西路線圖" loading="lazy"><span>④ 新界西 · 汀九／屯門／機場</span></a>
-      <a class="tc" href="https://resource.data.one.gov.hk/td/jss/sj5.tc.png" target="_blank" rel="noopener">
-        <img data-n="5" alt="新界西路線圖二" loading="lazy"><span>⑤ 新界西 · 荃灣／深井／小欖</span></a>
+    <div id="tmap"></div>
+    <div id="tstamp">路況載入中…</div>
+    <div id="tlegend">
+      <div class="lg"><i style="background:#8e1b12"></i>嚴重（&lt;15 km/h）</div>
+      <div class="lg"><i style="background:#d93025"></i>擠塞（15–30）</div>
+      <div class="lg"><i style="background:#f4a300"></i>慢車（30–45）</div>
+      <div class="lg"><i style="background:#12855a"></i>暢順（≥45）</div>
+      <div class="note">運輸署主要幹道探測器<br>每 2 分鐘更新</div>
     </div>
-    <div class="tnote"><b>綠＝暢順，黃＝慢車</b>，格內數字係預計行車分鐘。呢啲係運輸署即時數據，約每 2 分鐘更新，撳圖可放大。<br>只覆蓋主要幹線同過海路線，唔係全港每條街。</div>
-    <div class="tnews">
-      <div class="thead"><b>特別交通消息</b><span id="nstamp">—</span></div>
-      <div id="nlist"><div class="tnote">載入中…</div></div>
-    </div>
+    <button id="tnews-btn"><span class="nd off" id="tnews-dot"></span>交通消息 <span id="tnews-n">—</span></button>
   </div>
 </main>
 
@@ -302,6 +336,12 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <button class="route-btn" id="s-route">喺地圖畫路線（唔使開 Maps）→</button>
   <a class="alt" id="s-alt" href="#" target="_blank" rel="noopener"></a>
   <div class="hint" id="s-hint"></div>
+</div>
+
+<div id="tnews-panel">
+  <div class="grip"></div>
+  <h3>特別交通消息 <span id="nstamp" style="font-size:11px;color:var(--ink2);font-weight:500;margin-left:4px"></span></h3>
+  <div id="nlist"><div class="tnote" style="font-size:12px;color:var(--ink2)">載入中…</div></div>
 </div>
 
 <script>
@@ -879,6 +919,7 @@ function setTab(t){
   $("tabtraf").classList.toggle("on",t==="traf");
   var bn=$("banner");
   if(!bn.dataset.dismissed)bn.style.display = t==="list" ? "flex" : "none";
+  if(t!=="traf"&&$("tnews-panel"))$("tnews-panel").classList.remove("open","show");
   if(t==="map"){
     loadLeaflet(function(){initMap();setTimeout(function(){S.map&&S.map.invalidateSize();drawPins()},60)});
   }else if(t==="traf"){
@@ -887,16 +928,160 @@ function setTab(t){
     render(true);
   }
 }
-/* 運輸署主要幹線速度圖（自帶顏色＋行車分鐘） */
-function loadTraf(){
-  var t=Date.now();
-  Array.prototype.forEach.call(document.querySelectorAll("#tgall img"),function(im){
-    im.src="https://resource.data.one.gov.hk/td/jss/sj"+im.dataset.n+".tc.png?t="+t;
+/* 路況地圖：TD 800 個路面感應器即時車速，自砌似高德嘅紅黃綠 */
+var DET_CSV="https://static.data.gov.hk/td/traffic-data-strategic-major-roads/info/traffic_speed_volume_occ_info.csv";
+var SPEED_XML="https://resource.data.one.gov.hk/td/traffic-detectors/rawSpeedVol-all.xml";
+function speedColor(v){
+  if(v==null)return"#b8b5ad";
+  if(v<15)return"#8e1b12";
+  if(v<30)return"#d93025";
+  if(v<45)return"#f4a300";
+  return"#12855a";
+}
+function csvSplit(line){
+  var out=[],cur="",q=false;
+  for(var i=0;i<line.length;i++){
+    var ch=line[i];
+    if(ch==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++} else q=!q; }
+    else if(ch===","&&!q){ out.push(cur); cur=""; }
+    else cur+=ch;
+  }
+  out.push(cur);
+  return out;
+}
+function initTrafMap(){
+  if(S.tmap||!window.L)return;
+  S.tmap=L.map("tmap",{zoomControl:false,preferCanvas:true,attributionControl:false})
+    .setView([22.335,114.16],11);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,detectRetina:true}).addTo(S.tmap);
+  S.tlay=L.layerGroup().addTo(S.tmap);
+  S.tmap.on("zoomend",drawTraf);
+}
+function loadDetList(){
+  if(S.detList)return Promise.resolve(S.detList);
+  try{
+    var c=JSON.parse(localStorage.getItem("hkp_det2")||"null");
+    if(c&&c.d&&Object.keys(c.d).length){S.detList=c.d;return Promise.resolve(c.d)}
+  }catch(e){}
+  return fetch(DET_CSV,{cache:"force-cache"}).then(function(r){return r.text()}).then(function(txt){
+    var lines=txt.replace(/\r/g,"").split("\n"),out={};
+    for(var i=1;i<lines.length;i++){
+      if(!lines[i])continue;
+      var c=csvSplit(lines[i]);
+      if(c.length<9)continue;
+      var id=(c[0]||"").trim(),lat=parseFloat(c[7]),lon=parseFloat(c[8]);
+      if(!id||isNaN(lat)||isNaN(lon))continue;
+      /* 路名去掉「近乜乜」描述，得出主路名，方便同路探測器連線 */
+      var road=(c[3]||"").trim();
+      var base=road.split("近")[0].replace(/[-,，]\s*$/,"").trim()||road;
+      out[id]=[lat,lon,road,(c[9]||"").trim(),base,(c[1]||"").trim()];
+    }
+    S.detList=out;
+    try{localStorage.setItem("hkp_det2",JSON.stringify({at:Date.now(),d:out}))}catch(e){}
+    return out;
   });
-  S.trafAt=t;
-  var d=new Date(),p=function(n){return (n<10?"0":"")+n};
-  $("tstamp").textContent="更新 "+p(d.getHours())+":"+p(d.getMinutes());
-  loadNews();
+}
+function drawTraf(){
+  if(!S.tmap||!S.tpts)return;
+  var z=S.tmap.getZoom(),r=z>=15?8:z>=13?6:4;
+  S.tlay.clearLayers();
+  var b=S.tmap.getBounds(),vis=[];
+  S.tpts.forEach(function(p){
+    if(!b.contains([p.lat,p.lng]))return;
+    vis.push(p);
+  });
+  /* 同一條路同方向、相距近 → 連線，令佢似高德成條路著色 */
+  if(z>=12){
+    var groups={};
+    vis.forEach(function(p){
+      var k=(p.base||p.road)+"|"+p.dir+"|"+(p.dist||"");
+      (groups[k]||(groups[k]=[])).push(p);
+    });
+    var drawn=0,seenP={};
+    Object.keys(groups).forEach(function(k){
+      var a=groups[k];
+      if(a.length<2)return;
+      for(var i=0;i<a.length;i++){
+        var best=null,bd=1e9;
+        for(var j=0;j<a.length;j++){
+          if(i===j)continue;
+          var dx=(a[j].lng-a[i].lng)*102000,dy=(a[j].lat-a[i].lat)*111000;
+          var dd=Math.sqrt(dx*dx+dy*dy);
+          if(dd<bd){bd=dd;best=a[j]}
+        }
+        if(!best||bd>=400||drawn>=1200)continue;
+        var pk=(a[i].id<best.id?a[i].id+"|"+best.id:best.id+"|"+a[i].id);
+        if(seenP[pk])continue;
+        seenP[pk]=1;
+        var v=(a[i].v==null?best.v:a[i].v);
+        var v2=(best.v==null?v:Math.min(v==null?999:v,best.v));
+        L.polyline([[a[i].lat,a[i].lng],[best.lat,best.lng]],
+          {color:speedColor(v2),weight:4.5,opacity:.85,interactive:false}).addTo(S.tlay);
+        drawn++;
+      }
+    });
+  }
+  vis.forEach(function(p){
+    var m=L.circleMarker([p.lat,p.lng],{radius:r,stroke:false,
+      fillColor:speedColor(p.v),fillOpacity:.92});
+    m.on("click",function(){
+      m.bindPopup("<b>"+esc(p.road)+"</b><br>"+esc(p.dir||"")+"<br>"+
+        (p.v==null?"暫無車速數據":"最慢車道 <b>"+p.v+" km/h</b>")+
+        (p.occ!=null?"<br>路面佔用 "+p.occ+"%":"")).openPopup();
+    });
+    m.addTo(S.tlay);
+  });
+}
+function loadTraf(){
+  if(!window.L){loadLeaflet(function(){initTrafMap();loadTraf()});return}
+  initTrafMap();
+  setTimeout(function(){if(S.tmap)S.tmap.invalidateSize()},80);
+  if(!S.tmap){$("tstamp").textContent="地圖載入失敗";return}
+  var t=Date.now();
+  $("tstamp").innerHTML="路況更新中…";
+  loadDetList().then(function(det){
+    return fetch(SPEED_XML,{cache:"no-store"}).then(function(r){return r.text()}).then(function(xml){
+      var doc=new DOMParser().parseFromString(xml,"application/xml");
+      var ds=doc.getElementsByTagName("detector");
+      var pts=[],slow=0,bad=0,tm="";
+      var tf=doc.getElementsByTagName("period_from")[0];
+      if(tf)tm=tf.textContent.slice(0,5);
+      for(var i=0;i<ds.length;i++){
+        var d=ds[i],idEl=d.getElementsByTagName("detector_id")[0];
+        if(!idEl)continue;
+        var id=idEl.textContent.trim(),info=det[id];
+        if(!info)continue;
+        var lanes=d.getElementsByTagName("lane"),sp=[],occ=[];
+        for(var j=0;j<lanes.length;j++){
+          var s=lanes[j].getElementsByTagName("speed")[0];
+          var o=lanes[j].getElementsByTagName("occupancy")[0];
+          var vd=lanes[j].getElementsByTagName("valid")[0];
+          if(s&&(!vd||vd.textContent!=="N"))sp.push(parseInt(s.textContent,10));
+          if(o)occ.push(parseInt(o.textContent,10));
+        }
+        var v=sp.length?Math.min.apply(null,sp):null;
+        if(v!=null&&isNaN(v))v=null;
+        var oc=occ.length?Math.max.apply(null,occ):null;
+        if(v===0&&(oc==null||oc===0))v=null; /* 冇車／死感應器 → 灰色 */
+        pts.push({id:id,lat:info[0],lng:info[1],road:info[2],dir:info[3],
+                  base:info[4]||info[2],dist:info[5]||"",v:v,occ:oc});
+      }
+      /* XML 有多個時段，同一探測器會重複 → 去重（後者較新） */
+      var uniq={};
+      pts.forEach(function(p){uniq[p.id]=p});
+      pts=Object.keys(uniq).map(function(k){return uniq[k]});
+      for(var q=0;q<pts.length;q++){
+        if(pts[q].v==null)bad++; else if(pts[q].v<30)slow++;
+      }
+      S.tpts=pts;S.trafAt=t;
+      drawTraf();
+      $("tstamp").innerHTML="<b>"+(tm?tm+" 更新":"已更新")+"</b> · "+pts.length+" 個感應器<br>"+
+        "擠塞 <b style='color:#d93025'>"+slow+"</b> 個 · 無數據 "+bad;
+      loadNews();
+    });
+  }).catch(function(){
+    $("tstamp").textContent="路況數據攞唔到（網絡問題），等陣自動再試";
+  });
 }
 function loadNews(){
   fetch("https://resource.data.one.gov.hk/td/tc/specialtrafficnews.xml",{cache:"no-store"})
@@ -926,12 +1111,30 @@ function loadNews(){
     }).join("");
     var d=new Date(),p=function(n){return (n<10?"0":"")+n};
     $("nstamp").textContent=arr.length+" 條 · "+p(d.getHours())+":"+p(d.getMinutes());
+    $("tnews-n").textContent=arr.length+" 條";
+    $("tnews-dot").className="nd"+(live.length?"":" off");
   })
-  .catch(function(){$("nlist").innerHTML='<div class="tnote">交通消息暫時攞唔到（網絡問題）</div>'});
+  .catch(function(){$("nlist").innerHTML='<div class="tnote">交通消息暫時攞唔到（網絡問題）</div>';
+    $("tnews-n").textContent="—"});
 }
 $("nlist").addEventListener("click",function(e){
   var ni=e.target.closest(".ni");
   if(ni)ni.classList.toggle("open");
+});
+/* 交通消息面板 */
+function openNews(){
+  var p=$("tnews-panel");
+  p.classList.add("show");
+  requestAnimationFrame(function(){p.classList.add("open")});
+}
+function closeNews(){
+  var p=$("tnews-panel");
+  p.classList.remove("open");
+  setTimeout(function(){p.classList.remove("show")},230);
+}
+$("tnews-btn").onclick=openNews;
+$("tnews-panel").addEventListener("click",function(e){
+  if(e.target.id==="tnews-panel"||e.target.className==="grip")closeNews();
 });
 setInterval(function(){
   var el=$("cd");
