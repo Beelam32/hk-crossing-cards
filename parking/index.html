@@ -61,7 +61,7 @@ select.chip.on{background-color:var(--accent);border-color:var(--accent);color:#
 .banner b{font-weight:650}
 .banner .x{margin-left:auto;color:#5a7bb0;font-size:16px;padding:0 2px}
 /* ---------- list ---------- */
-main{flex:1 1 auto;position:relative;overflow:hidden}
+main{flex:1 1 auto;position:relative;z-index:1;overflow:hidden}
 #list{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 14px calc(16px + env(safe-area-inset-bottom))}
 .spacer{position:relative;width:100%}
 .row{
@@ -82,14 +82,21 @@ main{flex:1 1 auto;position:relative;overflow:hidden}
 .v-ok{background:var(--ok)} .v-warn{background:var(--warn)} .v-bad{background:var(--bad)} .v-na{background:#b8b5ad}
 .n-ok{color:var(--ok)} .n-warn{color:var(--warn)} .n-bad{color:var(--bad)} .n-na{color:#9a978f}
 /* ---------- map ---------- */
+#locate{position:absolute;right:12px;bottom:38px;z-index:400;width:46px;height:46px;border-radius:50%;border:1px solid #e2dfd8;background:#fff;color:#1a73e8;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.18);display:none;place-items:center}
+body.tabmap #locate{display:grid}
+body.sheetopen #locate{display:none}
 #attrib{position:absolute;right:8px;bottom:8px;z-index:400;font-size:9.5px;color:#4a4a4a;background:rgba(255,255,255,.78);padding:2px 5px;border-radius:4px;pointer-events:none;display:none}
 body.tabmap #attrib{display:block}
 #map{position:absolute;inset:0;display:none;background:#e9e7e1}
 body.tabmap #list{display:none} body.tabmap #map{display:block}
 .pin{
   width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
-  font:700 12px/1 system-ui;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);
-  border:2px solid #fff;font-variant-numeric:tabular-nums
+  font:700 12px/1 system-ui;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.45);
+  border:3px solid #fff;font-variant-numeric:tabular-nums
+}
+.me{
+  width:18px;height:18px;border-radius:50%;background:#1a73e8;border:3px solid #fff;
+  box-shadow:0 0 0 7px rgba(26,115,232,.22),0 1px 5px rgba(0,0,0,.45)
 }
 /* ---------- footer tabs ---------- */
 footer{
@@ -109,7 +116,9 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
   z-index:60;padding:8px 18px calc(18px + env(safe-area-inset-bottom));max-height:72dvh;overflow:auto
 }
 #sheet.open{transform:translateY(0)}
+#s-close{position:absolute;right:12px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:#f1efe9;color:#6b6e78;font-size:15px;display:grid;place-items:center}
 #sheet .grip{width:38px;height:4px;border-radius:2px;background:#dcd9d2;margin:2px auto 12px}
+.dist-line{font-size:13px;color:#1a73e8;margin:-4px 0 12px;font-weight:650}
 #sheet h2{font-size:17px;margin:0 0 4px;line-height:1.3}
 #sheet .addr{font-size:12.5px;color:var(--ink2);margin-bottom:12px}
 .kv{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
@@ -163,6 +172,7 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
   <div id="list"><div class="skel" id="skel"><div></div><div></div><div></div><div></div><div></div></div></div>
   <div id="map"></div>
   <div id="attrib">© OpenStreetMap</div>
+  <button id="locate" aria-label="返我位置">◎</button>
 </main>
 
 <footer>
@@ -176,8 +186,10 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 
 <div id="sheet">
   <div class="grip"></div>
+  <button id="s-close" aria-label="關閉">✕</button>
   <h2 id="s-name">—</h2>
   <div class="addr" id="s-addr">—</div>
+  <div class="dist-line" id="s-dist" style="display:none"></div>
   <div class="big"><b id="s-num">—</b><span id="s-unit">個私家車位</span></div>
   <div class="kv" id="s-kv"></div>
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
@@ -220,20 +232,20 @@ function ago(ts){
 }
 function lvl(r){
   if(r.vt==="C")return"bad";
-  if(r.num==null)return r.vt==="B"?"ok":"na";
+  if(r.num==null||r.num<0)return r.vt==="B"?"ok":"na";
   if(r.num<=3)return"bad";
   if(r.num<=15)return"warn";
   return"ok";
 }
 function numText(r){
   if(r.vt==="C")return"關";
-  if(r.num!=null)return r.num;
+  if(r.num!=null&&r.num>=0)return r.num;
   if(r.vt==="B")return"有";
   return"—";
 }
 function unitText(r){
   if(r.vt==="C")return"暫停開放";
-  if(r.num!=null)return"個車位";
+  if(r.num!=null&&r.num>=0)return"個車位";
   if(r.vt==="B")return"有位";
   return"無數據";
 }
@@ -438,13 +450,41 @@ function open(i){
   (r.f||[]).forEach(function(f){kv.push(f)});
   if(r.vt==="C")kv.push("暫停開放");
   $("s-kv").innerHTML=kv.map(function(t){return '<span class="tag">'+esc(t)+'</span>'}).join("");
-  $("s-go").href="https://www.google.com/maps/dir/?api=1&destination="+r.lat+","+r.lng;
+  var dl=$("s-dist");
+  if(S.me&&r._d!=null){
+    var km=r._d/1000, mins=Math.max(2,Math.round(km*1.35/30*60));
+    dl.style.display="block";
+    dl.textContent="由你出發約 "+fmtD(r._d)+" · 揸車大約 "+mins+" 分鐘";
+  }else{
+    dl.style.display="none";
+  }
+  var go=$("s-go");
+  go.href="https://www.google.com/maps/dir/?api=1"+
+    (S.me?"&origin="+S.me[0]+","+S.me[1]:"")+
+    "&destination="+r.lat+","+r.lng+"&travelmode=driving";
+  go.textContent=S.me?"導航去呢度（揸車）→":"用 Maps 查路線（揸車）→";
   var stale=ago(r.upd);
   $("s-hint").textContent=stale?("場方最後回報 "+stale+"　·　數字只供參考，出發前請以現場為準"):"此場未提供實時數字";
   $("sheet").classList.add("open");
+  document.body.classList.add("sheetopen");
+  drawLine(r);
+  if(S.tab==="map"&&S.map){
+    /* 把選中場地擺去「未畀 sheet 遮住」嘅區域中間 */
+    var zz=Math.max(S.map.getZoom(),14);
+    var pt=S.map.project([r.lat,r.lng],zz).add([0,110]);
+    S.map.setView(S.map.unproject(pt,zz),zz,{animate:true});
+  }
 }
+function closeSheet(){
+  $("sheet").classList.remove("open");
+  document.body.classList.remove("sheetopen");
+}
+$("s-close").onclick=closeSheet;
 $("sheet").addEventListener("click",function(e){
-  if(e.target.id==="sheet"||e.target.className==="grip")$("sheet").classList.remove("open");
+  if(e.target.id==="sheet"||e.target.className==="grip"){
+    $("sheet").classList.remove("open");
+    document.body.classList.remove("sheetopen");
+  }
 });
 
 /* ---------- map ---------- */
@@ -464,8 +504,25 @@ function initMap(){
   S.map=L.map("map",{zoomControl:false,preferCanvas:true,attributionControl:false}).setView([22.34,114.14],11);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,detectRetina:true}).addTo(S.map);
   S.markers=L.layerGroup().addTo(S.map);
-  S.map.on("zoomend moveend",drawPins);
+  S.map.on("zoomend moveend resize",drawPins);
+  addMe();
   drawPins();
+};
+window.__map=function(){return S.map};window.__S=function(){return S};
+function addMe(){
+  if(!S.map||!S.me)return;
+  if(!S.meM){
+    S.meM=L.marker(S.me,{
+      icon:L.divIcon({html:'<div class="me"></div>',className:"",iconSize:[18,18],iconAnchor:[9,9]}),
+      zIndexOffset:2000,interactive:false
+    }).addTo(S.map);
+  }else S.meM.setLatLng(S.me);
+}
+function drawLine(r){
+  if(!S.map)return;
+  if(S.line){S.map.removeLayer(S.line);S.line=null}
+  if(!S.me||!r)return;
+  S.line=L.polyline([S.me,[r.lat,r.lng]],{color:"#1a73e8",weight:3.5,dashArray:"7 8",opacity:.85,interactive:false}).addTo(S.map);
 }
 function drawPins(){
   if(!S.map)return;
@@ -504,13 +561,17 @@ function drawPins(){
     var r2=S.view[j];
     if(!b.contains([r2.lat,r2.lng]))continue;
     var lv=lvl(r2), txt=numText(r2);
-    var sz=z>=15?34:26, fs=z>=15?12:10;
+    var sz=z>=15?38:32, fs=z>=15?13.5:12;
     var html2='<div class="pin v-'+lv+'" style="width:'+sz+'px;height:'+sz+'px;font-size:'+fs+'px">'+txt+'</div>';
     var ic=L.divIcon({html:html2,className:"",iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
     var m=L.marker([r2.lat,r2.lng],{icon:ic,keyboard:false,title:r2.n});
     (function(rr){m.on("click",function(){open(S.view.indexOf(rr))})})(r2);
     S.markers.addLayer(m);
-    if(++n>400)break;
+    if(++n>600)break;
+  }
+  if(n===0){
+    /* 容器啱啱由 display:none 變返可見，bounds 可能未計好——重試一次 */
+    setTimeout(function(){if(S.map){S.map.invalidateSize();drawPins()}},160);
   }
 }
 
@@ -549,7 +610,7 @@ function askGeo(){
     $("banner").style.display="none";$("banner").dataset.dismissed="1";
     if(S.dist){S.dist="";distEl.value="";distEl.classList.remove("on")}
     apply();
-    if(S.map)S.map.setView(S.me,15);
+    if(S.map){addMe();drawLine(S.sel);S.map.setView(S.me,15)}
     $("stamp").innerHTML="已按你位置排序<br>實時車位每 90 秒更新";
   },function(){
     $("geo").textContent="◎";
@@ -560,6 +621,10 @@ function askGeo(){
   },{timeout:9000,maximumAge:120000});
 }
 $("geo").onclick=askGeo;
+$("locate").onclick=function(){
+  if(S.me&&S.map){addMe();S.map.setView(S.me,15,{animate:true})}
+  else askGeo();
+};
 $("bgeo").onclick=askGeo;
 $("bx").onclick=function(){
   $("banner").style.display="none";$("banner").dataset.dismissed="1";
