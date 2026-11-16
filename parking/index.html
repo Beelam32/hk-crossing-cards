@@ -119,6 +119,10 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 #s-close{position:absolute;right:12px;top:8px;width:34px;height:34px;border-radius:50%;border:0;background:#f1efe9;color:#6b6e78;font-size:15px;display:grid;place-items:center}
 #sheet .grip{width:38px;height:4px;border-radius:2px;background:#dcd9d2;margin:2px auto 12px}
 .dist-line{font-size:13px;color:#1a73e8;margin:-4px 0 12px;font-weight:650}
+#s-trend{color:#5a5d66;font-weight:500;margin:-8px 0 12px}
+#s-trend b.up{color:#12855a}
+#s-trend b.down{color:#c0392b}
+#s-trend b.flat{color:#5a5d66}
 #sheet h2{font-size:17px;margin:0 0 4px;line-height:1.3}
 #sheet .addr{font-size:12.5px;color:var(--ink2);margin-bottom:12px}
 .kv{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
@@ -190,6 +194,7 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
   <h2 id="s-name">—</h2>
   <div class="addr" id="s-addr">—</div>
   <div class="dist-line" id="s-dist" style="display:none"></div>
+  <div class="dist-line" id="s-trend" style="display:none"></div>
   <div class="big"><b id="s-num">—</b><span id="s-unit">個私家車位</span></div>
   <div class="kv" id="s-kv"></div>
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
@@ -204,7 +209,7 @@ var INFO_URL="data/info.json";
 var ROW=80, GAP=10, PER=ROW+GAP;
 var REFRESH=90000;
 
-var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list"};
+var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{}};
 
 /* ---------- utils ---------- */
 function $(id){return document.getElementById(id)}
@@ -325,10 +330,14 @@ function fetchVac(){
     S.rows.forEach(function(r){
       var v=m[String(r.id)];
       if(v){r.vt=v.vt;r.num=v.num;r.upd=v.upd}
+      /* 記低呢個 session 第一次見到嘅車位數，做「前後對比」 */
+      if(v&&typeof r.num==="number"&&r.num>=0&&!S.first[String(r.id)])
+        S.first[String(r.id)]={num:r.num,ts:t};
     });
     S.lastFetch=t;
     $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+n+" 個場 · "+(S.me?"按距離":"空位最多優先");
     apply();
+    if(S.sel&&$("sheet").classList.contains("open"))paintTrend(S.sel);
   }).catch(function(){
     if(!S.lastFetch)$("stamp").textContent="場地資料已載入\n實時數據暫時攞唔到";
   });
@@ -435,6 +444,26 @@ listEl.addEventListener("click",function(e){
 });
 
 /* ---------- sheet ---------- */
+function paintTrend(r){
+  var el=$("s-trend");
+  var rec=S.first[String(r.id)];
+  var cur=(typeof r.num==="number"&&r.num>=0)?r.num:null;
+  var ok=rec&&cur!=null;
+  if(!ok){el.style.display="none";return}
+  var mins=Math.max(1,Math.round((Date.now()-rec.ts)/60000));
+  if(rec.num===cur){
+    if(mins<2){el.style.display="none";return}
+    el.style.display="block";
+    el.innerHTML=mins+" 分鐘前睇過，<b class=\"flat\">"+cur+" 個位冇變</b>";
+    return;
+  }
+  var diff=cur-rec.num;
+  var cls=diff>0?"up":"down";
+  var word=diff>0?"+":"";
+  el.style.display="block";
+  el.innerHTML=mins+" 分鐘前 "+rec.num+" → 而家 <b class=\""+cls+"\">"+cur+
+    "（"+word+diff+"）</b>"+(diff>0?" · 多咗位":" · 快手啲");
+}
 function open(i){
   var r=S.view[i];
   if(!r)return;
@@ -465,6 +494,7 @@ function open(i){
   go.textContent=S.me?"導航去呢度（揸車）→":"用 Maps 查路線（揸車）→";
   var stale=ago(r.upd);
   $("s-hint").textContent=stale?("場方最後回報 "+stale+"　·　數字只供參考，出發前請以現場為準"):"此場未提供實時數字";
+  paintTrend(r);
   $("sheet").classList.add("open");
   document.body.classList.add("sheetopen");
   drawLine(r);
@@ -508,7 +538,7 @@ function initMap(){
   addMe();
   drawPins();
 };
-window.__map=function(){return S.map};window.__S=function(){return S};
+window.__map=function(){return S.map};window.__S=function(){return S};window.__paintTrend=paintTrend;
 function addMe(){
   if(!S.map||!S.me)return;
   if(!S.meM){
