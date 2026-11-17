@@ -68,7 +68,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
 #map path.d{stroke:rgba(255,255,255,.07);stroke-width:.8;vector-effect:non-scaling-stroke}
 #map text{pointer-events:none;font-family:inherit}
 #map .lb rect{fill:var(--card);fill-opacity:.95}
-#map .lb text{font-size:12.5px;font-weight:600;text-anchor:middle;fill:var(--ink);font-variant-numeric:tabular-nums}
+#map .lb text{font-size:14px;font-weight:600;text-anchor:middle;fill:var(--ink);font-variant-numeric:tabular-nums}
 #map .lb.dry text{fill:var(--ink2);font-weight:500}
 #map .s0{stroke:var(--line)} #map .s1{stroke:#4d9bd6} #map .s2{stroke:#2fa8a0}
 #map .s3{stroke:#e6b93f} #map .s4{stroke:#ec8a3c} #map .s5{stroke:#e05545}
@@ -250,10 +250,10 @@ function paintMap(d){
   HKD.d.forEach(function(z){
     var v=valOf(z),cls=rainCls(v),txt=z.n+" "+(v>0?v:"0");
     paths.push('<path class="d '+cls+'" d="'+z.p+'"><title>'+z.n+" · "+v+" mm</title></path>");
-    if(z.ax!==undefined)leaders.push('<line class="ld" x1="'+z.lx+'" y1="'+(z.ly-11)+'" x2="'+z.ax+'" y2="'+z.ay+'"/>');
-    var w=z.n.length*12.6+String(v>0?v:"0").length*8.2+22;
-    labels.push('<g class="lb '+cls+(cls==="f0"?" dry":"")+'"><rect x="'+(z.lx-w/2)+'" y="'+(z.ly-11)+'" width="'+w+'" height="22" rx="11"/>'
-      +'<text x="'+z.lx+'" y="'+(z.ly+4.5)+'">'+txt+"</text></g>");
+    if(z.ax!==undefined)leaders.push('<line class="ld" x1="'+z.lx+'" y1="'+(z.ly-12)+'" x2="'+z.ax+'" y2="'+z.ay+'"/>');
+    var w=z.n.length*14.1+String(v>0?v:"0").length*9.2+24;
+    labels.push('<g class="lb '+cls+(cls==="f0"?" dry":"")+'"><rect x="'+(z.lx-w/2)+'" y="'+(z.ly-12)+'" width="'+w+'" height="24" rx="12"/>'
+      +'<text x="'+z.lx+'" y="'+(z.ly+5)+'">'+txt+"</text></g>");
   });
   var svg='<svg viewBox="0 0 '+vb[0]+" "+vb[1]+'" role="img" aria-label="香港分区雨量地图">'
     +leaders.join("")+paths.join("")+labels.join("")+"</svg>";
