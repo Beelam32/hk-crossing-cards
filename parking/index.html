@@ -721,6 +721,8 @@ function navLinks(r){
 
 /* ---------- 地圖內路線（OSRM 開放路線服務，免 key，唔使開 Google／高德） ---------- */
 var OSRM="https://router.project-osrm.org/route/v1/driving/";
+/* 後備路線伺服器（FOSSGIS，CORS 全開）——demo server 偶爾 429／慢 */
+var OSRM2="https://routing.openstreetmap.de/routed-car/route/v1/driving/";
 var MAN={depart:"出發",arrive:"抵達目的地","new name":"直行",merge:"匯入",
   "on ramp":"駛入支路","off ramp":"駛出支路",fork:"行分岔","end of road":"去到路口",
   roundabout:"入迴旋處","roundabout turn":"行迴旋處",exit:"出迴旋處",continue:"繼續直行"};
@@ -762,12 +764,20 @@ function planRoute(r){
   }
   var btn=$("s-route");
   if(btn){btn.textContent="畫緊路線…";btn.disabled=true}
-  var ac=(typeof AbortController<"u")?new AbortController():null;
-  if(ac)setTimeout(function(){ac.abort()},12000);
-  fetch(OSRM+S.me[1]+","+S.me[0]+";"+r.lng+","+r.lat+
-    "?overview=full&geometries=geojson&steps=true&alternatives=false",
-    ac?{signal:ac.signal}:undefined)
-  .then(function(x){return x.json()})
+  var qs="?overview=full&geometries=geojson&steps=true&alternatives=false";
+  var pair=S.me[1]+","+S.me[0]+";"+r.lng+","+r.lat;
+  var getRoute=function(base){
+    var ac=(typeof AbortController<"u")?new AbortController():null;
+    if(ac)setTimeout(function(){ac.abort()},15000);
+    return fetch(base+pair+qs,ac?{signal:ac.signal}:undefined)
+      .then(function(x){if(!x.ok)throw 0;return x.json()})
+      .then(function(j){
+        if(!j.routes||!j.routes.length)throw 0;
+        return j;
+      });
+  };
+  getRoute(OSRM)
+  .catch(function(){return getRoute(OSRM2)})
   .then(function(j){
     if(btn){btn.textContent="喺地圖畫路線（唔使開 Maps）";btn.disabled=false}
     if(!j.routes||!j.routes.length){showRouteMsg("路線服務暫時回應唔到，可以用導航掣開 Maps");return}
@@ -1573,11 +1583,16 @@ $("q").addEventListener("keydown",function(e){
     if(b&&$("sugg").style.display==="block"){e.preventDefault();b.click();this.blur()}
   }
 });
+function geoOnce(opts){
+  return new Promise(function(res,rej){
+    navigator.geolocation.getCurrentPosition(res,function(e){rej(e)},opts);
+  });
+}
 function askGeo(){
-  if(!navigator.geolocation){$("stamp").textContent="此瀏覽器不支援定位";return}
+  if(!navigator.geolocation){$("stamp").textContent="此瀏覽器不支援定位";return Promise.resolve(null)}
   $("geo").textContent="…";
   $("bgeo").textContent="…";
-  navigator.geolocation.getCurrentPosition(function(p){
+  var ok=function(p){
     S.me=[p.coords.latitude,p.coords.longitude];
     $("geo").textContent="●";
     $("geo").style.color="var(--ok)";
@@ -1587,13 +1602,32 @@ function askGeo(){
     if(S.map){addMe();drawLine(S.sel);S.map.setView(S.me,15)}
     if(S.pendingRoute){var pr=S.pendingRoute;S.pendingRoute=null;planRoute(pr)}
     $("stamp").innerHTML="已按你位置排序<br>實時車位每 90 秒更新";
-  },function(){
-    $("geo").textContent="◎";
-    $("bgeo").textContent="開啟";
-    $("banner").style.display="none";$("banner").dataset.dismissed="1";
-    try{localStorage.setItem("hkp_geooff","1")}catch(e){}
-    $("stamp").innerHTML="未開啟定位<br>可用地區篩選";
-  },{timeout:9000,maximumAge:120000});
+    return S.me;
+  };
+  /* 第一次：高精度（手機 GPS 冷啟要 15-20 秒，唔好太早放棄） */
+  return geoOnce({enableHighAccuracy:true,timeout:20000,maximumAge:60000})
+    .then(ok)
+    .catch(function(e0){
+      /* 第二次：退回網絡／基站定位，容忍 5 分鐘內嘅舊位置 */
+      return geoOnce({enableHighAccuracy:false,timeout:15000,maximumAge:300000})
+        .then(ok)
+        .catch(function(){throw e0||{}});
+    })
+    .catch(function(e){
+      var code=e&&e.code;
+      $("geo").textContent="◎";
+      $("bgeo").textContent="開啟";
+      $("banner").style.display="none";$("banner").dataset.dismissed="1";
+      try{localStorage.setItem("hkp_geooff","1")}catch(err){}
+      $("stamp").innerHTML="未開啟定位<br>可用地區篩選";
+      toast(code===1
+        ?"瀏覽器封鎖咗定位——撳網址欄左邊個鎖頭，將「位置」設為允許，再撳 ◎ 試"
+        :code===3
+        ?"定位超時（室內或車內訊號弱）——行去空曠位、開住 Wi-Fi 再撳 ◎"
+        :"攞唔到位置——確認手機定位已開，再撳 ◎ 試");
+      if(S.pendingRoute){S.pendingRoute=null;showRouteMsg("未攞到你位置，畫唔到路線——撳 ◎ 定位成功後再撳一次");}
+      return null;
+    });
 }
 $("geo").onclick=askGeo;
 $("locate").onclick=function(){
