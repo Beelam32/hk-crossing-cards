@@ -1849,7 +1849,7 @@ window.__stress=function(k){
    STATS_URL 未填 = 完全靜默，唔會顯示亦唔會發請求。
    訪客碼係隨機產生存 localStorage，無個人資料。 */
 (function(){
-  var STATS_URL="";   /* 部署後填，例如 https://hk-parking-counter.xxx.workers.dev */
+  var STATS_URL="https://hk-parking-counter.beelam32.workers.dev";
   if(!STATS_URL)return;
   var VID=null;
   try{
@@ -1871,6 +1871,8 @@ window.__stress=function(k){
     }).catch(function(){});
   }
   ping().then(paint).catch(function(){});   /* 等報到完成先攞數，第一次載入都即刻見到 */
+  /* KV list 有約 60 秒延遲，「X 人睇緊」第一次可能未計到自己 → 75 秒後再攞一次 */
+  setTimeout(paint,75000);
   setInterval(ping,240000);      /* 4 分鐘報到一次（線上判斷窗口 5 分鐘） */
   setInterval(paint,240000);
 })();
