@@ -29,6 +29,8 @@ body{
 header{padding:calc(8px + env(safe-area-inset-top)) 14px 0;flex:0 0 auto;background:var(--bg);z-index:30}
 .hrow{display:flex;align-items:baseline;gap:8px}
 h1{font-size:19px;margin:0;letter-spacing:.3px;font-weight:700}
+#live{display:none;font-size:11px;font-weight:600;color:var(--ink2);background:var(--card);
+  border:1px solid var(--line);border-radius:10px;padding:2px 8px;margin-left:8px;vertical-align:3px;letter-spacing:0}
 .hsub{font-size:11.5px;color:var(--ink2);margin-left:auto;text-align:right;line-height:1.3}
 .search{display:flex;gap:8px;margin:9px 0 8px;position:relative}
 #sugg{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(0,0,0,.22);z-index:75;display:none;overflow:hidden}
@@ -344,7 +346,7 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
 
 <header>
   <div class="hrow">
-    <h1>香港泊車</h1>
+    <h1>香港泊車<span id="live"></span></h1>
     <div class="hsub" id="stamp">載入場地資料…</div>
   </div>
   <div class="search">
@@ -1840,6 +1842,37 @@ window.__stress=function(k){
   S.rows=out;S.me=null;apply();
   return out.length;
 };
+})();
+</script>
+<script>
+/* ---------- 線上／今日人次（Cloudflare Worker：hk-parking-counter）----------
+   STATS_URL 未填 = 完全靜默，唔會顯示亦唔會發請求。
+   訪客碼係隨機產生存 localStorage，無個人資料。 */
+(function(){
+  var STATS_URL="";   /* 部署後填，例如 https://hk-parking-counter.xxx.workers.dev */
+  if(!STATS_URL)return;
+  var VID=null;
+  try{
+    VID=localStorage.getItem("hkp_vid");
+    if(!VID){VID=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem("hkp_vid",VID)}
+  }catch(e){return}
+  function ping(){
+    return fetch(STATS_URL+"/hit",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({v:VID,p:location.pathname})}).catch(function(){});
+  }
+  function paint(){
+    fetch(STATS_URL+"/stats").then(function(r){return r.json()}).then(function(j){
+      var el=document.getElementById("live");
+      if(!el||!j)return;
+      if(j.today>0){
+        el.textContent="今日 "+j.today+" 人"+(j.online>0?" · "+j.online+" 人睇緊":"");
+        el.style.display="inline-block";
+      }
+    }).catch(function(){});
+  }
+  ping().then(paint).catch(function(){});   /* 等報到完成先攞數，第一次載入都即刻見到 */
+  setInterval(ping,240000);      /* 4 分鐘報到一次（線上判斷窗口 5 分鐘） */
+  setInterval(paint,240000);
 })();
 </script>
 <script>
