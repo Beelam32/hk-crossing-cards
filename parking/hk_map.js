@@ -10,6 +10,8 @@ HKD.polish=function(svg){
   if(!d){
     var st=document.createElement("style");st.id="hkdCss";
     st.textContent=[
+      /* 封死溢出：地圖 SVG 一律裁切（之前 overflow:visible 令超界圖層漏到全頁） */
+      "#dmap svg,#map svg{overflow:hidden!important}",
       "#map image.radar,#dmap image.radar{display:none!important}",
       "#map .legend .rad,#dmap .lg .rad{display:none!important}",
       /* 分區：亮邊 + 柔和陰影 + 垂直漸層（上亮下深＝有光澤） */
