@@ -142,6 +142,43 @@ body.tabtraf #traf{display:block}
 /* ---------- map ---------- */
 #locate{position:absolute;right:12px;bottom:38px;z-index:400;width:46px;height:46px;border-radius:50%;border:1px solid #e2dfd8;background:#fff;color:#1a73e8;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.18);display:none;place-items:center}
 body.tabmap #locate{display:grid}
+/* 錶位／記車位按鈕（地圖 tab 右下堆疊） */
+#meters,#carbtn{
+  position:absolute;right:12px;width:46px;height:46px;border-radius:50%;
+  border:1px solid #e2dfd8;background:#fff;color:#1a73e8;font-size:15px;font-weight:800;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);display:none;place-items:center;z-index:400;padding:0
+}
+#meters{bottom:152px;letter-spacing:-.5px}
+#carbtn{bottom:98px;font-size:17px}
+body.tabmap #meters,body.tabmap #carbtn{display:grid}
+body.sheetopen #meters,body.sheetopen #carbtn{display:none}
+#meters.on{background:#1a73e8;color:#fff;border-color:#1a73e8}
+#meters.loading{opacity:.6;pointer-events:none}
+#mstamp{
+  position:absolute;left:10px;bottom:38px;z-index:400;display:none;
+  background:rgba(255,255,255,.95);border-radius:9px;padding:5px 9px;
+  font-size:11px;color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.18);line-height:1.4
+}
+body.tabmap.meteron #mstamp{display:block}
+.mpin{
+  border-radius:50%;display:grid;place-items:center;color:#fff;
+  font:800 10px/1 system-ui;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.45);
+  font-variant-numeric:tabular-nums
+}
+.carM{font-size:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45));text-align:center;line-height:1}
+/* 錶位彈窗 */
+.mp .v{color:#12855a;font-weight:800}
+.mp .o{color:#d93025;font-weight:800}
+.mp .off{color:#8f949e;font-weight:700}
+.mp .fee{color:var(--ink2);font-size:11.5px}
+.mp .nav{display:inline-block;margin-top:6px;padding:5px 10px;border-radius:8px;background:#1a73e8;color:#fff;font-size:12px;text-decoration:none}
+/* snack 提示 */
+#snack{
+  position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(74px + env(safe-area-inset-bottom));
+  background:#333;color:#fff;padding:9px 16px;border-radius:20px;font-size:12.5px;z-index:900;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:86%;text-align:center
+}
+#snack.on{opacity:1;transform:translateX(-50%) translateY(0)}
 body.sheetopen #locate{display:none}
 #attrib{position:absolute;right:8px;bottom:8px;z-index:400;font-size:9.5px;color:#4a4a4a;background:rgba(255,255,255,.78);padding:2px 5px;border-radius:4px;pointer-events:none;display:none}
 body.tabmap #attrib{display:block}
@@ -262,6 +299,9 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
     background:rgba(26,29,33,.95);border:1px solid #3d424a;color:#f4f3f0;
     box-shadow:0 1px 8px rgba(0,0,0,.5)
   }
+  #meters,#carbtn{background:#262a31;border-color:#3d424a;color:var(--ink)}
+  #meters.on{background:#1a73e8;color:#fff;border-color:#1a73e8}
+  #mstamp{background:rgba(26,29,33,.95);border:1px solid #3d424a;color:#f4f3f0}
   #tlegend .note{color:#a9adb6}
   #tnews-panel{background:#1a1d21}
   #tnews-panel h3{color:#f4f3f0}
@@ -309,6 +349,10 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
     <div id="steps"></div>
   </div>
   <button id="locate" aria-label="返我位置">◎</button>
+  <button id="meters" aria-label="路邊錶位">P</button>
+  <button id="carbtn" aria-label="記低車位">🚗</button>
+  <div id="mstamp"></div>
+  <div id="snack"></div>
   <div id="traf">
     <div id="tmap"></div>
     <div id="tstamp">路況載入中…</div>
@@ -365,8 +409,10 @@ var INFO_URL="data/info.json";
 var ROW=80, GAP=10, PER=ROW+GAP;
 var REFRESH=90000;
 
-var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},favs:{},next:0,trafAt:0,dest:null,prof:null,profTried:false,destM:null};
+var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},favs:{},next:0,trafAt:0,dest:null,prof:null,profTried:false,destM:null,meters:null,metersOn:false,mL:null,car:null,carM:null};
 try{S.favs=JSON.parse(localStorage.getItem("hkp_favs")||"{}")||{}}catch(e){S.favs={}}
+try{S.metersOn=localStorage.getItem("hkp_meteron")==="1"}catch(e){}
+try{S.car=JSON.parse(localStorage.getItem("hkp_mycar")||"null")}catch(e){S.car=null}
 function saveFavs(){try{localStorage.setItem("hkp_favs",JSON.stringify(S.favs))}catch(e){}}
 function toggleFav(id){
   var k=String(id);
@@ -890,8 +936,10 @@ function initMap(){
   S.map=L.map("map",{zoomControl:false,preferCanvas:true,attributionControl:false}).setView([22.34,114.14],11);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,detectRetina:true}).addTo(S.map);
   S.markers=L.layerGroup().addTo(S.map);
-  S.map.on("zoomend moveend resize",drawPins);
+  S.map.on("zoomend moveend resize",function(){drawPins();if(S.metersOn)drawMeterPins()});
   addMe();
+  addCarM();
+  if(S.metersOn)toggleMeters(true);
   drawPins();
 };
 window.__map=function(){return S.map};window.__S=function(){return S};window.__paintTrend=paintTrend;
@@ -963,7 +1011,179 @@ function drawPins(){
   }
 }
 
-/* ---------- tabs ---------- */
+/* ---------- 路邊錶位（運輸署新咪錶實時，每分鐘更新；街級聚合檔由後台每 15 分鐘出） ---------- */
+/* 收費時段表（ dataspec )：strip 前綴數字 3A/4J/5T → A/J/T 同時段 */
+var OPTBL={
+  A:{wk:[8,24],su:null},           B:{wk:[8,20],su:null},
+  D:{wk:[8,24],su:[10,22]},        E:{wk:[7,20],su:[7,20]},
+  F:{wk:[8,21],su:[8,21]},         G:{wk:[7,19],su:[7,19]},
+  H:{wk:[8,20],su:[8,20]},         J:{wk:[8,24],su:[8,24]},
+  N:{wk:[19,24],su:[19,24]},       P:{wk:[8,20],su:null},
+  Q:{wk:[8,20],su:[10,22]},
+  S:{wk:[17,24],su:[10,22]},       /* 平日 8-5 唔畫泊，只列 5pm 後；週末照開 */
+  T:{wk:[17.5,24],su:[10,22]}
+};
+function opCode(o){return o?o.replace(/^\d+/,""):""}
+function isOp(code,d){
+  d=d||new Date();
+  var t=OPTBL[opCode(code)];
+  if(!t)return true; /* 唔識嘅代碼當營運中 */
+  var h=d.getHours()+d.getMinutes()/60;
+  var dow=d.getDay();
+  /* 公眾假期近似：當周日規則只套用於周日 */
+  if(dow===0)return !!(t.su&&h>=t.su[0]&&h<t.su[1]);
+  return !!(t.wk&&h>=t.wk[0]&&h<t.wk[1]);
+}
+function gunzipJson(buf){
+  var ds=new DecompressionStream("gzip");
+  return new Response(new Blob([buf]).stream().pipeThrough(ds)).text()
+    .then(function(t){return JSON.parse(t)});
+}
+function loadMeters(){
+  if(S.meters)return Promise.resolve(S.meters);
+  $("meters").classList.add("loading");
+  if(!("DecompressionStream" in window)){toggleMeters(false);$("meters").classList.remove("loading");return Promise.resolve(null)}
+  var got=function(r){if(!r.ok)throw 0;return r.arrayBuffer().then(gunzipJson)};
+  return fetch("data/meters.json.gz?v="+Math.floor(Date.now()/300000),{cache:"no-cache"})
+    .then(got)
+    .catch(function(){
+      /* COS 主站先有實時錶位；Pages 後備站降級 */
+      return fetch("https://weather.pdfworkbench.hk/parking/data/meters.json.gz",{cache:"no-cache"}).then(got);
+    })
+    .then(function(j){S.meters=j;return j})
+    .catch(function(){
+      toast("錶位實時數據暫時載入唔到，遲啲再試");
+      S.metersOn=false;
+      try{localStorage.setItem("hkp_meteron","0")}catch(e){}
+      return null;
+    })
+    .then(function(j){
+      $("meters").classList.remove("loading");
+      if(j)drawMeterPins();
+      return j;
+    });
+}
+function mColor(st){
+  var r=st.t?st.v/st.t:0;
+  if(!isOp(st.o))return "#8f949e";
+  return r>=0.25?"#12855a":r>=0.08?"#f4a300":"#d93025";
+}
+function drawMeterPins(){
+  if(!S.map||!S.meters)return;
+  if(!S.mL)S.mL=L.layerGroup().addTo(S.map);
+  S.mL.clearLayers();
+  var z=S.map.getZoom(), b=S.map.getBounds();
+  var sz=z>=15?24:z>=13?20:16, n=0;
+  var list=S.meters.s||[];
+  for(var i=0;i<list.length&&n<420;i++){
+    var st=list[i];
+    if(st.la==null)continue;
+    var pos=[st.la,st.ln];
+    if(!b.contains(pos))continue;
+    var c=mColor(st);
+    var label=isOp(st.o)?String(st.v):"–";
+    var ic=L.divIcon({html:'<div class="mpin" style="width:'+sz+'px;height:'+sz+'px;background:'+c+';font-size:'+(z>=15?11:10)+'px">'+label+'</div>',className:"",iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
+    (function(s){
+      L.marker(pos,{icon:ic,keyboard:false}).on("click",function(){openMeter(s)}).addTo(S.mL);
+    })(st);
+    n++;
+  }
+  mstampText();
+}
+function mstampText(){
+  var el=$("mstamp");
+  if(!S.meters){el.textContent="";return}
+  var tot=0,vac=0;
+  (S.meters.s||[]).forEach(function(s){tot+=s.t;vac+=s.v});
+  var t=new Date(S.meters.ts||Date.now());
+  var hh=("0"+t.getHours()).slice(-2)+":"+("0"+t.getMinutes()).slice(-2);
+  el.innerHTML="P 錶位 · <b>"+vac+"</b> / "+tot+" 空 · "+hh+" 更新";
+}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function openMeter(st){
+  if(!S.map)return;
+  var open=isOp(st.o);
+  var sec=(st.s&&st.s!==st.n)?"<br><span class='fee'>"+esc(st.s)+"</span>":"";
+  var vtxt=open
+    ?"<span class='v'>"+st.v+"</span> 空<span class='o'>／"+(st.t-st.v)+"</span> 泊"
+    :"<span class='off'>收費時段外</span>";
+  var vt={A:"私家車／輕型車",C:"旅遊巴士",G:"貨車"}[st.m]||"";
+  var fee=st.f?"<div class='fee'>$"+st.f+" / "+st.u+"分鐘"+(st.l?" · 一次最多泊 "+st.l+" 分鐘":"")+(vt?" · "+vt:"")+"</div>":"";
+  var links=navLinks({lat:st.la,lng:st.ln,n:st.n});
+  var html="<div class='mp'><b>"+esc(st.n)+"</b>"+sec+
+    "<br>實時："+vtxt+fee+
+    "<br><a class='nav' href='"+links.g+"' target='_blank' rel='noopener'>揸車去呢條街 ↗</a></div>";
+  L.popup({maxWidth:260}).setLatLng([st.la,st.ln]).setContent(html).openOn(S.map);
+}
+function toggleMeters(force){
+  var on=force!=null?force:!S.metersOn;
+  S.metersOn=on;
+  document.body.classList.toggle("meteron",on);
+  $("meters").classList.toggle("on",on);
+  try{localStorage.setItem("hkp_meteron",on?"1":"0")}catch(e){}
+  if(on)loadMeters();
+  else if(S.mL){S.mL.clearLayers();$("mstamp").innerHTML=""}
+}
+/* ---------- 記低車位 ---------- */
+function addCarM(){
+  if(!S.map||!S.car)return;
+  if(!S.carM){
+    S.carM=L.marker([S.car.la,S.car.ln],{
+      icon:L.divIcon({html:'<div class="carM">🚗</div>',className:"",iconSize:[26,26],iconAnchor:[13,12]}),
+      zIndexOffset:3000
+    }).on("click",openCar).addTo(S.map);
+  }else S.carM.setLatLng([S.car.la,S.car.ln]);
+}
+function agoText(ts){
+  var m=Math.round((Date.now()-ts)/60000);
+  if(m<1)return "啱啱";
+  if(m<60)return m+" 分鐘前";
+  var h=Math.floor(m/60);
+  return h+" 個鐘"+(m%60?(""+(m%60)+" 分"):"");
+}
+function openCar(){
+  if(!S.car)return;
+  var links=navLinks({lat:S.car.la,lng:S.car.ln,n:"我架車"});
+  var html="<div class='mp'><b>🚗 你架車</b><br>泊喺呢度 · "+agoText(S.car.ts)+"記低"+
+    "<br><a class='nav' href='"+links.g+"' target='_blank' rel='noopener'>導航返去攞車 ↗</a>"+
+    " <button class='rb-steps-btn' data-cact='upd' style='margin-left:6px'>記返新位置</button>"+
+    " <button class='rb-steps-btn' data-cact='del'>刪除</button></div>";
+  L.popup({maxWidth:260}).setLatLng([S.car.la,S.car.ln]).setContent(html).openOn(S.map);
+}
+function saveCar(pos){
+  S.car={la:+pos[0].toFixed(6),ln:+pos[1].toFixed(6),ts:Date.now()};
+  try{localStorage.setItem("hkp_mycar",JSON.stringify(S.car))}catch(e){}
+  addCarM();
+  toast("記低咗——行開咗撳 🚗 就搵返");
+  if(S.map)S.map.setView([S.car.la,S.car.ln],17,{animate:true});
+}
+function carAction(act){
+  if(act==="del"){
+    if(S.map&&S.carM)S.map.removeLayer(S.carM);
+    S.car=null;S.carM=null;
+    try{localStorage.removeItem("hkp_mycar")}catch(e){}
+    S.map&&S.map.closePopup();
+    toast("已刪除車位記錄");
+    return;
+  }
+  if(act==="upd")S.map&&S.map.closePopup();
+  if(S.me){saveCar(S.me);return}
+  if(!navigator.geolocation){toast("此瀏覽器唔支援定位");return}
+  toast("定位中…");
+  navigator.geolocation.getCurrentPosition(function(p){
+    saveCar([p.coords.latitude,p.coords.longitude]);
+  },function(){
+    toast("攞唔到位置——開咗定位再撳一次");
+  },{timeout:9000,maximumAge:0});
+}
+function toast(msg){
+  var el=$("snack");
+  el.textContent=msg;el.classList.add("on");
+  clearTimeout(toast._t);
+  toast._t=setTimeout(function(){el.classList.remove("on")},2600);
+}
+
+
 function setTab(t){
   S.tab=t;
   document.body.classList.toggle("tabmap",t==="map");
@@ -1315,6 +1535,12 @@ $("locate").onclick=function(){
   if(S.me&&S.map){addMe();S.map.setView(S.me,15,{animate:true})}
   else askGeo();
 };
+$("meters").onclick=function(){toggleMeters()};
+$("carbtn").onclick=function(){carAction(S.car?"upd":"new")};
+document.addEventListener("click",function(e){
+  var a=e.target.closest&&e.target.closest("[data-cact]");
+  if(a){e.preventDefault();carAction(a.getAttribute("data-cact"))}
+});
 $("bgeo").onclick=askGeo;
 $("bx").onclick=function(){
   $("banner").style.display="none";$("banner").dataset.dismissed="1";
