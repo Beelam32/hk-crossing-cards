@@ -88,6 +88,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
 .legend i{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(128,128,128,.3)}
 .legend i.f0{background:var(--map0)} .legend i.f1{background:#4d9bd6} .legend i.f2{background:#2fa8a0}
 .legend i.f3{background:#e6b93f} .legend i.f4{background:#ec8a3c} .legend i.f5{background:#e05545}
+.legend .rad{margin-left:auto;color:var(--ink2);font-size:11px} .legend .rad b{font-weight:600;font-variant-numeric:tabular-nums}
 .foot{color:var(--ink2);font-size:11.5px;padding:4px 4px 0;text-align:center}
 .err{text-align:center;color:var(--ink2);padding:30px 0}
 </style>
@@ -104,7 +105,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
   <div class="card" id="fnd"><h2>未来九日</h2><div class="err">载入中…</div></div>
   <div class="foot">资料来源：香港天文台开放数据 · 落雨机会为「显著雨概率」（低/中/高）<br>实时雨量每小时更新 · 本页每 15 分钟自动刷新</div>
 </main>
-<script src="hk_map.js?v=20261117c"></script>
+<script src="hk_map.js?v=20261117d"></script>
 <script>
 (function(){
 "use strict";
@@ -263,7 +264,10 @@ function paintMap(d){
   var legend=RCLASS.slice().reverse().map(function(r){
     return '<span><i class="'+r[1]+'"></i>'+r[2]+"</span>";
   }).join("");
-  el.innerHTML='<h2>分区雨量地图 · 过去一小时（mm）</h2>'+sum+svg+'<div class="legend">'+legend+"</div>";
+  el.innerHTML='<h2>分区雨量地图 · 过去一小时（mm）</h2>'+sum+svg+'<div class="legend">'+legend
+    +'<span class="rad" style="display:none">雷达 <b>--:--</b></span>'+"</div>";
+  var sv=el.querySelector("svg");
+  if(sv&&window.HKD&&HKD.radar)HKD.radar(sv,el.querySelector(".legend .rad"),(d.rainfall&&d.rainfall.data)||[]);
 
   el.dataset.upd=(d.updateTime||"").slice(11,16)||"";
 }
