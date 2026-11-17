@@ -160,6 +160,8 @@ body.sheetopen #meters,body.sheetopen #carbtn{display:none}
   font-size:11px;color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.18);line-height:1.4
 }
 body.tabmap.meteron #mstamp{display:block}
+/* 錶位模式：車場專用嘅篩選 chips 收埋，免誤會 */
+body.meteron .chips{display:none}
 .mpin{
   border-radius:50%;display:grid;place-items:center;color:#fff;
   font:800 10px/1 system-ui;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.45);
@@ -546,7 +548,9 @@ function fetchVac(){
     });
     S.lastFetch=t;
     S.next=t+REFRESH;
-    $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+n+" 個場 · "+(S.me?"按距離":"空位最多優先")+
+    $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+(S.metersOn
+      ? '錶位模式 · <b>P</b> 掣返停車場'
+      : n+" 個場 · "+(S.me?"按距離":"空位最多優先"))+
       ' · <span id="cd"></span>';
     apply();
     if(S.sel&&$("sheet").classList.contains("open"))paintTrend(S.sel);
@@ -961,7 +965,7 @@ function drawLine(r){
   S.line=L.polyline([S.me,[r.lat,r.lng]],{color:"#1a73e8",weight:3.5,dashArray:"7 8",opacity:.85,interactive:false}).addTo(S.map);
 }
 function drawPins(){
-  if(!S.map)return;
+  if(!S.map||S.metersOn)return; /* 錶位模式下停車場 pin 收埋，兩種嘢唔黐埋 */
   var z=S.map.getZoom(), b=S.map.getBounds();
   S.markers.clearLayers();
   if(z<13){
@@ -1120,7 +1124,7 @@ function mstampText(){
   (S.meters.s||[]).forEach(function(s){tot+=s.t;vac+=s.v});
   var t=new Date(S.meters.ts||Date.now());
   var hh=("0"+t.getHours()).slice(-2)+":"+("0"+t.getMinutes()).slice(-2);
-  el.innerHTML="P 錶位 · <b>"+vac+"</b> / "+tot+" 空 · "+hh+" 更新";
+  el.innerHTML="<b>錶位模式</b> · <b>"+vac+"</b> / "+tot+" 空 · "+hh+" 更新<br><span style='color:var(--ink2)'>撳 P 返停車場模式</span>";
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function openMeter(st){
@@ -1144,8 +1148,21 @@ function toggleMeters(force){
   document.body.classList.toggle("meteron",on);
   $("meters").classList.toggle("on",on);
   try{localStorage.setItem("hkp_meteron",on?"1":"0")}catch(e){}
-  if(on)loadMeters();
-  else if(S.mL){S.mL.clearLayers();$("mstamp").innerHTML=""}
+  if(on){
+    /* 錶位模式：停車場 pin 全部收埋 */
+    S.markers&&S.markers.clearLayers();
+    S.line&&S.map&&S.map.removeLayer(S.line);S.line=null;
+    loadMeters();
+    if(S.me)addMe();
+    addCarM();
+    $("stamp").innerHTML="<b>錶位模式</b><br>路邊咪錶實時空位";
+  }else{
+    if(S.mL){S.mL.clearLayers();$("mstamp").innerHTML=""}
+    drawPins();
+    if(S.lastFetch&&S.rows.length){
+      $("stamp").innerHTML="實時更新<br>"+S.view.length+" 個場 · "+(S.me?"按距離":"空位最多優先");
+    }
+  }
 }
 /* ---------- 記低車位 ---------- */
 function addCarM(){
