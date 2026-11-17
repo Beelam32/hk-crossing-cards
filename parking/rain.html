@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="香港未来九日落雨机会预报＋实时分区雨量（资料来源：香港天文台）">
+<title>香港落雨预报</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2315161a'/%3E%3Ctext x='32' y='46' font-size='34' font-family='system-ui' text-anchor='middle'%3E%F0%9F%8C%A7%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f7f6f3; --card:#fff; --ink:#15161a; --ink2:#6b6e78; --line:#e6e3dc;
+  --ok:#1e9e5a; --okbg:#e3f3ea; --warn:#b98a1a; --warnbg:#f7eed8;
+  --mid:#d06014; --midbg:#fbe9dd; --bad:#c43d3d; --badbg:#f7e1e1;
+  --accent:#2b6cb0; --pill:#eceae4;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1012; --card:#1a1d21; --ink:#f4f3f0; --ink2:#a9adb6; --line:#34383f;
+    --ok:#4fc48a; --okbg:#1b2f25; --warn:#d8b055; --warnbg:#2f2817;
+    --mid:#e08a52; --midbg:#33251a; --bad:#e07373; --badbg:#331c1c;
+    --accent:#6ea8dc; --pill:#23272d;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  font-size:15px;line-height:1.45;
+  display:flex;flex-direction:column;max-width:520px;margin:0 auto;
+}
+header{padding:calc(10px + env(safe-area-inset-top)) 16px 6px;flex:0 0 auto}
+header h1{font-size:21px;font-weight:700;letter-spacing:.5px}
+header .sub{color:var(--ink2);font-size:12px;margin-top:2px}
+main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bottom))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h2{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:10px;letter-spacing:1px}
+/* 结论卡 */
+#verdict .big{font-size:17px;font-weight:700;margin-bottom:8px}
+#verdict .row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+#verdict .row:first-of-type{border-top:none}
+#verdict .k{color:var(--ink2)}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+.b-ok{color:var(--ok);background:var(--okbg)} .b-warn{color:var(--warn);background:var(--warnbg)}
+.b-mid{color:var(--mid);background:var(--midbg)} .b-bad{color:var(--bad);background:var(--badbg)}
+.b-na{color:var(--ink2);background:var(--pill)}
+/* 而家 */
+#now .chips{display:flex;flex-wrap:wrap;gap:8px}
+#now .chip{background:var(--pill);border-radius:10px;padding:8px 12px;font-size:14px;font-weight:600}
+#now .chip small{display:block;font-weight:400;color:var(--ink2);font-size:11px}
+#now .dry{color:var(--ink2)}
+/* 九日 */
+.day{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:none}
+.day .dt{flex:0 0 66px}
+.day .dt b{display:block;font-size:15px}
+.day .dt span{font-size:11px;color:var(--ink2)}
+.day .wx{flex:1;min-width:0}
+.day .wx b{display:block;font-size:14px;line-height:1.3}
+.day .wx span{font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums}
+.day .psr{flex:0 0 auto;text-align:right}
+.wknd .dt b{color:var(--accent)}
+.foot{color:var(--ink2);font-size:11.5px;padding:4px 4px 0;text-align:center}
+.err{text-align:center;color:var(--ink2);padding:30px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>香港落雨预报</h1>
+  <div class="sub" id="upd">载入中…</div>
+</header>
+<main>
+  <div class="card" id="verdict"><h2>直接答案</h2><div class="err">载入中…</div></div>
+  <div class="card" id="now"><h2>当前实雨 · 过去一小时</h2><div class="err">载入中…</div></div>
+  <div class="card" id="fnd"><h2>未来九日</h2><div class="err">载入中…</div></div>
+  <div class="foot">资料来源：香港天文台开放数据 · 落雨机会为「显著雨概率」（低/中/高）<br>实时雨量每小时更新 · 本页每 15 分钟自动刷新</div>
+</main>
+<script>
+(function(){
+"use strict";
+var RANK={"低":0,"中低":1,"中":2,"中高":3,"高":4};
+var BCLS={0:"b-ok",1:"b-warn",2:"b-mid",3:"b-mid",4:"b-bad"};
+var BNAME={0:"机会低",1:"机会中低",2:"机会中",3:"机会中高",4:"机会高"};
+function badge(psr){
+  if(psr==null||RANK[psr]===undefined)return '<span class="badge b-na">—</span>';
+  var r=RANK[psr];
+  return '<span class="badge '+BCLS[r]+'">'+psr+" · "+BNAME[r]+"</span>";
+}
+function get(url){
+  return fetch(url,{cache:"no-store"}).then(function(r){
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    return r.json();
+  });
+}
+function err(el,msg){el.innerHTML='<div class="err">'+msg+"</div>";}
+
+function paintFnd(d){
+  var el=document.getElementById("verdict");
+  var days=d.weatherForecast||[];
+  if(!days.length){err(el,"天文台预报暂不可用，稍后自动重试");return;}
+  var maxR=-1,maxDay=null;
+  days.forEach(function(x){var r=RANK[x.PSR];if(r!==undefined&&r>maxR){maxR=r;maxDay=x;}});
+  if(maxR<0)maxR=0;
+  // 周末：取周六/周日 PSR 的最大等级
+  var wkMax=-1,wkCount=0;
+  days.forEach(function(x){
+    var s=x.forecastDate,dt=new Date(s.slice(0,4)+"-"+s.slice(4,6)+"-"+s.slice(6,8));
+    if(dt.getDay()===0||dt.getDay()===6){
+      wkCount++;
+      var r=RANK[x.PSR];
+      if(r!==undefined&&r>wkMax)wkMax=r;
+    }
+  });
+  if(wkMax<0)wkMax=0;
+  var lines=[];
+  var md=maxDay?(maxDay.forecastDate.slice(4,6)+"/"+maxDay.forecastDate.slice(6,8)):"";
+  if(maxR===0){
+    lines.push('<div class="big">未来九日大致干燥，落雨机会偏低</div>');
+  }else{
+    lines.push('<div class="big">最易落雨：'+wkPrefix(maxDay.forecastDate)+maxDay.week+" "+md+'（机会'+maxDay.PSR+'）</div>');
+  }
+  lines.push('<div class="row"><span class="k">周末'+(wkCount===2?"（周六＋周日）":"")+"落雨机会</span>"
+    +(wkCount?'<span class="badge '+BCLS[wkMax]+'">'+psrFromRank(wkMax)+"</span>"
+             :'<span class="badge b-na">预报期内无周末</span>')+"</div>");
+  if(maxR>0){
+    var wet=days.filter(function(x){return RANK[x.PSR]>=2;}).slice(0,3).map(function(x){return x.week;});
+    if(wet.length)lines.push('<div class="row"><span class="k">明显有雨的日子</span><span>'+wet.join("、")+"</span></div>");
+  }
+  el.innerHTML='<h2>直接答案</h2>'+lines.join("");
+
+  var f=document.getElementById("fnd");
+  var rows=days.map(function(x){
+    var s=x.forecastDate,dt=new Date(s.slice(0,4)+"-"+s.slice(4,6)+"-"+s.slice(6,8));
+    var g=dt.getDay(),isWk=(g===0||g===6);
+    var hm=x.forecastHumidity||{},hi=hm.min!=null?hm.min+"–"+hm.max+"%":null;
+    var sub="<b>"+x.forecastMintemp.value+"–"+x.forecastMaxtemp.value+"°C</b>"+(hi?" · 湿度 "+hi:"");
+    var ps=badgeShort(x.PSR);
+    return '<div class="day'+(isWk?" wknd":"")+'">'
+      +'<div class="dt"><b>'+x.week+"</b><span>"+s.slice(4,6)+"/"+s.slice(6,8)+(isWk?" · 周末":"")+"</span></div>"
+      +'<div class="wx"><b>'+(x.forecastWeather||"—")+"</b><span>"+sub+"</span></div>"
+      +'<div class="psr">'+ps+"</div>"
+      +"</div>";
+  });
+  f.innerHTML="<h2>未来九日</h2>"+rows.join("");
+}
+function badgeShort(psr){
+  if(psr==null||RANK[psr]===undefined)return '<span class="badge b-na">—</span>';
+  return '<span class="badge '+BCLS[RANK[psr]]+'">'+psr+"</span>";
+}
+function wkPrefix(s){
+  var d=new Date(s.slice(0,4)+"-"+s.slice(4,6)+"-"+s.slice(6,8));
+  var t=new Date(); t.setHours(0,0,0,0);
+  return ((d-t)/86400000)>=7?"下":"";
+}
+function psrFromRank(r){for(var k in RANK){if(RANK[k]===r)return k;}return "低";}
+
+function paintRain(d){
+  var el=document.getElementById("now");
+  var list=(d.hourlyRainfall||[]).map(function(s){
+    var v=s.value;
+    if(v==="TRACE")return {n:s.name,t:"微量",v:0.05};
+    var f=parseFloat(v);
+    return (isNaN(f)||f<=0)?null:{n:s.name,t:f+" mm",v:f};
+  }).filter(Boolean).sort(function(a,b){return b.v-a.v;});
+  if(!list.length){
+    el.innerHTML='<h2>当前实雨 · 过去一小时</h2><div class="dry">全港暂无雨量记录（0 mm）'+(d.obsTime?" · 截至 "+d.obsTime.slice(11,16):"")+"</div>";
+    return;
+  }
+  var chips=list.slice(0,8).map(function(s){
+    return '<div class="chip">'+s.t+"<small>"+s.n+"</small></div>";
+  }).join("");
+  el.innerHTML='<h2>当前实雨 · 过去一小时（'+list.length+" 个站有雨"+(d.obsTime?" · 截至 "+d.obsTime.slice(11,16):"")+"）</h2>"
+    +'<div class="chips">'+chips+"</div>";
+}
+
+function upd(t){
+  var n=new Date();
+  document.getElementById("upd").textContent="更新 "+n.toTimeString().slice(0,5)+" · 天文台 "+t;
+}
+function load(){
+  var p1=get("https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=sc");
+  var p2=get("https://data.weather.gov.hk/weatherAPI/opendata/hourlyRainfall.php?lang=sc");
+  p1.then(function(d){paintFnd(d);upd((d.updateTime||"").slice(11,16)||"—");}).catch(function(){err(document.getElementById("verdict"),"天文台预报暂不可用，稍后自动重试");});
+  p2.then(paintRain).catch(function(){err(document.getElementById("now"),"实时雨量暂不可用");});
+}
+var tmr;
+function schedule(){clearTimeout(tmr);tmr=setTimeout(function(){load();schedule();},15*60*1000);}
+document.addEventListener("visibilitychange",function(){if(!document.hidden)load();});
+load();schedule();
+})();
+</script>
+</body>
+</html>
