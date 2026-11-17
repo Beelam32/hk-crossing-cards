@@ -34,6 +34,7 @@ header h1{font-size:21px;font-weight:700;letter-spacing:.5px}
 header .sub{color:var(--ink2);font-size:12px;margin-top:2px}
 main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bottom))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+#map{padding:12px 8px}
 .card h2{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:10px;letter-spacing:1px}
 /* 结论卡 */
 #verdict .big{font-size:17px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
@@ -62,6 +63,31 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
 .day .wx span{font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums}
 .day .psr{flex:0 0 auto;text-align:right}
 .wknd .dt b{color:var(--accent)}
+/* 分区地图 */
+#map svg{width:100%;height:auto;display:block}
+#map path.d{stroke:rgba(255,255,255,.07);stroke-width:.8;vector-effect:non-scaling-stroke}
+#map text{pointer-events:none;font-family:inherit}
+#map .lb rect{fill:var(--card);fill-opacity:.95}
+#map .lb text{font-size:12.5px;font-weight:600;text-anchor:middle;fill:var(--ink);font-variant-numeric:tabular-nums}
+#map .lb.dry text{fill:var(--ink2);font-weight:500}
+#map .s0{stroke:var(--line)} #map .s1{stroke:#4d9bd6} #map .s2{stroke:#2fa8a0}
+#map .s3{stroke:#e6b93f} #map .s4{stroke:#ec8a3c} #map .s5{stroke:#e05545}
+#map .f0{fill:var(--map0)}
+#map .f1{fill:#4d9bd6} #map .f2{fill:#2fa8a0} #map .f3{fill:#e6b93f}
+#map .f4{fill:#ec8a3c} #map .f5{fill:#e05545}
+@media (prefers-color-scheme: dark){
+  :root{--map0:#2c3546}
+  #map path.d{stroke:rgba(255,255,255,.07)}
+}
+@media (prefers-color-scheme: light){
+  :root{--map0:#dde3ea}
+  #map path.d{stroke:rgba(0,0,0,.14)}
+}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;justify-content:center}
+.legend span{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2)}
+.legend i{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(128,128,128,.3)}
+.legend i.f0{background:var(--map0)} .legend i.f1{background:#4d9bd6} .legend i.f2{background:#2fa8a0}
+.legend i.f3{background:#e6b93f} .legend i.f4{background:#ec8a3c} .legend i.f5{background:#e05545}
 .foot{color:var(--ink2);font-size:11.5px;padding:4px 4px 0;text-align:center}
 .err{text-align:center;color:var(--ink2);padding:30px 0}
 </style>
@@ -73,10 +99,12 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
 </header>
 <main>
   <div class="card" id="verdict"><h2>直接答案</h2><div class="err">载入中…</div></div>
+  <div class="card" id="map"><h2>分区雨量地图 · 过去一小时（mm）</h2><div class="err">载入中…</div><div class="legend" id="legend"></div></div>
   <div class="card" id="now"><h2>当前实雨 · 过去一小时</h2><div class="err">载入中…</div></div>
   <div class="card" id="fnd"><h2>未来九日</h2><div class="err">载入中…</div></div>
   <div class="foot">资料来源：香港天文台开放数据 · 落雨机会为「显著雨概率」（低/中/高）<br>实时雨量每小时更新 · 本页每 15 分钟自动刷新</div>
 </main>
+<script src="hk_map.js"></script>
 <script>
 (function(){
 "use strict";
@@ -205,6 +233,40 @@ function wkPrefix(s){
 }
 function psrFromRank(r){for(var k in RANK){if(RANK[k]===r)return k;}return "低";}
 
+/* 分区地图（rhrread 18 区） */
+var T2S={"中西區":"中西区","東區":"东区","灣仔":"湾仔","南區":"南区","離島區":"离岛区","西貢":"西贡","大埔":"大埔","北區":"北区","元朗":"元朗","屯門":"屯门","荃灣":"荃湾","沙田":"沙田","葵青":"葵青","深水埗":"深水埗","油尖旺":"油尖旺","九龍城":"九龙城","黃大仙":"黄大仙","觀塘":"观塘"};
+var RCLASS=[[50,"f5",">=50 mm"],[30,"f4","30–50 mm"],[15,"f3","15–30 mm"],[5,"f2","5–15 mm"],[0.1,"f1","<5 mm"],[-1,"f0","0 mm"]];
+function rainCls(v){for(var i=0;i<RCLASS.length;i++){if(v>=RCLASS[i][0])return RCLASS[i][1];}return "f0";}
+function paintMap(d){
+  var el=document.getElementById("map");
+  var vals={},best=null;
+  (d.rainfall&&d.rainfall.data||[]).forEach(function(x){
+    var v=parseFloat(x.max);if(isNaN(v))return;
+    vals[x.place]=v;
+    if(!best||v>best.v)best={n:x.place,v:v};
+  });
+  function valOf(z){var v=vals[z.n];if(v===undefined)v=vals[T2S[z.n]];return v===undefined?0:v;}
+  var vb=HKD.vb,paths=[],labels=[],leaders=[];
+  HKD.d.forEach(function(z){
+    var v=valOf(z),cls=rainCls(v),txt=z.n+" "+(v>0?v:"0");
+    paths.push('<path class="d '+cls+'" d="'+z.p+'"><title>'+z.n+" · "+v+" mm</title></path>");
+    if(z.ax!==undefined)leaders.push('<line class="ld" x1="'+z.lx+'" y1="'+(z.ly-11)+'" x2="'+z.ax+'" y2="'+z.ay+'"/>');
+    var w=z.n.length*12.6+String(v>0?v:"0").length*8.2+22;
+    labels.push('<g class="lb '+cls+(cls==="f0"?" dry":"")+'"><rect x="'+(z.lx-w/2)+'" y="'+(z.ly-11)+'" width="'+w+'" height="22" rx="11"/>'
+      +'<text x="'+z.lx+'" y="'+(z.ly+4.5)+'">'+txt+"</text></g>");
+  });
+  var svg='<svg viewBox="0 0 '+vb[0]+" "+vb[1]+'" role="img" aria-label="香港分区雨量地图">'
+    +leaders.join("")+paths.join("")+labels.join("")+"</svg>";
+  var sum=(best&&best.v>0)
+    ? '<div class="msum">全港最多雨：<b>'+best.n+" "+best.v+" mm</b>"+(d.updateTime?" · 截至 "+d.updateTime.slice(11,16):"")+"</div>"
+    : '<div class="msum">全港 18 区暂未录得雨量（0 mm）'+(d.updateTime?" · 截至 "+d.updateTime.slice(11,16):"")+"</div>";
+  var legend=RCLASS.slice().reverse().map(function(r){
+    return '<span><i class="'+r[1]+'"></i>'+r[2]+"</span>";
+  }).join("");
+  el.innerHTML='<h2>分区雨量地图 · 过去一小时（mm）</h2>'+sum+svg+'<div class="legend">'+legend+"</div>";
+  el.dataset.upd=(d.updateTime||"").slice(11,16)||"";
+}
+
 function paintRain(d){
   var el=document.getElementById("now");
   var list=(d.hourlyRainfall||[]).map(function(s){
@@ -231,8 +293,10 @@ function upd(t){
 function load(){
   var p1=get("https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=sc");
   var p2=get("https://data.weather.gov.hk/weatherAPI/opendata/hourlyRainfall.php?lang=sc");
+  var p3=get("https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=sc");
   p1.then(function(d){paintFnd(d);upd((d.updateTime||"").slice(11,16)||"—");}).catch(function(){err(document.getElementById("verdict"),"天文台预报暂不可用，稍后自动重试");});
   p2.then(paintRain).catch(function(){err(document.getElementById("now"),"实时雨量暂不可用");});
+  p3.then(paintMap).catch(function(){err(document.getElementById("map"),"分区雨量暂不可用");});
 }
 var tmr;
 function schedule(){clearTimeout(tmr);tmr=setTimeout(function(){load();schedule();},15*60*1000);}
