@@ -1073,18 +1073,41 @@ function drawMeterPins(){
   if(!S.mL)S.mL=L.layerGroup().addTo(S.map);
   S.mL.clearLayers();
   var z=S.map.getZoom(), b=S.map.getBounds();
-  var sz=z>=15?24:z>=13?20:16, n=0;
   var list=S.meters.s||[];
-  for(var i=0;i<list.length&&n<420;i++){
-    var st=list[i];
+  /* 遠景：像素網格聚合（同車場 pin 一套邏輯），避免只顯示前 N 個造成地區偏差 */
+  if(z<13){
+    var grid={},W=56,cap=0;
+    for(var i=0;i<list.length;i++){
+      var s0=list[i];
+      if(!b.contains([s0.la,s0.ln]))continue;
+      var p=S.map.latLngToContainerPoint([s0.la,s0.ln]);
+      var k=Math.floor(p.x/W)+"_"+Math.floor(p.y/W);
+      var g=grid[k]||(grid[k]={v:0,t:0,la:0,ln:0,c:0,op:false});
+      g.v+=s0.v;g.t+=s0.t;g.la+=s0.la;g.ln+=s0.ln;g.c++;g.op=g.op||isOp(s0.o);
+    }
+    Object.keys(grid).forEach(function(k){
+      if(cap++>120)return;
+      var g=grid[k], sz=g.t>=200?34:g.t>=80?30:26;
+      var c=!g.op?"#8f949e":(g.v/g.t)>=0.25?"#12855a":(g.v/g.t)>=0.08?"#f4a300":"#d93025";
+      var html='<div class="mpin" style="width:'+sz+'px;height:'+sz+'px;background:'+c+';font-size:'+(sz>=30?11:10)+'px">'+(g.op?g.v:"–")+'</div>';
+      L.marker([g.la/g.c,g.ln/g.c],{icon:L.divIcon({html:html,className:"",iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]}),keyboard:false})
+        .on("click",function(){S.map.setView([g.la/g.c,g.ln/g.c],14)})
+        .addTo(S.mL);
+    });
+    mstampText();
+    return;
+  }
+  var sz2=z>=15?24:20, n=0;
+  for(var j=0;j<list.length&&n<420;j++){
+    var st=list[j];
     if(st.la==null)continue;
     var pos=[st.la,st.ln];
     if(!b.contains(pos))continue;
-    var c=mColor(st);
+    var cc=mColor(st);
     var label=isOp(st.o)?String(st.v):"–";
-    var ic=L.divIcon({html:'<div class="mpin" style="width:'+sz+'px;height:'+sz+'px;background:'+c+';font-size:'+(z>=15?11:10)+'px">'+label+'</div>',className:"",iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]});
-    (function(s){
-      L.marker(pos,{icon:ic,keyboard:false}).on("click",function(){openMeter(s)}).addTo(S.mL);
+    var ic=L.divIcon({html:'<div class="mpin" style="width:'+sz2+'px;height:'+sz2+'px;background:'+cc+';font-size:'+(z>=15?11:10)+'px">'+label+'</div>',className:"",iconSize:[sz2,sz2],iconAnchor:[sz2/2,sz2/2]});
+    (function(ss){
+      L.marker(pos,{icon:ic,keyboard:false}).on("click",function(){openMeter(ss)}).addTo(S.mL);
     })(st);
     n++;
   }
