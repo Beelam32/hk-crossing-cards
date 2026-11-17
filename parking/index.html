@@ -219,6 +219,18 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 #s-trend b.up{color:#12855a}
 #s-trend b.down{color:#c0392b}
 #s-trend b.flat{color:#5a5d66}
+/* 排隊風險＝實時空位跌幅＋入口附近路面車速 */
+.queue{
+  font-size:12.5px;line-height:1.5;padding:9px 11px;border-radius:10px;margin:0 0 12px;
+  border:1px solid var(--line);background:var(--card)
+}
+.queue.ok{border-color:#a8d8bd;background:#eef8f1}
+.queue.warn{border-color:#f3cf9a;background:#fdf5e7}
+.queue.bad{border-color:#f0b3ab;background:#fdeeeb}
+.queue.na{border-color:var(--line);background:var(--card);color:var(--ink2)}
+.queue b{font-weight:700}
+.queue .qs{display:block;margin-top:5px;color:var(--ink2);font-size:11.5px}
+.queue .qs.ok b{color:#12855a} .queue .qs.warn b{color:#b5730a} .queue .qs.bad b{color:#c0392b}
 #sheet h2{font-size:17px;margin:0 0 4px;line-height:1.3}
 #sheet .addr{font-size:12.5px;color:var(--ink2);margin-bottom:12px}
 .kv{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
@@ -316,6 +328,11 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   #bgeo{background:#262a31!important;color:#f4f3f0!important;border:1px solid #3d424a!important}
   .skel div{background:linear-gradient(90deg,#1e2126 25%,#262a30 37%,#1e2126 63%);background-size:400% 100%}
   #map,#tmap{background:#1a1c20}
+  .queue{background:#22262c;border-color:#3d424a}
+  .queue.ok{background:#16251c;border-color:#2f5c42}
+  .queue.warn{background:#2b2318;border-color:#6b5228}
+  .queue.bad{background:#2c1d1b;border-color:#6b3a34}
+  .queue.na{background:#22262c}
   .leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#23262c;color:#f4f3f0}
   .leaflet-container a.leaflet-popup-close-button{color:#a9adb6}
 }
@@ -396,6 +413,7 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <div class="dist-line" id="s-trend" style="display:none"></div>
   <div class="hist" id="s-hist" style="display:none"></div>
   <div class="big"><b id="s-num">—</b><span id="s-unit">個私家車位</span></div>
+  <div class="queue" id="s-queue" style="display:none"></div>
   <div class="kv" id="s-kv"></div>
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
   <button class="route-btn" id="s-route">喺地圖畫路線（唔使開 Maps）→</button>
@@ -560,7 +578,7 @@ function fetchVac(){
       : n+" 個場 · "+(S.me?"按距離":"空位最多優先"))+
       ' · <span id="cd"></span>';
     apply();
-    if(S.sel&&$("sheet").classList.contains("open"))paintTrend(S.sel);
+    if(S.sel&&$("sheet").classList.contains("open")){paintTrend(S.sel);paintQueue(S.sel)}
   }).catch(function(){
     if(!S.lastFetch)$("stamp").textContent="場地資料已載入\n實時數據暫時攞唔到";
   });
@@ -828,6 +846,52 @@ function paintTrend(r){
   el.innerHTML=mins+" 分鐘前 "+rec.num+" → 而家 <b class=\""+cls+"\">"+cur+
     "（"+word+diff+"）</b>"+(diff>0?" · 多咗位":" · 快手啲");
 }
+/* ---------- 排隊風險：用實時空位跌幅＋入口附近路面車速推算 ---------- */
+function queueVerdict(r){
+  var cur=(typeof r.num==="number"&&r.num>=0)?r.num:null;
+  if(r.vt==="C")return{k:"na",t:"暫停開放，唔好去"};
+  if(cur===null&&r.vt==="B")return{k:"warn",t:"場方只報「有位／滿」，冇實數"};
+  if(cur===null)return null;
+  if(cur===0)return{k:"bad",t:"滿場——好大機會排緊隊，建議睇隔鄰個場"};
+  var rec=S.first[String(r.id)];
+  if(rec&&rec.num!=null){
+    var mins=Math.max(1,Math.round((Date.now()-rec.ts)/60000));
+    var drop=rec.num-cur, rate=drop/mins;
+    if(drop>=6&&mins<=15)return{k:"warn",t:mins+" 分鐘內跌 "+drop+" 位——搶位中，去到可能要排"};
+    if(drop>0&&rate>=1)return{k:"warn",t:"跌得快（約 "+rate.toFixed(1)+" 位/分鐘）——可能開始排"};
+    if(cur-rec.num>=3)return{k:"ok",t:"位數升緊——唔使急"};
+  }
+  if(cur<=3)return{k:"warn",t:"只剩 "+cur+" 位——隨時滿"};
+  return{k:"ok",t:"有位，暫時睇落唔使排"};
+}
+function paintQueue(r){
+  var el=$("s-queue");
+  if(!el)return;
+  var v=queueVerdict(r);
+  if(!v){el.style.display="none";return}
+  el.className="queue "+v.k;
+  el.innerHTML='<b>'+esc(v.t)+'</b>';
+  el.style.display="block";
+  /* 入口附近路面車速（政府感應器，約 2 分鐘更新） */
+  if(r.lat==null||r.lng==null)return;
+  loadPts().then(function(pts){
+    if(S.sel!==r)return;
+    var best=null,bd=1e9;
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      if(p.lat==null||p.lng==null)continue;
+      var d=dist(r.lat,r.lng,p.lat,p.lng);
+      if(d<bd){bd=d;best=p}
+    }
+    if(!best||bd>400)return;
+    var nm=(best.base||best.road||"").split("近")[0].trim();
+    var sp=best.v, cls=sp==null?"":sp<15?"bad":sp<30?"warn":"ok";
+    var far="約 "+Math.max(50,Math.round(bd/50)*50)+" 米外 ";
+    var txt=sp==null?"附近路面暫時冇車速數據"
+      :far+(nm?nm+" ":"")+"<b>"+sp+" km/h</b>"+(sp<15?"（塞緊）":sp<30?"（慢車）":"（暢順）");
+    el.innerHTML+='<span class="qs '+cls+'">路面 · '+txt+'</span>';
+  }).catch(function(){});
+}
 /* ---------- 歷史趨勢：profile.json.gz（每週聚合嘅「習慣檔」） ---------- */
 function loadProf(){
   if(S.prof)return Promise.resolve(S.prof);
@@ -910,12 +974,13 @@ function open(i){
   $("s-hint").textContent=stale?("場方最後回報 "+stale+"　·　數字只供參考，出發前請以現場為準"):"此場未提供實時數字";
   /* 官網／街景睇入口／致電 */
   var ext=$("s-ext"), ex=[];
-  if(r.web)ex.push('<a href="'+esc(r.web)+'" target="_blank" rel="noopener">🌐 場官網／價目表</a>');
-  if(r.lat&&r.lng)ex.push('<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+r.lat+','+r.lng+'" target="_blank" rel="noopener">📷 街景睇入口</a>');
-  if(r.tel)ex.push('<a href="tel:'+esc(String(r.tel).replace(/[^0-9+]/g,""))+'">📞 致電場方</a>');
+  if(r.web)ex.push('<a href="'+esc(r.web)+'" target="_blank" rel="noopener">場官網／價目表 ↗</a>');
+  if(r.lat&&r.lng)ex.push('<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+r.lat+','+r.lng+'" target="_blank" rel="noopener">街景睇入口 ↗</a>');
+  if(r.tel)ex.push('<a href="tel:'+esc(String(r.tel).replace(/[^0-9+]/g,""))+'">致電場方</a>');
   ext.innerHTML=ex.join("");
   ext.style.display=ex.length?"flex":"none";
   paintTrend(r);
+  paintQueue(r);
   paintHist(r);
   $("sheet").classList.add("open");
   document.body.classList.add("sheetopen");
@@ -1380,20 +1445,17 @@ function drawTraf(){
     m.addTo(S.tlay);
   });
 }
-function loadTraf(){
-  if(!window.L){loadLeaflet(function(){initTrafMap();loadTraf()});return}
-  initTrafMap();
-  setTimeout(function(){if(S.tmap)S.tmap.invalidateSize()},80);
-  if(!S.tmap){$("tstamp").textContent="地圖載入失敗";return}
-  var t=Date.now();
-  $("tstamp").innerHTML="路況更新中…";
-  loadDetList().then(function(det){
+/* 感應器車速：一次過載入，路況 tab 同場詳情共用 */
+function loadPts(){
+  if(S.tpts&&Date.now()-S.trafAt<120000)return Promise.resolve(S.tpts);
+  if(S.ptsP)return S.ptsP;
+  S.ptsP=loadDetList().then(function(det){
     return fetch(SPEED_XML,{cache:"no-store"}).then(function(r){return r.text()}).then(function(xml){
       var doc=new DOMParser().parseFromString(xml,"application/xml");
       var ds=doc.getElementsByTagName("detector");
-      var pts=[],slow=0,bad=0,tm="";
+      var pts=[];
       var tf=doc.getElementsByTagName("period_from")[0];
-      if(tf)tm=tf.textContent.slice(0,5);
+      if(tf)S.trafTm=tf.textContent.slice(0,5);
       for(var i=0;i<ds.length;i++){
         var d=ds[i],idEl=d.getElementsByTagName("detector_id")[0];
         if(!idEl)continue;
@@ -1418,15 +1480,27 @@ function loadTraf(){
       var uniq={};
       pts.forEach(function(p){uniq[p.id]=p});
       pts=Object.keys(uniq).map(function(k){return uniq[k]});
-      for(var q=0;q<pts.length;q++){
-        if(pts[q].v==null)bad++; else if(pts[q].v<30)slow++;
-      }
-      S.tpts=pts;S.trafAt=t;
-      drawTraf();
-      $("tstamp").innerHTML="<b>"+(tm?tm+" 更新":"已更新")+"</b> · "+pts.length+" 個感應器<br>"+
-        "擠塞 <b style='color:#d93025'>"+slow+"</b> 個 · 無數據 "+bad;
-      loadNews();
+      S.tpts=pts;S.trafAt=Date.now();S.ptsP=null;
+      return pts;
     });
+  }).catch(function(){S.ptsP=null;throw 0});
+  return S.ptsP;
+}
+function loadTraf(){
+  if(!window.L){loadLeaflet(function(){initTrafMap();loadTraf()});return}
+  initTrafMap();
+  setTimeout(function(){if(S.tmap)S.tmap.invalidateSize()},80);
+  if(!S.tmap){$("tstamp").textContent="地圖載入失敗";return}
+  $("tstamp").innerHTML="路況更新中…";
+  loadPts().then(function(pts){
+    var slow=0,bad=0;
+    for(var q=0;q<pts.length;q++){
+      if(pts[q].v==null)bad++; else if(pts[q].v<30)slow++;
+    }
+    drawTraf();
+    $("tstamp").innerHTML="<b>"+(S.trafTm?S.trafTm+" 更新":"已更新")+"</b> · "+pts.length+" 個感應器<br>"+
+      "擠塞 <b style='color:#d93025'>"+slow+"</b> 個 · 無數據 "+bad;
+    loadNews();
   }).catch(function(){
     $("tstamp").textContent="路況數據攞唔到（網絡問題），等陣自動再試";
   });
