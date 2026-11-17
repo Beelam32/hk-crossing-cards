@@ -41,6 +41,8 @@ h1{font-size:19px;margin:0;letter-spacing:.3px;font-weight:700}
 #destbar .x{margin-left:auto;cursor:pointer;color:var(--ink2);padding:2px 6px;font-size:14px}
 .hist{font-size:12.5px;color:var(--ink2);margin:-4px 0 12px;line-height:1.5}
 .hist b{color:var(--ink);font-weight:650}
+.hist b.up{color:#12855a} .hist b.down{color:#c0392b} .hist b.flat{color:#5a5d66}
+.hist>div+div{margin-top:3px}
 .search input{
   flex:1;min-width:0;height:38px;border:1px solid var(--line);background:#fff;
   border-radius:11px;padding:0 12px;font-size:15px;color:var(--ink);outline:none;
@@ -436,11 +438,54 @@ var INFO_URL="data/info.json";
 var ROW=80, GAP=10, PER=ROW+GAP;
 var REFRESH=90000;
 
-var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},favs:{},next:0,trafAt:0,dest:null,prof:null,profTried:false,destM:null,meters:null,metersOn:false,mL:null,car:null,carM:null};
+var S={rows:[],view:[],q:"",dist:"",chips:{},me:null,sel:null,map:null,markers:null,lastFetch:0,tab:"list",first:{},obs:{},favs:{},next:0,trafAt:0,dest:null,prof:null,profTried:false,destM:null,meters:null,metersOn:false,mL:null,car:null,carM:null};
 try{S.favs=JSON.parse(localStorage.getItem("hkp_favs")||"{}")||{}}catch(e){S.favs={}}
 try{S.metersOn=localStorage.getItem("hkp_meteron")==="1"}catch(e){}
 try{S.car=JSON.parse(localStorage.getItem("hkp_mycar")||"null")}catch(e){S.car=null}
 function saveFavs(){try{localStorage.setItem("hkp_favs",JSON.stringify(S.favs))}catch(e){}}
+/* ---------- 空位觀察紀錄：存 localStorage，關咗網頁／隔一個鐘再開都記得 ----------
+   為咗解決「排隊風險只計今次 session，重開就清零」嘅問題。
+   每個場只留最近 6 小時、最多 8 個點，577 場大約 60-90 KB，唔會爆 localStorage。 */
+try{S.obs=JSON.parse(localStorage.getItem("hkp_obs")||"{}")||{}}catch(e){S.obs={}}
+var OBS_KEEP=6*3600e3,OBS_MAX=8;
+function saveObs(){try{localStorage.setItem("hkp_obs",JSON.stringify(S.obs))}catch(e){}}
+function noteObs(r,v,now){
+  if(typeof v!=="number"||v<0)return;
+  var k=String(r.id),a=S.obs[k]||(S.obs[k]=[]),last=a[a.length-1];
+  if(last&&now-last[0]<5*60e3){last[0]=now;last[1]=v}
+  else a.push([now,v]);
+  while(a.length&&a[0][0]<now-OBS_KEEP)a.shift();
+  if(a.length>OBS_MAX)a.splice(0,a.length-OBS_MAX);
+}
+function pruneObs(now){
+  var cut=now-OBS_KEEP,k,a;
+  for(k in S.obs){
+    a=S.obs[k];
+    while(a.length&&a[0][0]<cut)a.shift();
+    if(!a.length)delete S.obs[k];
+  }
+}
+/* 最舊但仍在 90 分鐘內嘅觀察 → 做「跌速」基準（跨重開都用得） */
+function obsBase(r){
+  var a=S.obs[String(r.id)];
+  if(!a||!a.length)return null;
+  var now=Date.now(),cut=now-90*60e3,best=null;
+  for(var i=0;i<a.length;i++){
+    if(a[i][0]<cut)continue;
+    if(!best||a[i][0]<best[0])best=a[i];
+  }
+  if(!best)return null;
+  var mins=Math.round((now-best[0])/60000);
+  if(mins<2)return null;
+  return{num:best[1],ts:best[0],mins:mins};
+}
+function baseObs(r){
+  var b=obsBase(r);
+  if(b)return b;
+  var f=S.first[String(r.id)];
+  if(!f)return null;
+  return{num:f.num,ts:f.ts,mins:Math.max(1,Math.round((Date.now()-f.ts)/60000))};
+}
 function toggleFav(id){
   var k=String(id);
   if(S.favs[k])delete S.favs[k]; else S.favs[k]=1;
@@ -545,16 +590,16 @@ function loadInfo(){
     S.rows=j.rows.filter(function(r){return r.lat&&r.lng});
     fillDistricts(j.districts||[]);
     try{localStorage.setItem("hkp_info",JSON.stringify({v:j.count,rows:S.rows}))}catch(e){}
-    apply(); fetchVac();
+    apply(); fetchVac(true);
   }).catch(function(){
     if(!S.rows.length) showEmpty("數據載入失敗，請檢查網絡後重試");
   });
 }
 
-function fetchVac(){
+function fetchVac(force){
   if(document.hidden)return;
   var t=Date.now();
-  if(t-S.lastFetch<5000)return;
+  if(!force&&t-S.lastFetch<5000)return;
   fetch(VAC_URL,{cache:"no-store"}).then(function(r){return r.json()}).then(function(j){
     var m={},n=0,newest="";
     (j.results||[]).forEach(function(x){
@@ -570,7 +615,10 @@ function fetchVac(){
       /* 記低呢個 session 第一次見到嘅車位數，做「前後對比」 */
       if(v&&typeof r.num==="number"&&r.num>=0&&!S.first[String(r.id)])
         S.first[String(r.id)]={num:r.num,ts:t};
+      /* 同時寫入跨 session 觀察紀錄（localStorage），重開網頁都接得返 */
+      if(v)noteObs(r,v.num,t);
     });
+    pruneObs(t);saveObs();
     S.lastFetch=t;
     S.next=t+REFRESH;
     $("stamp").innerHTML="實時更新 · "+ago(newest)+"<br>"+(S.metersOn
@@ -828,11 +876,11 @@ function planRoute(r){
 /* ---------- sheet ---------- */
 function paintTrend(r){
   var el=$("s-trend");
-  var rec=S.first[String(r.id)];
+  var rec=baseObs(r);
   var cur=(typeof r.num==="number"&&r.num>=0)?r.num:null;
   var ok=rec&&cur!=null;
   if(!ok){el.style.display="none";return}
-  var mins=Math.max(1,Math.round((Date.now()-rec.ts)/60000));
+  var mins=rec.mins;
   if(rec.num===cur){
     if(mins<2){el.style.display="none";return}
     el.style.display="block";
@@ -847,21 +895,43 @@ function paintTrend(r){
     "（"+word+diff+"）</b>"+(diff>0?" · 多咗位":" · 快手啲");
 }
 /* ---------- 排隊風險：用實時空位跌幅＋入口附近路面車速推算 ---------- */
+/* profile bins 一律用香港時間（星期一=0）；設備時區唔一定係香港，自己換算 */
+function slotNow(){
+  var d=new Date(),hk=d.getUTCHours()+8;
+  var h=hk%24,shift=hk>=24?1:0,mon0=(d.getUTCDay()+6+shift)%7;
+  return{h:h,mon0:mon0,wk:"一二三四五六日".charAt(mon0),key:mon0+"-"+h};
+}
+function profBins(r){
+  var p=S.prof&&S.prof.parks&&S.prof.parks[String(r.id)];
+  return p&&p.bins?p.bins:null;
+}
+/* 「平時呢個星期幾、呢個鐘」嘅平均空位（≥3 個樣本先算數） */
+function typicalNow(r){
+  var bins=profBins(r);
+  if(!bins)return null;
+  var b=bins[slotNow().key];
+  if(!b||b[0]<3)return null;
+  return{avg:Math.round(b[1]/b[0]),n:b[0],min:b[2],full:b[3]};
+}
 function queueVerdict(r){
   var cur=(typeof r.num==="number"&&r.num>=0)?r.num:null;
   if(r.vt==="C")return{k:"na",t:"暫停開放，唔好去"};
   if(cur===null&&r.vt==="B")return{k:"warn",t:"場方只報「有位／滿」，冇實數"};
   if(cur===null)return null;
   if(cur===0)return{k:"bad",t:"滿場——好大機會排緊隊，建議睇隔鄰個場"};
-  var rec=S.first[String(r.id)];
+  var rec=baseObs(r);
   if(rec&&rec.num!=null){
-    var mins=Math.max(1,Math.round((Date.now()-rec.ts)/60000));
-    var drop=rec.num-cur, rate=drop/mins;
-    if(drop>=6&&mins<=15)return{k:"warn",t:mins+" 分鐘內跌 "+drop+" 位——搶位中，去到可能要排"};
+    var drop=rec.num-cur,rate=drop/rec.mins;
+    if(drop>=6&&rec.mins<=15)return{k:"warn",t:rec.mins+" 分鐘內跌 "+drop+" 位——搶位中，去到可能要排"};
     if(drop>0&&rate>=1)return{k:"warn",t:"跌得快（約 "+rate.toFixed(1)+" 位/分鐘）——可能開始排"};
     if(cur-rec.num>=3)return{k:"ok",t:"位數升緊——唔使急"};
   }
+  var tp=typicalNow(r);
+  if(tp&&tp.avg>=4&&cur<=tp.avg*0.5)
+    return{k:"warn",t:"而家得 "+cur+" 位，平時呢個鐘約 "+tp.avg+" 位——今日特別搶手"};
   if(cur<=3)return{k:"warn",t:"只剩 "+cur+" 位——隨時滿"};
+  if(tp&&cur>=tp.avg*1.3&&cur>=8)
+    return{k:"ok",t:"有位（"+cur+" 位，平時呢個鐘約 "+tp.avg+" 位）——比平時鬆"};
   return{k:"ok",t:"有位，暫時睇落唔使排"};
 }
 function paintQueue(r){
@@ -876,6 +946,7 @@ function paintQueue(r){
   if(r.lat==null||r.lng==null)return;
   loadPts().then(function(pts){
     if(S.sel!==r)return;
+    var q0=el.querySelector(".qs");if(q0)q0.remove();   /* 防重複（paintQueue 會行多過一次） */
     var best=null,bd=1e9;
     for(var i=0;i<pts.length;i++){
       var p=pts[i];
@@ -907,28 +978,53 @@ function loadProf(){
   .then(function(txt){S.prof=JSON.parse(txt);return S.prof})
   .catch(function(){S.prof=null;return null});
 }
+/* 同一星期幾，邊個鐘最鬆／最爆（每格至少 2 個樣本） */
+function bestSlot(bins,mon0){
+  var best=null,worst=null;
+  for(var h=0;h<24;h++){
+    var b=bins[mon0+"-"+h];
+    if(!b||b[0]<2)continue;
+    var avg=Math.round(b[1]/b[0]);
+    if(!best||avg>best.v)best={h:h,v:avg};
+    if(!worst||avg<worst.v)worst={h:h,v:avg};
+  }
+  if(!best||best.h===worst.h)return null;
+  return{bestH:best.h,bestV:best.v,worstH:worst.h,worstV:worst.v};
+}
 function paintHist(r){
   var el=$("s-hist");
   if(!S.prof){
-    loadProf().then(function(){if(S.sel===r)paintHist(r)});
+    loadProf().then(function(){
+      if(S.sel===r){paintHist(r);paintQueue(r)}
+    });
     el.style.display="none";return;
   }
   var p=S.prof.parks&&S.prof.parks[String(r.id)];
   if(!p||!p.bins){el.style.display="none";return}
-  /* profile bins 用香港時間（星期一=0）；設備時區唔一定係香港，自己換算 */
-  var d=new Date(),hk=d.getUTCHours()+8;
-  var h=hk%24, shift=hk>=24?1:0;
-  var mon0=(d.getUTCDay()+6+shift)%7;
-  var b=p.bins[mon0+"-"+h];
-  if(!b||b[0]<2){el.style.display="none";return}
-  var avg=Math.round(b[1]/b[0]);
-  var fullPct=Math.round(b[3]/b[0]*100);
-  var wk="一二三四五六日".charAt(mon0);
-  var conf=b[0]<6?"（樣本 "+b[0]+" 次，僅供參考）":"";
+  var slot=slotNow(),b=p.bins[slot.key],lines=[];
+  if(b&&b[0]>=2){
+    var avg=Math.round(b[1]/b[0]);
+    var fullPct=Math.round(b[3]/b[0]*100);
+    var cur=(typeof r.num==="number"&&r.num>=0)?r.num:null;
+    var cmp="";
+    if(cur!=null){
+      var diff=cur-avg,tol=Math.max(3,Math.round(avg*0.4));
+      cmp=diff<=-tol?'　<b class="down">比平時少 '+(-diff)+' 位</b>'
+        :diff>=tol?'　<b class="up">比平時多 '+diff+' 位</b>'
+        :'　<b class="flat">同平時差唔多</b>';
+    }
+    lines.push("慣性 · 星期"+slot.wk+" "+slot.h+" 點：通常剩約 <b>"+avg+" 位</b>"+
+      (b[2]<avg?" · 最少試過 "+b[2]+" 位":"")+
+      (fullPct>0?" · 滿場 "+fullPct+"% 時間":"")+cmp+
+      (b[0]<6?"（樣本 "+b[0]+" 次，僅供參考）":""));
+  }
+  var bs=bestSlot(p.bins,slot.mon0);
+  if(bs&&bs.bestH!==slot.h)
+    lines.push("星期"+slot.wk+"習慣 · <b>"+bs.bestH+" 點</b>最鬆（約 "+bs.bestV+" 位）"+
+      "、<b>"+bs.worstH+" 點</b>最爆（約 "+bs.worstV+" 位）");
+  if(!lines.length){el.style.display="none";return}
   el.style.display="block";
-  el.innerHTML="歷史數據 · 星期"+wk+" "+h+" 點：通常剩約 <b>"+avg+" 位</b>"+
-    (b[2]<avg?" · 最少試過 "+b[2]+" 位":"")+
-    (fullPct>0?" · 滿場 "+fullPct+"% 時間":"")+conf;
+  el.innerHTML=lines.map(function(t){return"<div>"+t+"</div>"}).join("");
 }
 function open(i){
   var r=S.view[i];
@@ -1744,6 +1840,27 @@ window.__stress=function(k){
   S.rows=out;S.me=null;apply();
   return out.length;
 };
+})();
+</script>
+<script>
+/* ---------- 人流統計（Cloudflare Web Analytics）----------
+   免費、唔用 cookie、唔會拖慢（beacon 得 3KB 左右、非阻塞）。
+   用法：喺 Cloudflare 後台 Analytics & Logs → Web Analytics → Add a site，
+   兩個入口各自開一個 site（COS 站 + GitHub Pages），
+   複製出嚟嘅 token 貼落下面 TOKENS 對應位置就即刻生效。
+   TOKENS 全空 = 完全唔會發任何請求，等於冇加過。 */
+(function(){
+  var TOKENS={
+    "weather.pdfworkbench.hk":"",   /* COS 主站 */
+    "beelam32.github.io":""         /* GitHub Pages 後備站 */
+  };
+  var t=TOKENS[location.hostname]||TOKENS["*"]||"";
+  if(!t||!document.createElement)return;
+  var s=document.createElement("script");
+  s.defer=true;
+  s.src="https://static.cloudflareinsights.com/beacon.min.js";
+  s.setAttribute("data-cf-beacon",JSON.stringify({token:t}));
+  document.head.appendChild(s);
 })();
 </script>
 </body>
