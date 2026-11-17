@@ -142,18 +142,15 @@ body.tabtraf #traf{display:block}
 /* ---------- map ---------- */
 #locate{position:absolute;right:12px;bottom:38px;z-index:400;width:46px;height:46px;border-radius:50%;border:1px solid #e2dfd8;background:#fff;color:#1a73e8;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.18);display:none;place-items:center}
 body.tabmap #locate{display:grid}
-/* 錶位／記車位按鈕（地圖 tab 右下堆疊） */
-#meters,#carbtn{
-  position:absolute;right:12px;width:46px;height:46px;border-radius:50%;
-  border:1px solid #e2dfd8;background:#fff;color:#1a73e8;font-size:15px;font-weight:800;
+/* 錶位 tab／記車位按鈕（右下） */
+#carbtn{
+  position:absolute;right:12px;bottom:98px;width:46px;height:46px;border-radius:50%;
+  border:1px solid #e2dfd8;background:#fff;color:#1a73e8;font-size:17px;
   box-shadow:0 2px 8px rgba(0,0,0,.18);display:none;place-items:center;z-index:400;padding:0
 }
-#meters{bottom:152px;letter-spacing:-.5px}
-#carbtn{bottom:98px;font-size:17px}
-body.tabmap #meters,body.tabmap #carbtn{display:grid}
-body.sheetopen #meters,body.sheetopen #carbtn{display:none}
-#meters.on{background:#1a73e8;color:#fff;border-color:#1a73e8}
-#meters.loading{opacity:.6;pointer-events:none}
+body.tabmap #carbtn{display:grid}
+body.sheetopen #carbtn{display:none}
+.pf{font:800 15px/1 system-ui;letter-spacing:-.5px}
 #mstamp{
   position:absolute;left:10px;bottom:38px;z-index:400;display:none;
   background:rgba(255,255,255,.95);border-radius:9px;padding:5px 9px;
@@ -162,6 +159,8 @@ body.sheetopen #meters,body.sheetopen #carbtn{display:none}
 body.tabmap.meteron #mstamp{display:block}
 /* 錶位模式：車場專用嘅篩選 chips 收埋，免誤會 */
 body.meteron .chips{display:none}
+/* 錶位 tab：搜尋框係搜車場用，收埋 */
+body.tabmeter .search{display:none}
 .mpin{
   border-radius:50%;display:grid;place-items:center;color:#fff;
   font:800 10px/1 system-ui;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.45);
@@ -301,8 +300,7 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
     background:rgba(26,29,33,.95);border:1px solid #3d424a;color:#f4f3f0;
     box-shadow:0 1px 8px rgba(0,0,0,.5)
   }
-  #meters,#carbtn{background:#262a31;border-color:#3d424a;color:var(--ink)}
-  #meters.on{background:#1a73e8;color:#fff;border-color:#1a73e8}
+  #carbtn{background:#262a31;border-color:#3d424a;color:var(--ink)}
   #mstamp{background:rgba(26,29,33,.95);border:1px solid #3d424a;color:#f4f3f0}
   #tlegend .note{color:#a9adb6}
   #tnews-panel{background:#1a1d21}
@@ -351,7 +349,6 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
     <div id="steps"></div>
   </div>
   <button id="locate" aria-label="返我位置">◎</button>
-  <button id="meters" aria-label="路邊錶位">P</button>
   <button id="carbtn" aria-label="記低車位">🚗</button>
   <div id="mstamp"></div>
   <div id="snack"></div>
@@ -375,6 +372,9 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   </button>
   <button id="tabmap" aria-label="地圖">
     <svg viewBox="0 0 24 24"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3Z"/><path d="M9 3v15M15 6v15"/></svg><span>地圖</span>
+  </button>
+  <button id="tabmeter" aria-label="錶位">
+    <b class="pf">P</b><span>錶位</span>
   </button>
   <button id="tabtraf" aria-label="塞車">
     <svg viewBox="0 0 24 24"><path d="M4 16h16M5.5 16v-4.5L7.5 7h9l2 4.5V16"/><circle cx="8" cy="18.5" r="1.3"/><circle cx="16" cy="18.5" r="1.3"/></svg><span>塞車</span>
@@ -943,7 +943,6 @@ function initMap(){
   S.map.on("zoomend moveend resize",function(){drawPins();if(S.metersOn)drawMeterPins()});
   addMe();
   addCarM();
-  if(S.metersOn)toggleMeters(true);
   drawPins();
 };
 window.__map=function(){return S.map};window.__S=function(){return S};window.__paintTrend=paintTrend;
@@ -1045,8 +1044,11 @@ function gunzipJson(buf){
 }
 function loadMeters(){
   if(S.meters)return Promise.resolve(S.meters);
-  $("meters").classList.add("loading");
-  if(!("DecompressionStream" in window)){toggleMeters(false);$("meters").classList.remove("loading");return Promise.resolve(null)}
+  if(!("DecompressionStream" in window)){
+    toast("呢個瀏覽器唔支援解壓，錶位開唔到");
+    S.metersOn=false;document.body.classList.remove("meteron");
+    return Promise.resolve(null);
+  }
   var got=function(r){if(!r.ok)throw 0;return r.arrayBuffer().then(gunzipJson)};
   return fetch("data/meters.json.gz?v="+Math.floor(Date.now()/300000),{cache:"no-cache"})
     .then(got)
@@ -1058,11 +1060,11 @@ function loadMeters(){
     .catch(function(){
       toast("錶位實時數據暫時載入唔到，遲啲再試");
       S.metersOn=false;
+      document.body.classList.remove("meteron");
       try{localStorage.setItem("hkp_meteron","0")}catch(e){}
       return null;
     })
     .then(function(j){
-      $("meters").classList.remove("loading");
       if(j)drawMeterPins();
       return j;
     });
@@ -1124,7 +1126,7 @@ function mstampText(){
   (S.meters.s||[]).forEach(function(s){tot+=s.t;vac+=s.v});
   var t=new Date(S.meters.ts||Date.now());
   var hh=("0"+t.getHours()).slice(-2)+":"+("0"+t.getMinutes()).slice(-2);
-  el.innerHTML="<b>錶位模式</b> · <b>"+vac+"</b> / "+tot+" 空 · "+hh+" 更新<br><span style='color:var(--ink2)'>撳 P 返停車場模式</span>";
+  el.innerHTML="<b>錶位模式</b> · <b>"+vac+"</b> / "+tot+" 空 · "+hh+" 更新<br><span style='color:var(--ink2)'>撳下方「地圖」返停車場</span>";
 }
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function openMeter(st){
@@ -1146,7 +1148,6 @@ function toggleMeters(force){
   var on=force!=null?force:!S.metersOn;
   S.metersOn=on;
   document.body.classList.toggle("meteron",on);
-  $("meters").classList.toggle("on",on);
   try{localStorage.setItem("hkp_meteron",on?"1":"0")}catch(e){}
   if(on){
     /* 錶位模式：停車場 pin 全部收埋 */
@@ -1226,16 +1227,25 @@ function toast(msg){
 
 function setTab(t){
   S.tab=t;
-  document.body.classList.toggle("tabmap",t==="map");
+  var isMap=t==="map", isMeter=t==="meter";
+  /* 錶位 tab 同地圖共用同一個 map，只係模式唔同 */
+  document.body.classList.toggle("tabmap",isMap||isMeter);
+  document.body.classList.toggle("tabmeter",isMeter);
   document.body.classList.toggle("tabtraf",t==="traf");
   $("tablist").classList.toggle("on",t==="list");
-  $("tabmap").classList.toggle("on",t==="map");
+  $("tabmap").classList.toggle("on",isMap);
+  $("tabmeter").classList.toggle("on",isMeter);
   $("tabtraf").classList.toggle("on",t==="traf");
   var bn=$("banner");
   if(!bn.dataset.dismissed)bn.style.display = t==="list" ? "flex" : "none";
   if(t!=="traf"&&$("tnews-panel"))$("tnews-panel").classList.remove("open","show");
-  if(t==="map"){
-    loadLeaflet(function(){initMap();setTimeout(function(){S.map&&S.map.invalidateSize();drawPins()},60)});
+  if(isMap||isMeter){
+    toggleMeters(isMeter);
+    loadLeaflet(function(){initMap();setTimeout(function(){
+      if(!S.map)return;
+      S.map.invalidateSize();
+      if(S.metersOn)drawMeterPins();else drawPins();
+    },60)});
   }else if(t==="traf"){
     loadTraf();
   }else{
@@ -1460,6 +1470,7 @@ setInterval(function(){
 },1000);
 $("tablist").onclick=function(){setTab("list")};
 $("tabmap").onclick=function(){setTab("map")};
+$("tabmeter").onclick=function(){setTab("meter")};
 $("tabtraf").onclick=function(){setTab("traf")};
 
 /* ---------- search / geo ---------- */
@@ -1575,7 +1586,6 @@ $("locate").onclick=function(){
   if(S.me&&S.map){addMe();S.map.setView(S.me,15,{animate:true})}
   else askGeo();
 };
-$("meters").onclick=function(){toggleMeters()};
 $("carbtn").onclick=function(){carAction(S.car?"upd":"new")};
 document.addEventListener("click",function(e){
   var a=e.target.closest&&e.target.closest("[data-cact]");
