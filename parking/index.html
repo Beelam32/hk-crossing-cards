@@ -234,6 +234,12 @@ footer button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-wi
 .go:active{opacity:.8;transform:scale(.985)}
 .go.alt-on{background:#1677ff}
 .alt{display:block;text-align:center;font-size:12px;color:var(--ink2);margin-top:10px;text-decoration:underline}
+.ext{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ext a{
+  flex:1 1 auto;text-align:center;font-size:12px;padding:8px 10px;border-radius:9px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;white-space:nowrap
+}
+.ext a:active{background:var(--line)}
 .route-btn{
   display:block;width:100%;text-align:center;background:#fff;border:1.5px solid var(--accent);
   color:var(--accent);padding:11px;border-radius:11px;font-weight:650;font-size:14px;margin-top:9px;cursor:pointer
@@ -394,6 +400,7 @@ button:active,.chip:active,.geo:active,#locate:active{opacity:.7}
   <a class="go" id="s-go" href="#" target="_blank" rel="noopener">用 Maps 帶我去 →</a>
   <button class="route-btn" id="s-route">喺地圖畫路線（唔使開 Maps）→</button>
   <a class="alt" id="s-alt" href="#" target="_blank" rel="noopener"></a>
+  <div class="ext" id="s-ext"></div>
   <div class="hint" id="s-hint"></div>
 </div>
 
@@ -891,6 +898,13 @@ function open(i){
   }
   var stale=ago(r.upd);
   $("s-hint").textContent=stale?("場方最後回報 "+stale+"　·　數字只供參考，出發前請以現場為準"):"此場未提供實時數字";
+  /* 官網／街景睇入口／致電 */
+  var ext=$("s-ext"), ex=[];
+  if(r.web)ex.push('<a href="'+esc(r.web)+'" target="_blank" rel="noopener">🌐 場官網／價目表</a>');
+  if(r.lat&&r.lng)ex.push('<a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint='+r.lat+','+r.lng+'" target="_blank" rel="noopener">📷 街景睇入口</a>');
+  if(r.tel)ex.push('<a href="tel:'+esc(String(r.tel).replace(/[^0-9+]/g,""))+'">📞 致電場方</a>');
+  ext.innerHTML=ex.join("");
+  ext.style.display=ex.length?"flex":"none";
   paintTrend(r);
   paintHist(r);
   $("sheet").classList.add("open");

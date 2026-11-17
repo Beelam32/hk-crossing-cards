@@ -20,6 +20,12 @@ FAC = {
     "hourly": "時租",
     "monthly": "月租",
     "twentyFourHours": "24h",
+    "unloading": "卸貨區",
+    "washing": "洗車",
+    "carWash": "洗車",
+    "valetParking": "代客泊車",
+    "carLift": "汽車升降機",
+    "quickCharging": "快充",
 }
 PAY = {"octopus": "八達通", "contactless": "感應", "cash": "現金", "creditCard": "信用卡"}
 
@@ -74,6 +80,8 @@ def slim(rec):
         "f": fac,
         "pm": pay,
         "cap": pc.get("capacity") if isinstance(pc.get("capacity"), int) else None,
+        "web": (rec.get("website") or "").strip() or None,
+        "tel": (rec.get("contactNo") or "").strip() or None,
     }
 
 
