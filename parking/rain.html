@@ -36,7 +36,8 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
 .card h2{font-size:13px;font-weight:600;color:var(--ink2);margin-bottom:10px;letter-spacing:1px}
 /* 结论卡 */
-#verdict .big{font-size:17px;font-weight:700;margin-bottom:8px}
+#verdict .big{font-size:17px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+#verdict .big svg{flex:0 0 27px}
 #verdict .row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
 #verdict .row:first-of-type{border-top:none}
 #verdict .k{color:var(--ink2)}
@@ -52,6 +53,7 @@ main{flex:1;overflow-y:auto;padding:8px 14px calc(20px + env(safe-area-inset-bot
 /* 九日 */
 .day{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
 .day:first-of-type{border-top:none}
+.day .ic{flex:0 0 30px;text-align:center;line-height:0}
 .day .dt{flex:0 0 66px}
 .day .dt b{display:block;font-size:15px}
 .day .dt span{font-size:11px;color:var(--ink2)}
@@ -94,6 +96,42 @@ function get(url){
 }
 function err(el,msg){el.innerHTML='<div class="err">'+msg+"</div>";}
 
+/* ---- 天氣 SVG 圖標（按天文台 forecastIcon 編號映射）---- */
+var CLD='<path d="M6.2 17h10.6a3.6 3.6 0 0 0 .55-7.16A5.1 5.1 0 0 0 7.1 8.3A4.3 4.3 0 0 0 6.2 17z" fill="#9aa7b5"/>';
+function cloudy(f){return '<path d="M6.2 17h10.6a3.6 3.6 0 0 0 .55-7.16A5.1 5.1 0 0 0 7.1 8.3A4.3 4.3 0 0 0 6.2 17z" fill="'+(f||"#9aa7b5")+'"/>';}
+function sunBody(c){
+  c=c||"#f6b93b";
+  return '<g stroke="'+c+'" stroke-width="1.6" stroke-linecap="round"><line x1="12" y1="2.8" x2="12" y2="5.2"/><line x1="12" y1="18.8" x2="12" y2="21.2"/><line x1="2.8" y1="12" x2="5.2" y2="12"/><line x1="18.8" y1="12" x2="21.2" y2="12"/><line x1="5.5" y1="5.5" x2="7.2" y2="7.2"/><line x1="16.8" y1="16.8" x2="18.5" y2="18.5"/><line x1="5.5" y1="18.5" x2="7.2" y2="16.8"/><line x1="16.8" y1="7.2" x2="18.5" y2="5.5"/></g><circle cx="12" cy="12" r="4.6" fill="'+c+'"/>';
+}
+var SVGS={
+  sun:'<svg viewBox="0 0 24 24" width="27" height="27">'+sunBody("#f6b93b")+"</svg>",
+  hot:'<svg viewBox="0 0 24 24" width="27" height="27">'+sunBody("#e0704a")+"</svg>",
+  partly:'<svg viewBox="0 0 24 24" width="27" height="27"><circle cx="8.5" cy="8.5" r="4" fill="#f6b93b"/><g transform="translate(0,1.5)">'+CLD+"</g></svg>",
+  cloud:'<svg viewBox="0 0 24 24" width="27" height="27">'+CLD+"</svg>",
+  over:'<svg viewBox="0 0 24 24" width="27" height="27"><g transform="translate(6.2,-4.6) scale(.68)">'+cloudy("#aab7c4")+'</g><g transform="translate(0,1.2)">'+cloudy("#7d8894")+"</g></svg>",
+  fog:'<svg viewBox="0 0 24 24" width="27" height="27"><g transform="translate(0,-2.5)">'+CLD+'</g><g stroke="#9aa7b5" stroke-width="1.4" stroke-linecap="round"><line x1="7" y1="18.5" x2="17" y2="18.5"/><line x1="9" y1="20.8" x2="15" y2="20.8"/></g></svg>',
+  rain:'<svg viewBox="0 0 24 24" width="27" height="27"><g transform="translate(0,-2)">'+CLD+'</g><g stroke="#4f9bd5" stroke-width="1.5" stroke-linecap="round"><line x1="9.5" y1="17.5" x2="8.6" y2="20.2"/><line x1="13" y1="17.5" x2="12.1" y2="20.2"/><line x1="16.5" y1="17.5" x2="15.6" y2="20.2"/></g></svg>',
+  heavy:'<svg viewBox="0 0 24 24" width="27" height="27"><g transform="translate(0,-2.6)">'+cloudy("#7d8894")+'</g><g stroke="#3f8ecb" stroke-width="1.9" stroke-linecap="round"><line x1="8.4" y1="16.8" x2="7.2" y2="21.4"/><line x1="11.6" y1="16.8" x2="10.4" y2="21.4"/><line x1="14.8" y1="16.8" x2="13.6" y2="21.4"/><line x1="18" y1="16.8" x2="16.8" y2="21.4"/></g></svg>',
+  storm:'<svg viewBox="0 0 24 24" width="27" height="27"><g transform="translate(0,-2)">'+CLD+'</g><path d="M12.9 15.5l-2.7 4.6h2.2l-1.3 3.2 3.9-5h-2.1l1.5-2.8z" fill="#f2c14e"/></svg>',
+  snow:'<svg viewBox="0 0 24 24" width="27" height="27"><g transform="translate(0,-2)">'+CLD+'</g><g stroke="#bfe3f5" stroke-width="1.4" stroke-linecap="round"><line x1="9.5" y1="17.4" x2="9.5" y2="20.4"/><line x1="8.2" y1="18.2" x2="10.8" y2="19.6"/><line x1="10.8" y1="18.2" x2="8.2" y2="19.6"/><line x1="15.4" y1="17.4" x2="15.4" y2="20.4"/><line x1="14.1" y1="18.2" x2="16.7" y2="19.6"/><line x1="16.7" y1="18.2" x2="14.1" y2="19.6"/></g></svg>'
+};
+function wxIcon(n){
+  n=parseInt(n,10);
+  if(isNaN(n))return SVGS.cloud;
+  if(n===50)return SVGS.sun;
+  if(n>=51&&n<=53)return SVGS.partly;
+  if(n>=60&&n<=63)return SVGS.cloud;
+  if(n===64)return SVGS.over;
+  if(n===65)return SVGS.fog;
+  if(n>=70&&n<=71)return SVGS.rain;
+  if(n>=72&&n<=77)return SVGS.heavy;
+  if(n>=80&&n<=85)return SVGS.storm;
+  if(n===90)return SVGS.hot;
+  if(n===91||n===92)return SVGS.partly;
+  if(n===93)return SVGS.snow;
+  return SVGS.cloud;
+}
+
 function paintFnd(d){
   var el=document.getElementById("verdict");
   var days=d.weatherForecast||[];
@@ -115,9 +153,9 @@ function paintFnd(d){
   var lines=[];
   var md=maxDay?(maxDay.forecastDate.slice(4,6)+"/"+maxDay.forecastDate.slice(6,8)):"";
   if(maxR===0){
-    lines.push('<div class="big">未来九日大致干燥，落雨机会偏低</div>');
+    lines.push('<div class="big">'+SVGS.sun+'<span class="bigtx">未来九日大致干燥，落雨机会偏低</span></div>');
   }else{
-    lines.push('<div class="big">最易落雨：'+wkPrefix(maxDay.forecastDate)+maxDay.week+" "+md+'（机会'+maxDay.PSR+'）</div>');
+    lines.push('<div class="big">'+SVGS.rain+'<span class="bigtx">最易落雨：'+wkPrefix(maxDay.forecastDate)+maxDay.week+" "+md+'（机会'+maxDay.PSR+'）</span></div>');
   }
   lines.push('<div class="row"><span class="k">周末'+(wkCount===2?"（周六＋周日）":"")+"落雨机会</span>"
     +(wkCount?'<span class="badge '+BCLS[wkMax]+'">'+psrFromRank(wkMax)+"</span>"
@@ -136,6 +174,7 @@ function paintFnd(d){
     var sub="<b>"+x.forecastMintemp.value+"–"+x.forecastMaxtemp.value+"°C</b>"+(hi?" · 湿度 "+hi:"");
     var ps=badgeShort(x.PSR);
     return '<div class="day'+(isWk?" wknd":"")+'">'
+      +'<div class="ic">'+wxIcon(x.forecastIcon)+"</div>"
       +'<div class="dt"><b>'+x.week+"</b><span>"+s.slice(4,6)+"/"+s.slice(6,8)+(isWk?" · 周末":"")+"</span></div>"
       +'<div class="wx"><b>'+(x.forecastWeather||"—")+"</b><span>"+sub+"</span></div>"
       +'<div class="psr">'+ps+"</div>"
