@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20 06:31",
+ "generated": "2026-11-20 11:48",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,25 +8,25 @@
  },
  "err": {},
  "crossing": {
-  "updated": "06:25",
+  "updated": "11:40",
   "rows": [
    {
     "code": "LWS",
     "name": "罗湖",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -41,28 +41,28 @@
     "code": "SBC",
     "name": "深圳湾",
     "hours": "06:30–24:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,37 +76,30 @@
   ]
  },
  "weather": {
-  "temp": 16,
-  "humidity": 70,
-  "uv": null,
-  "uvDesc": null,
+  "temp": 14,
+  "humidity": 90,
+  "uv": 0.8,
+  "uvDesc": "低",
   "warnings": [
+   "寒冷天气警告",
    "强烈季候风信号"
   ],
-  "situation": "一股强烈东北季候风及一道云雨带正影响广东沿岸。本港今早天气显著转凉，截至上午六时，天文台录得最低气温15.3度，是入秋以来的最低纪录。",
-  "forecast": "密云，有几阵雨。市区气温由初时约17度，下降至稍后约14度，新界再低一两度，新界部分地区及高地寒冷。吹清劲北至东北风，离岸及高地吹强风。",
+  "situation": "一股强烈东北季候风正影响华南。同时，一道广阔云带持续为该区带来有雨的天气。正午时分，本港普遍地区气温下降至约12度。",
+  "forecast": "天气转冷，密云，有几阵雨。吹清劲北至东北风，离岸及高地吹强风。",
   "updated": "08:00",
   "days": [
    {
-    "date": "20261120",
-    "week": "星期五",
-    "txt": "密云，天气相当清凉，有几阵雨。",
-    "max": 20,
-    "min": 14,
-    "psr": "低"
-   },
-   {
     "date": "20261121",
     "week": "星期六",
-    "txt": "渐转天晴干燥。早上相当清凉。",
-    "max": 22,
-    "min": 15,
+    "txt": "初时大致多云，早上相当清凉，日间部分时间有阳光。",
+    "max": 21,
+    "min": 13,
     "psr": "低"
    },
    {
     "date": "20261122",
     "week": "星期日",
-    "txt": "大致多云，初时部分时间天色明朗。稍后有一两阵微雨。",
+    "txt": "大致多云。稍后有一两阵微雨。",
     "max": 22,
     "min": 19,
     "psr": "低"
@@ -114,7 +107,7 @@
    {
     "date": "20261123",
     "week": "星期一",
-    "txt": "多云，有一两阵微雨。",
+    "txt": "多云，有一两阵雨。",
     "max": 24,
     "min": 21,
     "psr": "低"
@@ -124,54 +117,62 @@
     "week": "星期二",
     "txt": "多云，有几阵雨。稍后气温下降。",
     "max": 22,
-    "min": 19,
+    "min": 18,
     "psr": "中低"
    },
    {
     "date": "20261125",
     "week": "星期三",
     "txt": "多云，有几阵雨。天气转凉。",
-    "max": 21,
-    "min": 17,
+    "max": 20,
+    "min": 16,
     "psr": "中低"
    },
    {
     "date": "20261126",
     "week": "星期四",
-    "txt": "大致多云，有一两阵雨。早上清凉，日间部分时间天色明朗。",
+    "txt": "大致多云。早上清凉，有一两阵雨，日间部分时间天色明朗。",
     "max": 22,
     "min": 17,
     "psr": "低"
+   },
+   {
+    "date": "20261127",
+    "week": "星期五",
+    "txt": "部分时间有阳光。",
+    "max": 24,
+    "min": 19,
+    "psr": "低"
    }
   ],
-  "fndUpdated": "04:50"
+  "fndUpdated": "11:30"
  },
  "tunnel": {
-  "updated": "06:29",
+  "updated": "11:47",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "4",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "8",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "EH",
     "name": "东隧",
     "dest": "往九龙东",
-    "min": "8",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "12",
+    "txt": "繁忙",
+    "lv": "warn"
    },
    {
     "key": "WH",
     "name": "西隧",
     "dest": "往西九龙",
-    "min": "9",
-    "txt": "畅通",
-    "lv": "ok"
+    "min": "14",
+    "txt": "繁忙",
+    "lv": "warn"
    }
   ],
   "origin": "灣仔 · 黃泥涌道（北行）"
