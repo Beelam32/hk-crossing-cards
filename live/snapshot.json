@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-25 22:44",
+ "generated": "2026-11-26 07:25",
  "ok": {
   "crossing": true,
   "weather": true,
@@ -8,7 +8,7 @@
  },
  "err": {},
  "crossing": {
-  "updated": "22:40",
+  "updated": "07:20",
   "rows": [
    {
     "code": "LWS",
@@ -23,10 +23,10 @@
     "code": "LSC",
     "name": "福田",
     "hours": "06:30–22:30",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HGP",
@@ -50,19 +50,19 @@
     "code": "HYW",
     "name": "莲塘",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "MKT",
     "name": "文锦渡",
     "hours": "07:00–22:00",
-    "arrTxt": "未开闸",
-    "arrLv": "off",
-    "depTxt": "未开闸",
-    "depLv": "off"
+    "arrTxt": "畅通",
+    "arrLv": "ok",
+    "depTxt": "畅通",
+    "depLv": "ok"
    },
    {
     "code": "HZM",
@@ -76,19 +76,19 @@
   ]
  },
  "weather": {
-  "temp": 19,
-  "humidity": 62,
+  "temp": 18,
+  "humidity": 82,
   "uv": null,
   "uvDesc": null,
   "warnings": [],
-  "situation": "一股东北季候风正影响广东沿岸。同时，一道云雨带覆盖华南。受天文大潮及东北季候风的共同影响，过去一两小时本港沿岸水位普遍较正常稍高，吐露港及大澳的水位上升至海图基准面以上3米左右。",
-  "forecast": "大致多云，今晚及明日初时有几阵雨，市区最低气温约16度，新界再低两三度，部分地区相当清凉。下午部分时间天色明朗，最高气温约21度。吹和缓北至东北风，初时离岸风势清劲。",
+  "situation": "一股东北季候风正影响广东沿岸。同时，一道云带亦覆盖华南。本港方面，今早市区气温降至17度左右，新界再低两三度。",
+  "forecast": "大致多云，初时有一两阵微雨。早上清凉。下午部分时间天色明朗，最高气温约21度。吹轻微至和缓北至东北风。",
   "updated": "08:00",
   "days": [
    {
     "date": "20261126",
     "week": "星期四",
-    "txt": "大致多云。初时有几阵雨。下午部分时间天色明朗。",
+    "txt": "大致多云。初时有一两阵微雨。下午部分时间天色明朗。",
     "max": 21,
     "min": 16,
     "psr": "低"
@@ -142,18 +142,18 @@
     "psr": "低"
    }
   ],
-  "fndUpdated": "19:20"
+  "fndUpdated": "04:45"
  },
  "tunnel": {
-  "updated": "22:43",
+  "updated": "07:23",
   "rows": [
    {
     "key": "CH",
     "name": "红隧",
     "dest": "往红磡",
-    "min": "6",
-    "txt": "繁忙",
-    "lv": "warn"
+    "min": "4",
+    "txt": "畅通",
+    "lv": "ok"
    },
    {
     "key": "EH",
